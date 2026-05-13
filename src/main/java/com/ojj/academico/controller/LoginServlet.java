@@ -32,24 +32,24 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("usuario", usuario);
                 
                 if ("Estudante".equals(usuario.getTipoPerfil())) {
-                    response.sendRedirect("dashboard_estudante.jsp");
+                    response.sendRedirect("view/estudante/dashboard_estudante.jsp");
                 } else {
-                    response.sendRedirect("dashboard_funcionario.jsp");
+                    response.sendRedirect("view/funcionario/dashboard_funcionario.jsp");
                 }
             } else {
                 request.setAttribute("erro", "Usuário ou senha inválidos");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("view/auth/login.jsp").forward(request, response);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("erro", "Erro no sistema. Tente novamente.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("view/auth/login.jsp").forward(request, response);
         }
     }
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("view/auth/login.jsp");
     }
 }

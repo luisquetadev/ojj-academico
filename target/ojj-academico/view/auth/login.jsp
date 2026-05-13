@@ -182,7 +182,7 @@
         
         <div class="footer">
             <p>© 2026 Universidade OJJ — Todos os direitos reservados</p>
-            <p style="margin-top: 5px;">Desenvolvido com <i class="fas fa-heart" style="color: #c53030;"></i> para excelência académica</p>
+            <p style="margin-top: 5px;">Desenvolvido com para excelência académica</p>
         </div>
     </div>
 </body>
