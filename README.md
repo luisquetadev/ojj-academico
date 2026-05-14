@@ -99,5 +99,5 @@ Antes de começar, certifique-se de ter instalado:
 ## 📥 Clonar o Repositório
 
 
-git clone https://github.com/SEU_USUARIO/ojj-academico.git
+git clone https://github.com/luisquetadev/ojj-academico.git
 cd ojj-academico
