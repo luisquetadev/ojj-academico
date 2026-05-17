@@ -43,6 +43,7 @@
           <i class="fa-solid fa-lock input-icon"></i>
         </div>
 
+        
         <a href="#" class="forgot">Esqueceu a palavra-passe?</a>
 
         <button type="submit" class="btn-login">Entrar</button>

@@ -299,7 +299,7 @@ body {
     border-radius: var(--radius-card) var(--radius-card) 0 0;
     padding: 2.25rem 1.5rem;
     min-height: 220px;
-  }
+  } 
 
   .panel-right {
     width: 100%;
