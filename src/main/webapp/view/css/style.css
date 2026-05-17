@@ -1,0 +1,317 @@
+/* ===========================
+   CSS Variables / Design Tokens
+   =========================== */
+:root {
+  /* Paleta académica: azul-marinha + dourado */
+  --clr-primary:       #1a3c6e;
+  --clr-primary-mid:   #1e4d9b;
+  --clr-primary-light: #2d6abf;
+  --clr-accent:        #c9a84c;
+  --clr-accent-light:  #e8c96a;
+
+  --clr-bg:        #eef1f7;
+  --clr-card:      #ffffff;
+  --clr-text:      #1a2340;
+  --clr-muted:     #7a8aaa;
+  --clr-border:    #d0d8ec;
+  --clr-input-bg:  #f5f7fc;
+
+  --radius-card:  26px;
+  --radius-btn:   50px;
+  --radius-input: 10px;
+  --shadow-card:  0 24px 64px rgba(26, 60, 110, 0.18);
+
+  --font:       'Poppins', sans-serif;
+  --transition: 0.25s ease;
+}
+
+/* ===========================
+   Reset & Base
+   =========================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--clr-bg);
+  background-image:
+    linear-gradient(rgba(26, 60, 110, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 60, 110, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+/* ===========================
+   Card Container
+   =========================== */
+.card {
+  display: flex;
+  width: 100%;
+  max-width: 800px;
+  min-height: 500px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  background: var(--clr-card);
+}
+
+/* ===========================
+   Left Panel
+   =========================== */
+.panel-left {
+  position: relative;
+  width: 42%;
+  background: linear-gradient(150deg, var(--clr-primary) 0%, var(--clr-primary-mid) 60%, var(--clr-primary-light) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+  overflow: hidden;
+  border-radius: var(--radius-card) 0 140px 0;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.12;
+}
+.blob-1 {
+  width: 260px;
+  height: 260px;
+  background: var(--clr-accent);
+  bottom: -80px;
+  right: -80px;
+}
+.blob-2 {
+  width: 140px;
+  height: 140px;
+  background: #fff;
+  top: -40px;
+  left: -40px;
+}
+
+.panel-left__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.logo-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.9rem;
+  color: var(--clr-accent-light);
+  margin-bottom: 0.6rem;
+}
+
+.panel-left__content h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.brand-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  opacity: 0.8;
+  letter-spacing: 0.3px;
+}
+
+.brand-abbr {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--clr-accent-light);
+  letter-spacing: 4px;
+  line-height: 1;
+  margin: 0.15rem 0 0.3rem;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+
+.panel-left__content::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 2px;
+  background: var(--clr-accent);
+  border-radius: 2px;
+  margin: 0.4rem auto 0;
+  opacity: 0.75;
+}
+
+.brand-tagline {
+  font-size: 0.72rem;
+  opacity: 0.62;
+  margin-top: 0.55rem;
+  line-height: 1.5;
+  max-width: 160px;
+}
+
+/* ===========================
+   Right Panel
+   =========================== */
+.panel-right {
+  width: 58%;
+  padding: 3rem 2.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.panel-right::before {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 4px;
+  background: var(--clr-accent);
+  border-radius: 2px;
+  margin: 0 auto 0.85rem;
+}
+
+.title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--clr-primary);
+  margin-bottom: 1.75rem;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+/* ===========================
+   Form
+   =========================== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.78rem 2.8rem 0.78rem 1.1rem;
+  background: var(--clr-input-bg);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-input);
+  font-family: var(--font);
+  font-size: 0.88rem;
+  color: var(--clr-text);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.input-group input::placeholder {
+  color: var(--clr-muted);
+}
+
+.input-group input:focus {
+  border-color: var(--clr-primary-light);
+  box-shadow: 0 0 0 3px rgba(45, 106, 191, 0.14);
+}
+
+.input-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--clr-muted);
+  font-size: 0.9rem;
+  pointer-events: none;
+  transition: color var(--transition);
+}
+
+.input-group input:focus + .input-icon {
+  color: var(--clr-primary-light);
+}
+
+.forgot {
+  text-align: right;
+  font-size: 0.76rem;
+  color: var(--clr-muted);
+  text-decoration: none;
+  margin-top: -0.3rem;
+  transition: color var(--transition);
+}
+
+.forgot:hover {
+  color: var(--clr-primary);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, var(--clr-primary) 0%, var(--clr-primary-light) 100%);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-btn);
+  font-family: var(--font);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+  margin-top: 0.3rem;
+}
+
+.btn-login:hover {
+  opacity: 0.91;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(26, 60, 110, 0.35);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* ===========================
+   Responsive
+   =========================== */
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column;
+    max-width: 420px;
+  }
+
+  .panel-left {
+    width: 100%;
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+    padding: 2.25rem 1.5rem;
+    min-height: 220px;
+  }
+
+  .panel-right {
+    width: 100%;
+    padding: 2rem 1.75rem 2.5rem;
+  }
+
+  .title { font-size: 1.55rem; }
+  .brand-abbr { font-size: 2.2rem; }
+}
+
+@media (max-width: 400px) {
+  body { padding: 0.75rem; }
+  .panel-right { padding: 1.75rem 1.25rem 2rem; }
+  .title { font-size: 1.35rem; }
+}

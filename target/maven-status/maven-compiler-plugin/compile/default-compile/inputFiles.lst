@@ -1,7 +1,7 @@
-C:\Users\us\Desktop\ojj-academico\src\main\java\com\ojj\academico\models\Usuario.java
-C:\Users\us\Desktop\ojj-academico\src\main\java\com\ojj\academico\model\Usuario.java
-C:\Users\us\Desktop\ojj-academico\src\main\java\com\ojj\academico\test\TestConnection.java
-C:\Users\us\Desktop\ojj-academico\src\main\java\com\ojj\academico\util\ConnectionFactory.java
-C:\Users\us\Desktop\ojj-academico\src\main\java\com\ojj\academico\controller\LoginServlet.java
-C:\Users\us\Desktop\ojj-academico\src\main\java\com\ojj\academico\controller\LogoutServlet.java
-C:\Users\us\Desktop\ojj-academico\src\main\java\com\ojj\academico\dao\UsuarioDAO.java
+/workspaces/ojj-academico/src/main/java/com/ojj/academico/models/Usuario.java
+/workspaces/ojj-academico/src/main/java/com/ojj/academico/controller/LogoutServlet.java
+/workspaces/ojj-academico/src/main/java/com/ojj/academico/test/TestConnection.java
+/workspaces/ojj-academico/src/main/java/com/ojj/academico/model/Usuario.java
+/workspaces/ojj-academico/src/main/java/com/ojj/academico/dao/UsuarioDAO.java
+/workspaces/ojj-academico/src/main/java/com/ojj/academico/util/ConnectionFactory.java
+/workspaces/ojj-academico/src/main/java/com/ojj/academico/controller/LoginServlet.java
