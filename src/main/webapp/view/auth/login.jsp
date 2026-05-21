@@ -12,7 +12,7 @@
     <div class="login-card">
         <div class="logo">
             <h1> OJJ Acadêmico</h1>
-            <p>Sistema Integrado de Gestão</p>
+            <p>Sistema de Gestão Acadêmica</p>
         </div>
         
         <div style="text-align: center; margin-bottom: 25px;">

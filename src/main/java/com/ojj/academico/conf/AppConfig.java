@@ -9,6 +9,14 @@ public final class AppConfig {
     public static final String REGISTER_PAGE = "view/auth/register.jsp";
     public static final String STUDENT_DASHBOARD = "view/estudante/dashboard_estudante.jsp";
     public static final String STAFF_DASHBOARD = "view/funcionario/dashboard_funcionario.jsp";
+    
+    // Tipos de funcionário
+    public static final String TIPO_PROFESSOR = "professor";
+    public static final String TIPO_SECRETARIO = "secretario";
+    public static final String TIPO_TESOUREIRO = "tesoureiro";
+    public static final String TIPO_COORDENADOR_CURSO = "coordenador_curso";
+    public static final String TIPO_COORDENADOR_DEPARTAMENTO = "coordenador_departamento";
+    public static final String TIPO_RH = "rh";
 
     private AppConfig() {
         // utilitário

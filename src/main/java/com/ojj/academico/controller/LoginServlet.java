@@ -11,45 +11,48 @@ import jakarta.servlet.http.HttpSession;
 
 import com.ojj.academico.conf.AppConfig;
 import com.ojj.academico.dto.LoginDTO;
-import com.ojj.academico.exception.ValidationException;
-import com.ojj.academico.model.Usuario;
-import com.ojj.academico.service.UsuarioService;
+
+import com.ojj.academico.model.Utilizador;
+import com.ojj.academico.service.UtilizadorService;
 
 public class LoginServlet extends HttpServlet {
+    private final UtilizadorService utilizadorService;
 
-    private final UsuarioService usuarioService = new UsuarioService();
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String username = request.getParameter("username");
-        String senha = request.getParameter("password");
-        LoginDTO loginDTO = new LoginDTO(username, senha);
-
-        try {
-            Usuario usuario = usuarioService.autenticar(loginDTO);
-            HttpSession session = request.getSession();
-            session.setAttribute(AppConfig.SESSION_USER_ATTRIBUTE, usuario);
-
-            if (AppConfig.ROLE_ESTUDANTE.equals(usuario.getTipoPerfil())) {
-                response.sendRedirect(request.getContextPath() + "/" + AppConfig.STUDENT_DASHBOARD);
-            } else {
-                response.sendRedirect(request.getContextPath() + "/" + AppConfig.STAFF_DASHBOARD);
-            }
-        } catch (ValidationException e) {
-            request.setAttribute("erro", e.getMessage());
-            request.getRequestDispatcher("/" + AppConfig.LOGIN_PAGE).forward(request, response);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            request.setAttribute("erro", "Erro no sistema. Tente novamente.");
-            request.getRequestDispatcher("/" + AppConfig.LOGIN_PAGE).forward(request, response);
-        }
+    public LoginServlet() {
+        this.utilizadorService = new UtilizadorService();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/" + AppConfig.LOGIN_PAGE);
+        request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        try {
+            LoginDTO loginDTO = new LoginDTO(email, password);
+            Utilizador utilizador = utilizadorService.login(loginDTO.getEmail(), loginDTO.getPassword());
+
+            if (utilizador != null) {
+                HttpSession session = request.getSession();
+                session.setAttribute(AppConfig.SESSION_USER_ATTRIBUTE, utilizador);
+                response.sendRedirect(request.getContextPath() + "/dashboard");
+            } else {
+                request.setAttribute("error", "Credenciais inválidas.");
+                request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Ocorreu um erro durante o login.");
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+        }
+}
+
+
+
 }

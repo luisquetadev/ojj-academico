@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ojj.academico.model.Usuario" %>
+<%@ page import="com.ojj.academico.service.EstudanteService" %>
+<%@ page import="com.ojj.academico.service.FuncionarioService" %>
+
 <%
     Usuario usuario = (Usuario) session.getAttribute("usuario");
+    EstudanteService service = new EstudanteService();
+    FuncionarioService funcionarioService = new FuncionarioService();
     if (usuario == null || !"Funcionario".equals(usuario.getTipoPerfil())) {
         response.sendRedirect("login.jsp");
         return;
@@ -32,17 +37,17 @@
         <div class="stats">
             <div class="stat-card">
                 <i class="fas fa-users"></i>
-                <h3>0</h3>
+                <h3><%= service.contarEstudantes() %></h3>
                 <p>Total de Estudantes</p>
             </div>
             <div class="stat-card">
                 <i class="fas fa-chalkboard-user"></i>
-                <h3>0</h3>
+                <h3><%= funcionarioService.contarFuncionarios() %></h3>
                 <p>Total de Funcionarios</p>
             </div>
             <div class="stat-card">
                 <i class="fas fa-headset"></i>
-                <h3>0</h3>
+                <h3>10</h3>
                 <p>Atendimentos Hoje</p>
             </div>
             <div class="stat-card">

@@ -21,4 +21,15 @@ public final class PasswordUtils {
         }
         return BCrypt.checkpw(plainPassword, hashedPassword);
     }
+
+    public static String gerarSenha() {
+        // Gera uma senha aleatória de 8 caracteres
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder senha = new StringBuilder();
+        java.util.Random random = new java.util.Random();
+        for (int i = 0; i < 8; i++) {
+            senha.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return senha.toString();
+    }
 }

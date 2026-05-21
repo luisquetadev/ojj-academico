@@ -1,0 +1,100 @@
+package com.ojj.academico.dao;
+
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.math.BigDecimal;
+
+import com.ojj.academico.model.Propina;
+import com.ojj.academico.utils.ConnectionFactory;
+
+public class PropinaDAO {
+
+    public Propina buscarPorId(int idPropina) throws SQLException {
+        String sql = "SELECT * FROM propina WHERE id_propina = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idPropina);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapPropina(rs);
+            }
+            return null;
+        }
+    }
+
+    public List<Propina> listarTodos() throws SQLException {
+        String sql = "SELECT * FROM propina";
+        List<Propina> list = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                list.add(mapPropina(rs));
+            }
+        }
+        return list;
+    }
+
+    public boolean inserir(Propina propina) throws SQLException {
+        String sql = "INSERT INTO propina (id_estudante, mes_referencia, ano_referencia, valor, multa, data_vencimento, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, propina.getIdEstudante());
+            stmt.setString(2, propina.getMesReferencia());
+            stmt.setInt(3, propina.getAnoReferencia());
+            stmt.setBigDecimal(4, propina.getValor());
+            stmt.setBigDecimal(5, propina.getMulta());
+            stmt.setDate(6, Date.valueOf(propina.getDataVencimento()));
+            stmt.setString(7, propina.getStatus());
+            int affected = stmt.executeUpdate();
+            if (affected > 0) {
+                ResultSet keys = stmt.getGeneratedKeys();
+                if (keys.next()) {
+                    propina.setIdPropina(keys.getInt(1));
+                }
+                return true;
+            }
+            return false;
+        }
+    }
+
+    public boolean atualizar(Propina propina) throws SQLException {
+        String sql = "UPDATE propina SET id_estudante = ?, mes_referencia = ?, ano_referencia = ?, valor = ?, multa = ?, data_vencimento = ?, status = ? WHERE id_propina = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, propina.getIdEstudante());
+            stmt.setString(2, propina.getMesReferencia());
+            stmt.setInt(3, propina.getAnoReferencia());
+            stmt.setBigDecimal(4, propina.getValor());
+            stmt.setBigDecimal(5, propina.getMulta());
+            stmt.setDate(6, Date.valueOf(propina.getDataVencimento()));
+            stmt.setString(7, propina.getStatus());
+            stmt.setInt(8, propina.getIdPropina());
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
+    public boolean excluir(int idPropina) throws SQLException {
+        String sql = "DELETE FROM propina WHERE id_propina = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idPropina);
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
+    private Propina mapPropina(ResultSet rs) throws SQLException {
+        Propina p = new Propina();
+        p.setIdPropina(rs.getInt("id_propina"));
+        p.setIdEstudante(rs.getInt("id_estudante"));
+        p.setMesReferencia(rs.getString("mes_referencia"));
+        p.setAnoReferencia(rs.getInt("ano_referencia"));
+        p.setValor(rs.getBigDecimal("valor"));
+        p.setMulta(rs.getBigDecimal("multa"));
+        p.setDataVencimento(rs.getDate("data_vencimento").toLocalDate());
+        p.setStatus(rs.getString("status"));
+        return p;
+    }
+}

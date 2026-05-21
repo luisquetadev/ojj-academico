@@ -47,4 +47,49 @@
     <welcome-file-list>
         <welcome-file>view/auth/login.jsp</welcome-file>
     </welcome-file-list>
+
+    <listener>
+        <listener-class>com.ojj.academico.init.AppInitializer</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>FuncionarioAdminServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.FuncionarioAdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FuncionarioAdminServlet</servlet-name>
+        <url-pattern>/admin/funcionario/new</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>FuncionarioListServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.FuncionarioListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FuncionarioListServlet</servlet-name>
+        <url-pattern>/admin/funcionario/list</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>FuncionarioEditServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.FuncionarioEditServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FuncionarioEditServlet</servlet-name>
+        <url-pattern>/admin/funcionario/edit</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>MatriculaEstudanteServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.MatriculaEstudanteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MatriculaEstudanteServlet</servlet-name>
+        <url-pattern>/secretario/matricular</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DeclaracaoEstudanteServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.DeclaracaoEstudanteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeclaracaoEstudanteServlet</servlet-name>
+        <url-pattern>/secretario/declaracao</url-pattern>
+    </servlet-mapping>
 </web-app>

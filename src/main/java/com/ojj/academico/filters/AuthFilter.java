@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import com.ojj.academico.model.Usuario;
+import com.ojj.academico.model.Utilizador;
 
 public class AuthFilter implements Filter {
 
@@ -26,9 +26,9 @@ public class AuthFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession(false);
-        Usuario usuario = session != null ? (Usuario) session.getAttribute(AppConfig.SESSION_USER_ATTRIBUTE) : null;
+        Utilizador utilizador = session != null ? (Utilizador) session.getAttribute(AppConfig.SESSION_USER_ATTRIBUTE) : null;
 
-        if (usuario == null) {
+        if (utilizador == null) {
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/");
             return;
         }
