@@ -14,7 +14,7 @@ public class FuncionarioDAO {
     public Funcionario buscarPorId(int idFuncionario) throws SQLException {
         String sql = "SELECT * FROM funcionario WHERE id_funcionario = ?";
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idFuncionario);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -24,12 +24,43 @@ public class FuncionarioDAO {
         }
     }
 
+    public Funcionario buscarPorIdUtilizador(int idUtilizador) throws SQLException {
+        String sql = "SELECT * FROM funcionario WHERE id_utilizador = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idUtilizador);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapFuncionario(rs);
+            }
+            return null;
+        }
+    }
+
+    public Funcionario buscarPerfilFuncionario(int idFuncionario) throws SQLException {
+        String sql = "SELECT  p.nome_perfil FROM funcionario f INNER JOIN utilizador u ON f.id_utilizador = u.id_utilizador \r\n"
+                + //
+                "INNER JOIN perfil p ON u.id_perfil = p.id_perfil WHERE f.id_funcionario = ?;  ";
+        try(Connection conn = ConnectionFactory.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setInt(1,idFuncionario);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                return mapFuncionario(rs);
+            }
+            return null;
+        }
+
+
+
+    }
+
     public List<Funcionario> listarTodos() throws SQLException {
         String sql = "SELECT * FROM funcionario";
         List<Funcionario> list = new ArrayList<>();
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 list.add(mapFuncionario(rs));
             }
@@ -40,7 +71,7 @@ public class FuncionarioDAO {
     public boolean inserir(Funcionario funcionario) throws SQLException {
         String sql = "INSERT INTO funcionario (id_utilizador, id_departamento, nome_completo, telefone, numero_bi, sexo, data_nascimento, morada, salario, data_admissao, id_admin_criador) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, funcionario.getIdUtilizador());
             setInteger(stmt, 2, funcionario.getIdDepartamento());
             stmt.setString(3, funcionario.getNomeCompleto());
@@ -67,7 +98,7 @@ public class FuncionarioDAO {
     public boolean atualizar(Funcionario funcionario) throws SQLException {
         String sql = "UPDATE funcionario SET id_utilizador = ?, id_departamento = ?, nome_completo = ?, telefone = ?, numero_bi = ?, sexo = ?, data_nascimento = ?, morada = ?, salario = ?, data_admissao = ?, id_admin_criador = ? WHERE id_funcionario = ?";
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, funcionario.getIdUtilizador());
             setInteger(stmt, 2, funcionario.getIdDepartamento());
             stmt.setString(3, funcionario.getNomeCompleto());
@@ -87,7 +118,7 @@ public class FuncionarioDAO {
     public boolean excluir(int idFuncionario) throws SQLException {
         String sql = "DELETE FROM funcionario WHERE id_funcionario = ?";
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idFuncionario);
             return stmt.executeUpdate() > 0;
         }

@@ -14,6 +14,14 @@ public class FuncionarioRepository {
         return funcionarioDAO.buscarPorId(id);
     }
 
+    public Funcionario findByIdUtilizador(int idutilizador) throws SQLException {
+        return funcionarioDAO.buscarPorIdUtilizador(idutilizador);
+    }
+
+    public Funcionario findPerfilFuncionario(int idFuncionario) throws SQLException {
+        return funcionarioDAO.buscarPerfilFuncionario(idFuncionario);
+    }
+
     public List<Funcionario> findAll() throws SQLException {
         return funcionarioDAO.listarTodos();
     }

@@ -46,9 +46,7 @@
                 <i class="fas fa-sign-in-alt"></i> ENTRAR
             </button>
         </form>
-        <div style="text-align: center; margin-top: 18px;">
-            <a href="<%= request.getContextPath() %>/register" style="color: #4a3580; text-decoration: none; font-size: 14px;">Não tem conta? Cadastre-se</a>
-        </div>
+        
         
         <div class="footer">
             <p>© 2026 Universidade OJJ — Todos os direitos reservados</p>

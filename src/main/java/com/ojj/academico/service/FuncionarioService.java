@@ -22,6 +22,14 @@ public class FuncionarioService {
         return funcionarioRepository.findById(id);
     }
 
+    public Funcionario findByIdUtilizador(int idutilizador) throws SQLException{
+        return funcionarioRepository.findByIdUtilizador(idutilizador);
+    }
+
+    public Funcionario findPerfilFuncionario(int idFuncionario) throws SQLException {
+        return funcionarioRepository.findPerfilFuncionario(idFuncionario);
+    }
+
     public List<Funcionario> findAll() throws SQLException {
         return funcionarioRepository.findAll();
     }

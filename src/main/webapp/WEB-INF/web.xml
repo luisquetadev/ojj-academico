@@ -4,7 +4,24 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee 
          https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
-    <display-name>OJJ Academico</display-name>
+    
+    <display-name>OJJ Academico - Sistema de Gestão Académica</display-name>
+
+    <!-- =================================================================== -->
+    <!-- MÓDULO 0: AUTENTICAÇÃO E ENTRADA -->
+    <!-- =================================================================== -->
+
+    <!-- 0. Tela de Boas-vindas -->
+    <servlet>
+        <servlet-name>WelcomeServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.WelcomeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WelcomeServlet</servlet-name>
+        <url-pattern>/welcome</url-pattern>
+    </servlet-mapping>
+
+    <!-- 1. Login (EXISTENTE) -->
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.ojj.academico.controller.LoginServlet</servlet-class>
@@ -13,6 +30,8 @@
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
+
+    <!-- Logout -->
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>com.ojj.academico.controller.LogoutServlet</servlet-class>
@@ -22,6 +41,7 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
+    <!-- Register -->
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>com.ojj.academico.controller.RegisterServlet</servlet-class>
@@ -31,35 +51,21 @@
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
 
-    <filter>
-        <filter-name>AuthFilter</filter-name>
-        <filter-class>com.ojj.academico.filters.AuthFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthFilter</filter-name>
-        <url-pattern>/view/estudante/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AuthFilter</filter-name>
-        <url-pattern>/view/funcionario/*</url-pattern>
-    </filter-mapping>
-
-    <welcome-file-list>
-        <welcome-file>view/auth/login.jsp</welcome-file>
-    </welcome-file-list>
-
-    <listener>
-        <listener-class>com.ojj.academico.init.AppInitializer</listener-class>
-    </listener>
-
+    <!-- 2. Dashboard Admin -->
     <servlet>
-        <servlet-name>FuncionarioAdminServlet</servlet-name>
-        <servlet-class>com.ojj.academico.controller.FuncionarioAdminServlet</servlet-class>
+        <servlet-name>DashboardAdminServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.DashboardAdminServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>FuncionarioAdminServlet</servlet-name>
-        <url-pattern>/admin/funcionario/new</url-pattern>
+        <servlet-name>DashboardAdminServlet</servlet-name>
+        <url-pattern>/admin/dashboard</url-pattern>
     </servlet-mapping>
+
+    <!-- =================================================================== -->
+    <!-- MÓDULO 1: FUNCIONÁRIOS -->
+    <!-- =================================================================== -->
+
+    <!-- 3. Listar Funcionários (EXISTENTE) -->
     <servlet>
         <servlet-name>FuncionarioListServlet</servlet-name>
         <servlet-class>com.ojj.academico.controller.FuncionarioListServlet</servlet-class>
@@ -68,6 +74,18 @@
         <servlet-name>FuncionarioListServlet</servlet-name>
         <url-pattern>/admin/funcionario/list</url-pattern>
     </servlet-mapping>
+
+    <!-- 4. Cadastrar Funcionário (EXISTENTE) -->
+    <servlet>
+        <servlet-name>FuncionarioAdminServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.FuncionarioAdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FuncionarioAdminServlet</servlet-name>
+        <url-pattern>/admin/funcionario/new</url-pattern>
+    </servlet-mapping>
+
+    <!-- 5. Editar Funcionário (EXISTENTE) -->
     <servlet>
         <servlet-name>FuncionarioEditServlet</servlet-name>
         <servlet-class>com.ojj.academico.controller.FuncionarioEditServlet</servlet-class>
@@ -76,6 +94,62 @@
         <servlet-name>FuncionarioEditServlet</servlet-name>
         <url-pattern>/admin/funcionario/edit</url-pattern>
     </servlet-mapping>
+
+    <!-- 6. Perfil do Funcionário -->
+    <servlet>
+        <servlet-name>FuncionarioPerfilServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.FuncionarioPerfilServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FuncionarioPerfilServlet</servlet-name>
+        <url-pattern>/admin/funcionario/profile</url-pattern>
+    </servlet-mapping>
+
+    <!-- =================================================================== -->
+    <!-- MÓDULO 2: ESTUDANTES -->
+    <!-- =================================================================== -->
+
+    <!-- 7. Listar Estudantes -->
+    <servlet>
+        <servlet-name>EstudanteListServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.EstudanteListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EstudanteListServlet</servlet-name>
+        <url-pattern>/admin/estudante/list</url-pattern>
+    </servlet-mapping>
+
+    <!-- 8. Cadastrar Estudante -->
+    <servlet>
+        <servlet-name>EstudanteAdminServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.EstudanteAdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EstudanteAdminServlet</servlet-name>
+        <url-pattern>/admin/estudante/new</url-pattern>
+    </servlet-mapping>
+
+    <!-- 9. Editar Estudante -->
+    <servlet>
+        <servlet-name>EstudanteEditServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.EstudanteEditServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EstudanteEditServlet</servlet-name>
+        <url-pattern>/admin/estudante/edit</url-pattern>
+    </servlet-mapping>
+
+    <!-- 10. Perfil do Estudante -->
+    <servlet>
+        <servlet-name>EstudantePerfilServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.EstudantePerfilServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EstudantePerfilServlet</servlet-name>
+        <url-pattern>/estudante/profile</url-pattern>
+    </servlet-mapping>
+
+    <!-- 11. Matrícula do Estudante (EXISTENTE) -->
     <servlet>
         <servlet-name>MatriculaEstudanteServlet</servlet-name>
         <servlet-class>com.ojj.academico.controller.MatriculaEstudanteServlet</servlet-class>
@@ -84,6 +158,56 @@
         <servlet-name>MatriculaEstudanteServlet</servlet-name>
         <url-pattern>/secretario/matricular</url-pattern>
     </servlet-mapping>
+
+    <!-- 12. Trancamento/Suspensão -->
+    <servlet>
+        <servlet-name>TrancamentoServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.TrancamentoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TrancamentoServlet</servlet-name>
+        <url-pattern>/secretario/trancamento</url-pattern>
+    </servlet-mapping>
+
+    <!-- =================================================================== -->
+    <!-- MÓDULO 3: CURSOS E TURMAS -->
+    <!-- =================================================================== -->
+
+    <!-- 13. Gestão de Cursos -->
+    <servlet>
+        <servlet-name>CursoServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.CursoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CursoServlet</servlet-name>
+        <url-pattern>/admin/curso</url-pattern>
+    </servlet-mapping>
+
+    <!-- 14. Gestão de Disciplinas -->
+    <servlet>
+        <servlet-name>DisciplinaServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.DisciplinaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DisciplinaServlet</servlet-name>
+        <url-pattern>/admin/disciplina</url-pattern>
+    </servlet-mapping>
+
+    <!-- 15. Gestão de Turmas -->
+    <servlet>
+        <servlet-name>TurmaServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.TurmaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TurmaServlet</servlet-name>
+        <url-pattern>/admin/turma</url-pattern>
+    </servlet-mapping>
+
+    <!-- =================================================================== -->
+    <!-- MÓDULO 4: SECRETARIA -->
+    <!-- =================================================================== -->
+
+    <!-- 16. Emitir Declaração (EXISTENTE) -->
     <servlet>
         <servlet-name>DeclaracaoEstudanteServlet</servlet-name>
         <servlet-class>com.ojj.academico.controller.DeclaracaoEstudanteServlet</servlet-class>
@@ -92,4 +216,293 @@
         <servlet-name>DeclaracaoEstudanteServlet</servlet-name>
         <url-pattern>/secretario/declaracao</url-pattern>
     </servlet-mapping>
+
+    <!-- 17. Emitir Confirmação de Matrícula -->
+    <servlet>
+        <servlet-name>ConfirmacaoMatriculaServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.ConfirmacaoMatriculaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ConfirmacaoMatriculaServlet</servlet-name>
+        <url-pattern>/secretario/confirmacao-matricula</url-pattern>
+    </servlet-mapping>
+
+    <!-- 18. Emitir Cartão de Estudante -->
+    <servlet>
+        <servlet-name>CartaoEstudanteServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.CartaoEstudanteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CartaoEstudanteServlet</servlet-name>
+        <url-pattern>/secretario/cartao-estudante</url-pattern>
+    </servlet-mapping>
+
+    <!-- 19. Histórico de Atendimento -->
+    <servlet>
+        <servlet-name>HistoricoAtendimentoServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.HistoricoAtendimentoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HistoricoAtendimentoServlet</servlet-name>
+        <url-pattern>/secretario/historico-atendimento</url-pattern>
+    </servlet-mapping>
+
+    <!-- =================================================================== -->
+    <!-- MÓDULO 5: TESOURARIA -->
+    <!-- =================================================================== -->
+
+    <!-- 20. Pagamento de Propina -->
+    <servlet>
+        <servlet-name>PropinaServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.PropinaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PropinaServlet</servlet-name>
+        <url-pattern>/tesouraria/propina</url-pattern>
+    </servlet-mapping>
+
+    <!-- 21. Pagamento de Serviços -->
+    <servlet>
+        <servlet-name>PagamentoServicosServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.PagamentoServicosServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PagamentoServicosServlet</servlet-name>
+        <url-pattern>/tesouraria/pagamento-servicos</url-pattern>
+    </servlet-mapping>
+
+    <!-- 22. Histórico de Pagamentos -->
+    <servlet>
+        <servlet-name>HistoricoPagamentosServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.HistoricoPagamentosServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HistoricoPagamentosServlet</servlet-name>
+        <url-pattern>/tesouraria/historico</url-pattern>
+    </servlet-mapping>
+
+    <!-- =================================================================== -->
+    <!-- MÓDULO 6: PROFESSORES -->
+    <!-- =================================================================== -->
+
+    <!-- 23. Minhas Turmas -->
+    <servlet>
+        <servlet-name>ProfessorTurmasServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.ProfessorTurmasServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProfessorTurmasServlet</servlet-name>
+        <url-pattern>/professor/turmas</url-pattern>
+    </servlet-mapping>
+
+    <!-- 24. Lançamento de Notas -->
+    <servlet>
+        <servlet-name>LancamentoNotasServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.LancamentoNotasServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LancamentoNotasServlet</servlet-name>
+        <url-pattern>/professor/lancar-notas</url-pattern>
+    </servlet-mapping>
+
+    <!-- 25. Gestão de Pautas -->
+    <servlet>
+        <servlet-name>GestiaoPautasServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.GestiaoPautasServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GestiaoPautasServlet</servlet-name>
+        <url-pattern>/professor/pautas</url-pattern>
+    </servlet-mapping>
+
+    <!-- =================================================================== -->
+    <!-- MÓDULO 7: COORDENAÇÃO -->
+    <!-- =================================================================== -->
+
+    <!-- 26. Aprovação de Pautas -->
+    <servlet>
+        <servlet-name>AprovacaoPautasServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.AprovacaoPautasServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AprovacaoPautasServlet</servlet-name>
+        <url-pattern>/coordenador/aprovacao-pautas</url-pattern>
+    </servlet-mapping>
+
+    <!-- 27. Calendário Académico -->
+    <servlet>
+        <servlet-name>CalendarioAcademicoServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.CalendarioAcademicoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CalendarioAcademicoServlet</servlet-name>
+        <url-pattern>/coordenador/calendario</url-pattern>
+    </servlet-mapping>
+
+    <!-- =================================================================== -->
+    <!-- MÓDULO 8: RELATÓRIOS -->
+    <!-- =================================================================== -->
+
+    <!-- 28. Relatório de Estudantes -->
+    <servlet>
+        <servlet-name>RelatorioEstudantesServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.RelatorioEstudantesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RelatorioEstudantesServlet</servlet-name>
+        <url-pattern>/relatorios/estudantes</url-pattern>
+    </servlet-mapping>
+
+    <!-- 29. Relatório Financeiro -->
+    <servlet>
+        <servlet-name>RelatorioFinanceiroServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.RelatorioFinanceiroServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RelatorioFinanceiroServlet</servlet-name>
+        <url-pattern>/relatorios/financeiro</url-pattern>
+    </servlet-mapping>
+
+    <!-- 30. Relatório Académico -->
+    <servlet>
+        <servlet-name>RelatorioAcademicoServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.RelatorioAcademicoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RelatorioAcademicoServlet</servlet-name>
+        <url-pattern>/relatorios/academico</url-pattern>
+    </servlet-mapping>
+
+    <!-- =================================================================== -->
+    <!-- MÓDULO 9: SISTEMA -->
+    <!-- =================================================================== -->
+
+    <!-- 31. Gestão de Utilizadores -->
+    <servlet>
+        <servlet-name>GestaoUtilizadoresServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.GestaoUtilizadoresServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GestaoUtilizadoresServlet</servlet-name>
+        <url-pattern>/sistema/utilizadores</url-pattern>
+    </servlet-mapping>
+
+    <!-- 32. Logs/Auditoria -->
+    <servlet>
+        <servlet-name>LogsAuditoriaServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.LogsAuditoriaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogsAuditoriaServlet</servlet-name>
+        <url-pattern>/sistema/logs</url-pattern>
+    </servlet-mapping>
+
+    <!-- =================================================================== -->
+    <!-- FILTROS DE AUTENTICAÇÃO E AUTORIZAÇÃO -->
+    <!-- =================================================================== -->
+
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>com.ojj.academico.filters.AuthFilter</filter-class>
+    </filter>
+
+    <!-- Proteger URLs administrativas -->
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Proteger URLs de professor -->
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/professor/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Proteger URLs de estudante -->
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/estudante/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Proteger URLs de secretaria -->
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/secretario/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Proteger URLs de tesouraria -->
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/tesouraria/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Proteger URLs de coordenação -->
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/coordenador/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Proteger URLs de relatórios -->
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/relatorios/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Proteger URLs do sistema -->
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/sistema/*</url-pattern>
+    </filter-mapping>
+
+    <!-- =================================================================== -->
+    <!-- LISTENERS -->
+    <!-- =================================================================== -->
+
+    <listener>
+        <listener-class>com.ojj.academico.init.AppInitializer</listener-class>
+    </listener>
+
+    <!-- =================================================================== -->
+    <!-- CONFIGURAÇÕES GLOBAIS -->
+    <!-- =================================================================== -->
+
+    <welcome-file-list>
+        <welcome-file>welcome</welcome-file>
+        <welcome-file>login</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- Configuração de erro 404 -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/views/error/404.jsp</location>
+    </error-page>
+
+    <!-- Configuração de erro 500 -->
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/views/error/500.jsp</location>
+    </error-page>
+
+    <!-- Configuração de erro de acesso negado -->
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/views/error/403.jsp</location>
+    </error-page>
+
+    <!-- Tempo de sessão em minutos -->
+    <session-config>
+        <cookie-config>
+            <secure>false</secure>
+            <http-only>true</http-only>
+        </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+    <!-- Configuração de MIME types -->
+    <mime-mapping>
+        <extension>pdf</extension>
+        <mime-type>application/pdf</mime-type>
+    </mime-mapping>
+
 </web-app>

@@ -1,187 +1,422 @@
-# OJJ Acadêmico
+# 📑 ÍNDICE DE DOCUMENTAÇÃO - SISTEMA DE GESTÃO ACADÉMICA
 
-Sistema base de autenticação e dashboards para a aplicação acadêmica da Universidade OJJ.
-Esta versão foca na autenticação do usuário, controles de sessão e páginas de apresentação para login, logout e dashboards.
+## 🎯 Comece Aqui
 
----
-
-## Visão Geral
-
-- Página de login centralizada: `src/main/webapp/view/auth/login.jsp`
-- Cadastro de usuário: `src/main/webapp/view/auth/register.jsp`
-- Dashboard Estudante: `src/main/webapp/view/estudante/dashboard_estudante.jsp`
-- Dashboard Funcionário / Administrador: `src/main/webapp/view/funcionario/dashboard_funcionario.jsp`
-- Rotas protegidas por filtro de sessão: `com.ojj.academico.filters.AuthFilter`
-- Logout por servlet: `com.ojj.academico.controller.LogoutServlet`
+Este projeto contém toda a documentação, código e configuração necessária para criar um sistema completo de gestão académica com **32 telas principais** em **Java/Jakarta Servlet**.
 
 ---
 
-## Estrutura de Arquivos Importantes
+## 📚 Documentos Fornecidos
 
-```text
-src/main/java/com/ojj/academico/
-├── conf/
-│   └── AppConfig.java              # Configuração de caminhos e constantes
-├── controller/
-│   ├── LoginServlet.java           # Tratamento de login
-│   ├── LogoutServlet.java          # Tratamento de logout
-│   └── RegisterServlet.java        # Cadastro de usuário
-├── filters/
-│   └── AuthFilter.java             # Protege áreas autenticadas
-├── model/
-│   └── Usuario.java                # Entidade de usuário
-├── repository/
-│   └── UsuarioRepository.java      # Persistência de usuário
-├── service/
-│   └── UsuarioService.java         # Lógica de autenticação e registro
-├── validator/
-│   └── UsuarioValidator.java       # Validação de dados de login e cadastro
-├── utils/
-│   ├── ConnectionFactory.java      # Conexão com banco MySQL
-│   └── PasswordUtils.java          # Hash de senha BCrypt
-```
+### 1. **RESUMO_EXECUTIVO.md** ⭐ LEIA PRIMEIRO
+**Arquivo:** `RESUMO_EXECUTIVO.md`
 
-```text
-src/main/webapp/
-├── assets/
-│   ├── css/
-│   │   ├── login.css
-│   │   ├── register.css
-│   │   └── dashboard.css
-│   ├── js/
-│   │   └── main.js
-│   └── images/
-├── view/
-│   ├── auth/
-│   │   ├── login.jsp
-│   │   └── register.jsp
-│   ├── estudante/
-│   │   └── dashboard_estudante.jsp
-│   └── funcionario/
-│       └── dashboard_funcionario.jsp
-└── WEB-INF/
-    └── web.xml
-```
+**O que contém:**
+- 📊 Visão geral do projeto com estatísticas
+- 🏗️ Arquitetura do sistema
+- 📋 Tabela completa de todas as 32 telas
+- 👥 Papéis de utilizadores e matriz de permissões
+- 🔄 Fluxo de autenticação
+- 🚀 Como começar (passo a passo)
+- 📁 Estrutura de pastas
+- 📞 Cronograma estimado
+
+**Tempo de leitura:** 15-20 minutos
+
+**Recomendação:** Leia este primeiro para entender a visão geral do projeto.
 
 ---
 
-## Funcionalidades de Autenticação
+### 2. **ESTRUTURA_COMPLETA_SISTEMA_ACADEMICO.md**
+**Arquivo:** `ESTRUTURA_COMPLETA_SISTEMA_ACADEMICO.md`
 
-### Tipos de usuário suportados
-- `Estudante` → dashboard de estudante
-- `Funcionario` → dashboard de funcionário
-- `Administrador` → roteado para o dashboard de funcionário
+**O que contém:**
+- 📍 Localização exata de cada arquivo (Servlet e JSP)
+- 🔗 URLs de acesso para cada tela
+- 🔐 Níveis de acesso por funcionalidade
+- 📝 Configuração completa do web.xml para cada servlet
+- ✅ Status atual de implementação
+- 📋 Resumo de todos os arquivos a criar
 
-### Fluxo de login
-1. Usuário acessa a aplicação em `/` ou `/login`
-2. Preenche `username` e `password`
-3. `LoginServlet` valida os dados e chama `UsuarioService.autenticar(...)`
-4. Se válido, o usuário é armazenado na sessão
-5. O usuário é redirecionado para o dashboard correto
+**Tempo de leitura:** 30-40 minutos
 
-### Logout
-- O link de logout usa caminho absoluto para evitar problemas de rota:
-  - `<%= request.getContextPath() %>/logout`
-- `LogoutServlet` invalida a sessão e redireciona para `/`
-- Ao acessar URLs protegidas sem sessão válida, o filtro `AuthFilter` redireciona para `/`
+**Recomendação:** Use como referência técnica durante a implementação.
 
 ---
 
-## Configuração do Banco de Dados
+### 3. **GUIA_IMPLEMENTACAO_SERVLETS_JSPS.md**
+**Arquivo:** `GUIA_IMPLEMENTACAO_SERVLETS_JSPS.md`
 
-A conexão com o MySQL está configurada em `src/main/java/com/ojj/academico/utils/ConnectionFactory.java`:
+**O que contém:**
+- 💻 Exemplos de código Java completo
+  - Template de Servlet GET (Listagem)
+  - Template de Servlet POST (Criar)
+  - Template de Servlet PUT (Editar)
+- 🎨 Exemplos de código JSP
+  - Template de página de listagem
+  - Template de formulário
+- 📋 Checklist de implementação por módulo
+- 💡 Dicas de implementação
+- 🔧 Boas práticas de codificação
 
-- URL: `jdbc:mysql://localhost:3306/ojj_academico?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true`
-- Usuário: `root`
-- Senha: `""` (vazia)
+**Tempo de leitura:** 45-60 minutos (com testes do código)
 
-A tabela usada é `utilizadores` com colunas mínimas:
-- `id_utilizador`
-- `username`
-- `senha_hash`
-- `tipo_perfil`
-- `id_ref`
-
-> Ajuste as credenciais de banco se necessário antes de executar.
+**Recomendação:** Leia durante o desenvolvimento para entender os padrões.
 
 ---
 
-## Como Rodar Localmente
+### 4. **web.xml** (Arquivo de Configuração)
+**Arquivo:** `web.xml`
 
-### Pré-requisitos
-- Java 17
-- Maven
-- MySQL em execução com base `ojj_academico`
-- Tomcat ou outro servidor Jakarta/Servlet
+**O que contém:**
+- 🔗 Mapeamento de todos os 32+ servlets
+- 🔐 Configuração de filtros de autenticação
+- ⚠️ Tratamento de erros (404, 500, 403)
+- ⏱️ Configuração de sessão
+- 📄 Tipos MIME
+- 🎯 Página inicial (welcome-file-list)
 
-### Build e execução
+**Tamanho:** ~450 linhas
+
+**Recomendação:** Copie para `src/main/webapp/WEB-INF/web.xml` do seu projeto.
+
+---
+
+### 5. **criar_estrutura.sh** (Script de Automação)
+**Arquivo:** `criar_estrutura.sh`
+
+**O que faz:**
+- 📂 Cria toda a estrutura de diretórios
+- 📝 Cria arquivos-modelo (templates) de Servlet e JSP
+- 📋 Gera arquivo `CHECKLIST_IMPLEMENTACAO.md`
+- 📊 Exibe resumo da estrutura criada
+
+**Como executar:**
 ```bash
-mvn clean package
+bash criar_estrutura.sh /caminho/para/seu/projeto
 ```
 
-### Deploy no Tomcat
-1. Gere o WAR:
-   ```bash
-   mvn clean package
-   ```
-2. Copie o arquivo `target/ojj-academico.war` para o diretório `webapps` do Tomcat.
-3. Inicie ou reinicie o Tomcat.
-4. Acesse a aplicação em:
-   ```text
-   http://localhost:8080/ojj-academico/
-   ```
-
-> Se estiver usando IDE, basta configurar o Tomcat como servidor e deployar o artefato `ojj-academico.war`.
-
-### Uso
-- Acesse: `http://localhost:8080/ojj-academico/`
-- Login padrão: use conta cadastrada ou registre uma nova em `/register`
-
----
-
-## Credenciais de Teste
-
-Caso queira adicionar usuários diretamente no banco, use este exemplo:
-
-```sql
-INSERT INTO utilizadores (username, senha_hash, tipo_perfil, id_ref) VALUES
-('admin1', '$2a$10$Dz.CvShn3oXhyJzbeF5vhO42Y4PrHTlNjw7cAgWEUFRbCKInNC5im', 'Administrador', 0),
-('admin2', '$2a$10$MkyMOIB7xQQgmmLl2N4Oe5kw.C75UaOdSVfX4evrfBI95LQrCM3a', 'Administrador', 0),
-('estudante1', '$2a$10$iRbNcIDAPCfGDH/BF/MiCO1QAo0zFLRpQ0eX5F6IpwrJHd8GSGAXu', 'Estudante', 0),
-('estudante2', '$2a$10$BKxsUfiQfAayDqN7PXZiY.KUv8jD4MeKgtHlvL5pFy4QGdBVEJ7rm', 'Estudante', 0),
-('funcionario1', '$2a$10$foFuVocETUWTuCY2Dl2jaOQCaKzZApx9JOBlHvJn2T8ts.CNfz3ua', 'Funcionario', 0),
-('funcionario2', '$2a$10$FHcrvOlkyCAEKUaq5Kjw8e3pKuNldZR64ObPXzLogt88PCKX1q6gG', 'Funcionario', 0);
+**Exemplo:**
+```bash
+bash criar_estrutura.sh ~/projetos/ojj-academico
 ```
 
-- Senhas originais:
-  - `Admin123`
-  - `Estudante123`
-  - `Funcionario123`
+**Recomendação:** Execute assim que clonar o repositório para automatizar a criação de pastas.
 
 ---
 
-## Tags e Versionamento
-- Versão atual marcada: `v1.0.0`
-- Branch principal atual: `master`
-- Repositório remoto: `https://github.com/luisquetadev/ojj-academico.git`
+### 6. **Este Arquivo (README/ÍNDICE)**
+**Arquivo:** `README.md` ou `INDICE.md`
+
+**O que contém:**
+- 📑 Este índice com descrição de todos os documentos
+- 🗺️ Mapa de navegação
+- 📞 Perguntas frequentes
+- 🔗 Links de referência
 
 ---
 
-## Próximos Passos
+## 🗺️ Mapa de Navegação Rápida
 
-- Adicionar validação de perfil mais detalhada para `Administrador`
-- Implementar persistência de dados de estudante e funcionário
-- Criar dashboards funcionais com rotas específicas
-- Adicionar testes automatizados de integração e unidade
+### Se você quer...
+
+**Entender o projeto rapidamente**
+→ Leia: `RESUMO_EXECUTIVO.md` (15 min)
+
+**Implementar um servlet**
+→ Consulte: `GUIA_IMPLEMENTACAO_SERVLETS_JSPS.md` + exemplos
+
+**Saber onde criar um arquivo**
+→ Consulte: `ESTRUTURA_COMPLETA_SISTEMA_ACADEMICO.md`
+
+**Configurar o web.xml**
+→ Copie: `web.xml`
+
+**Criar a estrutura de pastas**
+→ Execute: `bash criar_estrutura.sh .`
+
+**Verificar o progresso**
+→ Consulte: `CHECKLIST_IMPLEMENTACAO.md` (gerado pelo script)
 
 ---
 
-## Notas para o Responsável pela Autenticação
+## 📊 Estatísticas do Projeto
 
-Seu escopo atual é:
-- manter o login funcionando
-- garantir logout correto
-- proteger páginas privadas com sessão
-- fazer redirecionamento para dashboards com base no `tipoPerfil`
+| Item | Quantidade |
+|------|-----------|
+| Telas principais | 32 |
+| Servlets | 32 |
+| JSPs | 35+ |
+| Módulos | 9 |
+| Papéis de utilizador | 7 |
+| Documentos fornecidos | 6 |
+| Linhas de código JSP template | 500+ |
+| Linhas de código Servlet template | 300+ |
+| Linhas no web.xml | 450+ |
 
-Foco no fluxo de autenticação e apresentação mínima das telas.
+---
+
+## 🚀 Guia Rápido de Início
+
+### 1️⃣ Primeira Execução (5 minutos)
+
+```bash
+# Clonar repositório
+git clone https://github.com/luisquetadev/ojj-academico.git
+cd ojj-academico
+
+# Criar estrutura
+bash criar_estrutura.sh .
+
+# Verificar resultado
+find src/main -type d | wc -l  # Deve mostrar 30+ diretórios
+```
+
+### 2️⃣ Estudar Arquitetura (20 minutos)
+
+1. Abrir: `RESUMO_EXECUTIVO.md`
+2. Ler seção: "Arquitetura do Sistema"
+3. Ler seção: "Tabela de Telas por Módulo"
+
+### 3️⃣ Implementar Primeiro Servlet (1-2 horas)
+
+1. Ler: `GUIA_IMPLEMENTACAO_SERVLETS_JSPS.md` - Seção "Exemplo 1"
+2. Usar template fornecido
+3. Implementar `EstudanteListServlet`
+4. Testar com curl ou postman
+
+### 4️⃣ Criar Primeira JSP (1-2 horas)
+
+1. Copiar template de `GUIA_IMPLEMENTACAO_SERVLETS_JSPS.md`
+2. Criar `src/main/webapp/view/admin/estudante/list.jsp`
+3. Testar no navegador
+
+### 5️⃣ Atualizar web.xml (30 minutos)
+
+1. Copiar arquivo `web.xml` fornecido
+2. Colocar em `src/main/webapp/WEB-INF/`
+3. Fazer deploy e testar
+
+---
+
+## 🔍 Estrutura de Pastas Esperada
+
+```
+ojj-academico/
+├── src/main/java/com/ojj/academico/
+│   └── controller/
+│       ├── WelcomeServlet.java           (a criar)
+│       ├── DashboardAdminServlet.java    (a criar)
+│       ├── EstudanteListServlet.java     (a criar)
+│       ├── EstudanteAdminServlet.java    (a criar)
+│       ├── EstudanteEditServlet.java     (a criar)
+│       ├── EstudantePerfilServlet.java   (a criar)
+│       ├── PropinaServlet.java           (a criar)
+│       ├── ... (mais 24 servlets)
+│       ├── LoginServlet.java             ✅ (existente)
+│       ├── LogoutServlet.java            ✅ (existente)
+│       ├── RegisterServlet.java          ✅ (existente)
+│       ├── FuncionarioListServlet.java   ✅ (existente)
+│       ├── FuncionarioAdminServlet.java  ✅ (existente)
+│       └── FuncionarioEditServlet.java   ✅ (existente)
+│
+├── src/main/webapp/view/
+│   ├── welcome.jsp                       (a criar)
+│   ├── admin/
+│   │   ├── dashboard.jsp                 (a criar)
+│   │   ├── funcionario/
+│   │   │   ├── list.jsp                  (a criar)
+│   │   │   ├── form.jsp                  (a criar)
+│   │   │   ├── edit.jsp                  (a criar)
+│   │   │   └── profile.jsp               (a criar)
+│   │   ├── estudante/
+│   │   │   ├── list.jsp                  (a criar)
+│   │   │   ├── form.jsp                  (a criar)
+│   │   │   ├── edit.jsp                  (a criar)
+│   │   │   └── profile.jsp               (a criar)
+│   │   ├── curso/
+│   │   ├── disciplina/
+│   │   └── turma/
+│   ├── secretaria/
+│   ├── tesouraria/
+│   ├── professor/
+│   ├── coordenador/
+│   ├── relatorios/
+│   ├── sistema/
+│   ├── error/
+│   └── components/
+│
+├── src/main/webapp/WEB-INF/
+│   └── web.xml                           (copiar arquivo fornecido)
+│
+├── pom.xml
+├── ESTRUTURA_COMPLETA_SISTEMA_ACADEMICO.md
+├── GUIA_IMPLEMENTACAO_SERVLETS_JSPS.md
+├── RESUMO_EXECUTIVO.md
+├── web.xml
+└── criar_estrutura.sh
+```
+
+---
+
+## ❓ Perguntas Frequentes
+
+### P1: Por onde começo?
+**R:** 
+1. Leia `RESUMO_EXECUTIVO.md` (15 min)
+2. Execute `bash criar_estrutura.sh .`
+3. Leia `GUIA_IMPLEMENTACAO_SERVLETS_JSPS.md`
+
+### P2: Qual é a ordem de implementação?
+**R:** Recomendamos por módulo:
+1. Módulo 0: Autenticação
+2. Módulo 1: Dashboard (Admin)
+3. Módulo 2: Funcionários (já parcialmente existe)
+4. Módulo 3: Estudantes
+5. E assim por diante...
+
+### P3: Como adiciono uma nova tela depois?
+**R:** Siga o padrão:
+1. Crie o Servlet em `src/main/java/com/ojj/academico/controller/`
+2. Crie a JSP em `src/main/webapp/view/[modulo]/`
+3. Adicione mapeamento no `web.xml`
+
+### P4: Como testo um servlet sem JSP?
+**R:** Use ferramentas como:
+- **Postman** (recomendado)
+- **curl**: `curl -X GET http://localhost:8080/app/admin/estudante/list`
+- **IDE (IntelliJ)**: Built-in HTTP Client
+
+### P5: Qual é o tamanho total do projeto?
+**R:** 
+- ~30 Servlets (300-400 linhas cada) = ~12,000 linhas
+- ~35 JSPs (300-500 linhas cada) = ~14,000 linhas
+- **Total: ~26,000 linhas de código**
+
+### P6: Quanto tempo leva para implementar?
+**R:** 
+- 1 pessoa, tempo integral: 6-8 semanas
+- 2 pessoas, tempo integral: 3-4 semanas
+- Com templates fornecidos: -30% do tempo
+
+### P7: Como fazer deploy?
+**R:**
+1. Maven build: `mvn clean package`
+2. Copiar WAR para Tomcat: `cp target/ojj-academico.war $CATALINA_HOME/webapps/`
+3. Reiniciar Tomcat: `./shutdown.sh && ./startup.sh`
+
+### P8: Como adicionar nova tabela ao banco?
+**R:**
+1. Criar script SQL em `db/` 
+2. Criar classe Model
+3. Criar DAO/Repository
+4. Criar Service
+5. Usar no Servlet
+
+---
+
+## 🔗 Links de Referência Importantes
+
+### Documentação Oficial
+- **Jakarta Servlet:** https://jakarta.ee/specifications/servlet/
+- **Jakarta Server Pages:** https://jakarta.ee/specifications/pages/
+- **JSTL:** https://projects.eclipse.org/projects/ee4j.jstl
+
+### Ferramentas
+- **Maven:** https://maven.apache.org/
+- **Tomcat:** https://tomcat.apache.org/
+- **MySQL:** https://www.mysql.com/
+- **Postman:** https://www.postman.com/
+
+### Bootstrap & Frontend
+- **Bootstrap 5:** https://getbootstrap.com/
+- **Font Awesome:** https://fontawesome.com/
+- **jQuery:** https://jquery.com/
+
+### Boas Práticas
+- **Clean Code:** https://www.oreilly.com/library/view/clean-code/9780136083238/
+- **Design Patterns:** https://refactoring.guru/design-patterns/java
+- **SOLID Principles:** https://en.wikipedia.org/wiki/SOLID
+
+---
+
+## 📞 Suporte
+
+Se tiver dúvidas ou problemas:
+
+1. Consulte o arquivo `GUIA_IMPLEMENTACAO_SERVLETS_JSPS.md` para exemplos
+2. Verifique `ESTRUTURA_COMPLETA_SISTEMA_ACADEMICO.md` para localização de arquivos
+3. Revise o `web.xml` fornecido para configurações
+4. Execute `bash criar_estrutura.sh .` novamente para regenerar estrutura
+
+---
+
+## ✅ Checklist Final
+
+Antes de começar a implementação:
+
+- [ ] Clonou o repositório
+- [ ] Leu `RESUMO_EXECUTIVO.md`
+- [ ] Executou `bash criar_estrutura.sh .`
+- [ ] Verificou a estrutura de pastas
+- [ ] Leu `GUIA_IMPLEMENTACAO_SERVLETS_JSPS.md`
+- [ ] Entendeu a arquitetura MVC
+- [ ] Copiar `web.xml` para `src/main/webapp/WEB-INF/`
+- [ ] Salvou `ESTRUTURA_COMPLETA_SISTEMA_ACADEMICO.md` como referência
+- [ ] Pronto para iniciar implementação! 🚀
+
+---
+
+## 📈 Próximas Etapas
+
+1. **Imediatamente:**
+   - Ler documentação
+   - Criar estrutura
+
+2. **Dias 1-3:**
+   - Implementar módulo de autenticação
+   - Testes de login/logout
+
+3. **Semanas 1-2:**
+   - Implementar CRUD básico
+   - Testes unitários
+
+4. **Semanas 2-4:**
+   - Implementar relatórios
+   - Testes de integração
+
+5. **Semanas 4-8:**
+   - Ajustes finais
+   - Testes em produção
+
+---
+
+## 📜 Informações do Projeto
+
+- **Nome:** Sistema de Gestão Académica OJJ
+- **Versão:** 1.0.0
+- **Data:** May 22, 2026
+- **Status:** 📋 Planejamento Completo
+- **Próxima Fase:** 🔧 Implementação
+- **Total de Documentos:** 6
+- **Total de Exemplos:** 10+
+
+---
+
+## 🎓 Conclusão
+
+Parabéns! Você tem agora:
+
+✅ Especificação completa de 32 telas  
+✅ Arquitetura MVC bem definida  
+✅ Exemplos de código prontos para usar  
+✅ Configuração web.xml completa  
+✅ Script de automação  
+✅ Documentação abrangente  
+
+**Tudo o que você precisa para iniciar a implementação com sucesso! 🚀**
+
+---
+
+**Última atualização:** May 22, 2026  
+**Mantido por:** Equipe de Desenvolvimento OJJ Académico
