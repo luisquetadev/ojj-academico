@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.ojj.academico.model.Utilizador;
 import com.ojj.academico.utils.ConnectionFactory;
+import com.ojj.academico.utils.PasswordUtils;
 
 public class UtilizadorDAO {
 
@@ -120,14 +121,18 @@ public class UtilizadorDAO {
     }
 
 public Utilizador buscarPorUsernameESenha(String username, String password) throws SQLException {
-        String sql = "SELECT * FROM utilizador WHERE email = ? AND password_hash = ?";
+        // Primeiro busca o usuário pelo email
+        String sql = "SELECT * FROM utilizador WHERE email = ?";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
-            stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return mapUtilizador(rs);
+                Utilizador usuario = mapUtilizador(rs);
+                // Verifica a senha usando BCrypt
+                if (PasswordUtils.checkPassword(password, usuario.getPasswordHash())) {
+                    return usuario;
+                }
             }
             return null;
         }

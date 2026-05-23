@@ -7,25 +7,29 @@
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Dashboard - Sistema Académico OJJ</title>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+            <link href="<%= request.getContextPath() %>/assets/css/main.css" rel="stylesheet">
             <style>
                 :root {
-                    --primary-color: #2c3e50;
-                    --secondary-color: #3498db;
-                    --success-color: #27ae60;
-                    --danger-color: #e74c3c;
-                    --warning-color: #f39c12;
+                    --primary-color: #1e3a5f;
+                    --secondary-color: #2c5282;
+                    --accent-color: #3182ce;
+                    --success-color: #2f855a;
+                    --danger-color: #c53030;
+                    --warning-color: #d69e2e;
                 }
 
                 body {
-                    background-color: #f4f6f9;
+                    background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
                     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 }
 
                 .sidebar {
                     min-height: 100vh;
-                    background: linear-gradient(135deg, var(--primary-color) 0%, #34495e 100%);
+                    background: rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
                     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
                 }
 
@@ -43,7 +47,7 @@
                 }
 
                 .sidebar .nav-link.active {
-                    background: var(--secondary-color);
+                    background: var(--accent-color);
                     color: white;
                 }
 
@@ -57,7 +61,9 @@
                 }
 
                 .navbar-top {
-                    background: white;
+                    background: rgba(255, 255, 255, 0.95);
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(255, 255, 255, 0.3);
                     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                     padding: 15px 20px;
                     border-radius: 10px;
@@ -86,7 +92,7 @@
                 }
 
                 .welcome-banner {
-                    background: linear-gradient(135deg, var(--secondary-color) 0%, #2980b9 100%);
+                    background: linear-gradient(135deg, var(--accent-color) 0%, var(--secondary-color) 100%);
                     border-radius: 15px;
                     padding: 30px;
                     color: white;
@@ -94,7 +100,9 @@
                 }
 
                 .table-card {
-                    background: white;
+                    background: rgba(255, 255, 255, 0.95);
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(255, 255, 255, 0.3);
                     border-radius: 15px;
                     padding: 20px;
                     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -275,7 +283,7 @@
                 </div>
             </div>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>
                 // Mostrar data atual

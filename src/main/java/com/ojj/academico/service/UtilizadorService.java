@@ -38,5 +38,8 @@ public class UtilizadorService {
         return utilizadorRepository.findByUsernameAndPassword(email, password);
     }
 
+    public Utilizador findByEmail(String email) throws SQLException {
+        return utilizadorRepository.findByUsername(email);
+    }
 
 }

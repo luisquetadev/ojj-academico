@@ -61,6 +61,66 @@
         <url-pattern>/admin/dashboard</url-pattern>
     </servlet-mapping>
 
+    <!-- 2.1. Dashboard Secretario -->
+    <servlet>
+        <servlet-name>SecretarioDashboardServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.SecretarioDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SecretarioDashboardServlet</servlet-name>
+        <url-pattern>/secretario/dashboard</url-pattern>
+    </servlet-mapping>
+
+    <!-- 2.2. Dashboard Tesouraria -->
+    <servlet>
+        <servlet-name>TesourariaDashboardServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.TesourariaDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TesourariaDashboardServlet</servlet-name>
+        <url-pattern>/tesouraria/dashboard</url-pattern>
+    </servlet-mapping>
+
+    <!-- 2.3. Dashboard Professor -->
+    <servlet>
+        <servlet-name>ProfessorDashboardServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.ProfessorDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProfessorDashboardServlet</servlet-name>
+        <url-pattern>/professor/dashboard</url-pattern>
+    </servlet-mapping>
+
+    <!-- 2.4. Dashboard Coordenador -->
+    <servlet>
+        <servlet-name>CoordenadorDashboardServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.CoordenadorDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CoordenadorDashboardServlet</servlet-name>
+        <url-pattern>/coordenador/dashboard</url-pattern>
+    </servlet-mapping>
+
+    <!-- 2.5. Dashboard Director -->
+    <servlet>
+        <servlet-name>DirectorDashboardServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.DirectorDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DirectorDashboardServlet</servlet-name>
+        <url-pattern>/director/dashboard</url-pattern>
+    </servlet-mapping>
+
+    <!-- 2.6. Dashboard Estudante -->
+    <servlet>
+        <servlet-name>EstudanteDashboardServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.EstudanteDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EstudanteDashboardServlet</servlet-name>
+        <url-pattern>/estudante/dashboard</url-pattern>
+    </servlet-mapping>
+
     <!-- =================================================================== -->
     <!-- MÓDULO 1: FUNCIONÁRIOS -->
     <!-- =================================================================== -->
@@ -467,8 +527,6 @@
     <!-- =================================================================== -->
 
     <welcome-file-list>
-        <welcome-file>welcome</welcome-file>
-        <welcome-file>login</welcome-file>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
