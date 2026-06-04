@@ -13,7 +13,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
-            <a class="navbar-brand" href="<%= request.getContextPath() %>/dashboard/admin">
+            <a class="navbar-brand" href="<%= request.getContextPath() %>/admin/dashboard">
                 <i class="fas fa-university"></i> OJJ Académico
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -22,7 +22,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="<%= request.getContextPath() %>/dashboard/admin">
+                        <a class="nav-link active" href="<%= request.getContextPath() %>/admin/dashboard">
                             <i class="fas fa-home"></i> Dashboard
                         </a>
                     </li>
@@ -96,25 +96,25 @@
         <div class="row mt-4">
             <div class="col-md-3">
                 <div class="stat-card">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number"><%= request.getAttribute("totalEstudantes") != null ? request.getAttribute("totalEstudantes") : 0 %></div>
                     <div class="stat-label"><i class="fas fa-user-graduate"></i> Estudantes</div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="stat-card">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number"><%= request.getAttribute("totalFuncionarios") != null ? request.getAttribute("totalFuncionarios") : 0 %></div>
                     <div class="stat-label"><i class="fas fa-users"></i> Funcionários</div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="stat-card">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number"><%= request.getAttribute("totalCursos") != null ? request.getAttribute("totalCursos") : 0 %></div>
                     <div class="stat-label"><i class="fas fa-book"></i> Cursos</div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="stat-card">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number"><%= request.getAttribute("totalTurmas") != null ? request.getAttribute("totalTurmas") : 0 %></div>
                     <div class="stat-label"><i class="fas fa-chalkboard-teacher"></i> Turmas</div>
                 </div>
             </div>

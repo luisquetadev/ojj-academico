@@ -2,13 +2,18 @@ package com.ojj.academico.model;
 
 import java.time.LocalDateTime;
 
+/**
+ * Classe Model que representa a tabela 'utilizador' do banco de dados.
+ * 
+ * Contém os dados de acesso e perfil de qualquer pessoa que faça login no sistema.
+ */
 public class Utilizador {
     private int idUtilizador;
-    private int idPerfil;
-    private String email;
-    private String passwordHash;
-    private String status; // ATIVO, INATIVO, BLOQUEADO
-    private int tentativasLogin;
+    private int idPerfil; // FK para a tabela perfil (ADMIN, SECRETARIA, etc)
+    private String email; // Usado como username no login
+    private String passwordHash; // Senha (atualmente em texto plano)
+    private String status; // Estados possíveis: ATIVO, INATIVO, BLOQUEADO
+    private int tentativasLogin; // Controle de segurança contra ataques de força bruta
     private String ultimoIp;
     private String tokenReset;
     private LocalDateTime tokenExpiracao;
@@ -24,6 +29,7 @@ public class Utilizador {
         this.passwordHash = passwordHash;
     }
 
+    // Getters e Setters padrão para acesso aos atributos privados
     public int getIdUtilizador() {
         return idUtilizador;
     }
@@ -31,6 +37,8 @@ public class Utilizador {
     public void setIdUtilizador(int idUtilizador) {
         this.idUtilizador = idUtilizador;
     }
+    
+    // ... restante dos métodos get/set sem alteração lógica ...
 
     public int getIdPerfil() {
         return idPerfil;

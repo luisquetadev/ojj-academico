@@ -9,6 +9,8 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 
+import com.ojj.academico.utils.PasswordUtils;
+
 @WebListener
 public class AppInitializer implements ServletContextListener {
 
@@ -28,8 +30,9 @@ public class AppInitializer implements ServletContextListener {
             if (repository.findByUsername(email) == null) {
                 Utilizador utilizador = new Utilizador();
                 utilizador.setEmail(email);
-                utilizador.setPasswordHash(password);
+                utilizador.setPasswordHash(PasswordUtils.hashPassword(password));
                 utilizador.setIdPerfil(IdPerfil);
+                utilizador.setStatus("ATIVO");
                 
                 service.save(utilizador);
             }

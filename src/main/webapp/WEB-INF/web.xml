@@ -208,6 +208,10 @@
         <servlet-name>EstudantePerfilServlet</servlet-name>
         <url-pattern>/estudante/profile</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EstudantePerfilServlet</servlet-name>
+        <url-pattern>/admin/estudante/profile</url-pattern>
+    </servlet-mapping>
 
     <!-- 11. Matrícula do Estudante (EXISTENTE) -->
     <servlet>

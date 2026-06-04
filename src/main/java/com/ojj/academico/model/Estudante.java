@@ -3,22 +3,28 @@ package com.ojj.academico.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * Classe Model que representa a tabela 'estudante'.
+ * 
+ * Contém todas as informações pessoais, de contato e de identificação
+ * do aluno no sistema académico.
+ */
 public class Estudante {
     private int idEstudante;
-    private int idUtilizador;
-    private String numeroEstudante;
+    private int idUtilizador; // Referência à conta de login (pode ser NULL no banco)
+    private String numeroEstudante; // Número de matrícula institucional
     private String nomeCompleto;
-    private String sexo; // M,F
+    private String sexo; // M para Masculino, F para Feminino
     private LocalDate dataNascimento;
     private String telefone;
     private String emailPessoal;
     private String morada;
     private String provincia;
     private String nacionalidade;
-    private String numeroBi;
+    private String numeroBi; // Número do Bilhete de Identidade (Único)
     private String nomeEncarregado;
     private String telefoneEncarregado;
-    private String foto;
+    private String foto; // Caminho para o arquivo de imagem
     private LocalDateTime dataInscricao;
 
     public Estudante() {
@@ -33,6 +39,7 @@ public class Estudante {
         this.dataNascimento = dataNascimento;
     }
 
+    // Getters e Setters para encapsulamento dos dados
     public int getIdEstudante() {
         return idEstudante;
     }
@@ -40,6 +47,8 @@ public class Estudante {
     public void setIdEstudante(int idEstudante) {
         this.idEstudante = idEstudante;
     }
+    
+    // ... restante dos métodos get/set automáticos ...
 
     public int getIdUtilizador() {
         return idUtilizador;

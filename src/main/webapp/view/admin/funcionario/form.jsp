@@ -12,7 +12,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
-            <a class="navbar-brand" href="<%= request.getContextPath() %>/dashboard/admin">
+            <a class="navbar-brand" href="<%= request.getContextPath() %>/admin/dashboard">
                 <i class="fas fa-university"></i> OJJ Académico
             </a>
             <div class="navbar-nav ms-auto">

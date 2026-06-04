@@ -9,8 +9,17 @@ import java.util.List;
 import com.ojj.academico.model.Estudante;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * Data Access Object (DAO) para a tabela 'estudante'.
+ * 
+ * Responsável por todas as operações de persistência relacionadas aos dados biográficos
+ * e académicos dos estudantes.
+ */
 public class EstudanteDAO {
 
+    /**
+     * Localiza um estudante específico pelo seu ID.
+     */
     public Estudante buscarPorId(int idEstudante) throws SQLException {
         String sql = "SELECT * FROM estudante WHERE id_estudante = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -24,6 +33,9 @@ public class EstudanteDAO {
         }
     }
 
+    /**
+     * Retorna a lista de todos os estudantes matriculados.
+     */
     public List<Estudante> listarTodos() throws SQLException {
         String sql = "SELECT * FROM estudante";
         List<Estudante> lista = new ArrayList<>();
@@ -37,11 +49,24 @@ public class EstudanteDAO {
         return lista;
     }
 
+    /**
+     * Registra um novo estudante no sistema.
+     * 
+     * Nota: O campo 'id_utilizador' é tratado como opcional (setNull) para permitir
+     * o cadastro de estudantes que ainda não possuem uma conta de login criada.
+     */
     public boolean inserir(Estudante estudante) throws SQLException {
         String sql = "INSERT INTO estudante (id_utilizador, numero_estudante, nome_completo, sexo, data_nascimento, telefone, email_pessoal, morada, provincia, nacionalidade, numero_bi, nome_encarregado, telefone_encarregado, foto, data_inscricao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, estudante.getIdUtilizador());
+            
+            // Tratamento especial para Foreign Key opcional
+            if (estudante.getIdUtilizador() > 0) {
+                stmt.setInt(1, estudante.getIdUtilizador());
+            } else {
+                stmt.setNull(1, Types.INTEGER);
+            }
+            
             stmt.setString(2, estudante.getNumeroEstudante());
             stmt.setString(3, estudante.getNomeCompleto());
             stmt.setString(4, estudante.getSexo());
@@ -56,8 +81,10 @@ public class EstudanteDAO {
             stmt.setString(13, estudante.getTelefoneEncarregado());
             stmt.setString(14, estudante.getFoto());
             setTimestamp(stmt, 15, estudante.getDataInscricao());
+            
             int affected = stmt.executeUpdate();
             if (affected > 0) {
+                // Recupera o ID gerado pelo banco e atualiza o objeto Model
                 ResultSet keys = stmt.getGeneratedKeys();
                 if (keys.next()) {
                     estudante.setIdEstudante(keys.getInt(1));
@@ -68,11 +95,20 @@ public class EstudanteDAO {
         }
     }
 
+    /**
+     * Atualiza todas as informações de um estudante.
+     */
     public boolean atualizar(Estudante estudante) throws SQLException {
         String sql = "UPDATE estudante SET id_utilizador = ?, numero_estudante = ?, nome_completo = ?, sexo = ?, data_nascimento = ?, telefone = ?, email_pessoal = ?, morada = ?, provincia = ?, nacionalidade = ?, numero_bi = ?, nome_encarregado = ?, telefone_encarregado = ?, foto = ?, data_inscricao = ? WHERE id_estudante = ?";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, estudante.getIdUtilizador());
+            
+            if (estudante.getIdUtilizador() > 0) {
+                stmt.setInt(1, estudante.getIdUtilizador());
+            } else {
+                stmt.setNull(1, Types.INTEGER);
+            }
+            
             stmt.setString(2, estudante.getNumeroEstudante());
             stmt.setString(3, estudante.getNomeCompleto());
             stmt.setString(4, estudante.getSexo());
@@ -88,10 +124,14 @@ public class EstudanteDAO {
             stmt.setString(14, estudante.getFoto());
             setTimestamp(stmt, 15, estudante.getDataInscricao());
             stmt.setInt(16, estudante.getIdEstudante());
+            
             return stmt.executeUpdate() > 0;
         }
     }
 
+    /**
+     * Remove o registro do estudante pelo ID.
+     */
     public boolean excluir(int idEstudante) throws SQLException {
         String sql = "DELETE FROM estudante WHERE id_estudante = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -101,6 +141,9 @@ public class EstudanteDAO {
         }
     }
 
+    /**
+     * Mapeia os dados do ResultSet para o objeto Estudante.
+     */
     private Estudante mapEstudante(ResultSet rs) throws SQLException {
         Estudante e = new Estudante();
         e.setIdEstudante(rs.getInt("id_estudante"));
@@ -108,6 +151,7 @@ public class EstudanteDAO {
         e.setNumeroEstudante(rs.getString("numero_estudante"));
         e.setNomeCompleto(rs.getString("nome_completo"));
         e.setSexo(rs.getString("sexo"));
+        // Converte java.sql.Date para java.time.LocalDate
         e.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
         e.setTelefone(rs.getString("telefone"));
         e.setEmailPessoal(rs.getString("email_pessoal"));
@@ -122,6 +166,9 @@ public class EstudanteDAO {
         return e;
     }
 
+    /**
+     * Auxiliar para definir parâmetros de data e hora no PreparedStatement.
+     */
     private void setTimestamp(PreparedStatement stmt, int index, LocalDateTime value) throws SQLException {
         if (value != null) {
             stmt.setTimestamp(index, Timestamp.valueOf(value));
@@ -130,6 +177,9 @@ public class EstudanteDAO {
         }
     }
 
+    /**
+     * Auxiliar para ler campos de data e hora do ResultSet.
+     */
     private LocalDateTime getTimestamp(ResultSet rs, String columnLabel) throws SQLException {
         Timestamp ts = rs.getTimestamp(columnLabel);
         return ts != null ? ts.toLocalDateTime() : null;
