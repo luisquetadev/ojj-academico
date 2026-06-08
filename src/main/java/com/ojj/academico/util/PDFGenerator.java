@@ -45,7 +45,7 @@ public class PDFGenerator {
 
         // Date and Signature
         String dataAtual = java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy"));
-        Paragraph data = new Paragraph("Maputo, aos " + dataAtual, fontCorpo);
+        Paragraph data = new Paragraph("Luanda, aos " + dataAtual, fontCorpo);
         data.setAlignment(Element.ALIGN_RIGHT);
         document.add(data);
 

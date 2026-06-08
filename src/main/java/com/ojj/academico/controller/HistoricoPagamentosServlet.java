@@ -19,6 +19,6 @@ public class HistoricoPagamentosServlet extends AbstractPageServlet {
         } catch (SQLException e) {
             request.setAttribute("erro", "Nao foi possivel carregar pagamentos: " + e.getMessage());
         }
-        forward(request, response, "Historico de Pagamentos", "Tesouraria", "Consulta de recibos, referencias e estado dos pagamentos.");
+        request.getRequestDispatcher("/view/tesouraria/historico.jsp").forward(request, response);
     }
 }

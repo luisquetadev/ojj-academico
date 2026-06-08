@@ -10,12 +10,18 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import com.ojj.academico.dao.PagamentoDAO;
+import java.sql.SQLException;
+
 public class TesourariaDashboardServlet extends HttpServlet {
+
+    private final PagamentoDAO pagamentoDAO = new PagamentoDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
+        // ... (previous checks)
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -26,6 +32,13 @@ public class TesourariaDashboardServlet extends HttpServlet {
         if (utilizador == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
+        }
+
+        try {
+            request.setAttribute("receitaHoje", pagamentoDAO.calcularReceitaHoje());
+            request.setAttribute("pagamentosPendentes", pagamentoDAO.contarPagamentosPendentes());
+        } catch (SQLException e) {
+            request.setAttribute("erro", "Erro ao carregar estatísticas: " + e.getMessage());
         }
 
         request.getRequestDispatcher("/view/tesouraria/dashboard.jsp").forward(request, response);

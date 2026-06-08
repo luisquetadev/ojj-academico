@@ -102,6 +102,31 @@ public class PagamentoDAO {
         }
     }
 
+    public BigDecimal calcularReceitaHoje() throws SQLException {
+        String sql = "SELECT SUM(valor_pago) FROM pagamento WHERE DATE(data_pagamento) = CURDATE()";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                BigDecimal total = rs.getBigDecimal(1);
+                return total != null ? total : BigDecimal.ZERO;
+            }
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public int contarPagamentosPendentes() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM pagamento WHERE status = 'PENDENTE'";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        }
+    }
+
     private Pagamento mapPagamento(ResultSet rs) throws SQLException {
         Pagamento p = new Pagamento();
         p.setIdPagamento(rs.getInt("id_pagamento"));

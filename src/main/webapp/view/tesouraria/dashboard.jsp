@@ -61,13 +61,13 @@
         <div class="row mt-4">
             <div class="col-md-4">
                 <div class="stat-card">
-                    <div class="stat-number">MZN 0,00</div>
+                    <div class="stat-number">Kz ${not empty receitaHoje ? receitaHoje : '0,00'}</div>
                     <div class="stat-label"><i class="fas fa-wallet"></i> Receita Hoje</div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="stat-card">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number">${not empty pagamentosPendentes ? pagamentosPendentes : '0'}</div>
                     <div class="stat-label"><i class="fas fa-exclamation-circle"></i> Pagamentos em Atraso</div>
                 </div>
             </div>

@@ -25,11 +25,11 @@ INSERT INTO funcionario (
     @last_user_id,
     1, 
     'Administrador do Sistema', 
-    '+258 840000000', 
+    '+244 923000000', 
     '000000001A', 
     'M', 
     '1990-01-01', 
-    'Maputo, Avenida 24 de Julho', 
+    'Luanda, Avenida Deolinda Rodrigues', 
     50000.00, 
     CURDATE()
 );

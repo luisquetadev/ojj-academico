@@ -98,7 +98,7 @@
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="nacionalidade" class="form-label">Nacionalidade *</label>
-                                    <input type="text" class="form-control-custom" id="nacionalidade" name="nacionalidade" required value="Moçambicana">
+                                    <input type="text" class="form-control-custom" id="nacionalidade" name="nacionalidade" required value="Angolana">
                                 </div>
                             </div>
 
@@ -111,7 +111,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="telefone" class="form-label">Telefone *</label>
-                                    <input type="tel" class="form-control-custom" id="telefone" name="telefone" required placeholder="+258 ...">
+                                    <input type="tel" class="form-control-custom" id="telefone" name="telefone" required placeholder="+244 ...">
                                 </div>
                             </div>
 
@@ -124,17 +124,24 @@
                                     <label for="provincia" class="form-label">Província *</label>
                                     <select class="form-control-custom" id="provincia" name="provincia" required>
                                         <option value="">Selecione...</option>
-                                        <option value="Maputo Cidade">Maputo Cidade</option>
-                                        <option value="Maputo Província">Maputo Província</option>
-                                        <option value="Gaza">Gaza</option>
-                                        <option value="Inhambane">Inhambane</option>
-                                        <option value="Sofala">Sofala</option>
-                                        <option value="Manica">Manica</option>
-                                        <option value="Tete">Tete</option>
-                                        <option value="Zambézia">Zambézia</option>
-                                        <option value="Nampula">Nampula</option>
-                                        <option value="Niassa">Niassa</option>
-                                        <option value="Cabo Delgado">Cabo Delgado</option>
+                                        <option value="Bengo">Bengo</option>
+                                        <option value="Benguela">Benguela</option>
+                                        <option value="Bié">Bié</option>
+                                        <option value="Cabinda">Cabinda</option>
+                                        <option value="Cuando Cubango">Cuando Cubango</option>
+                                        <option value="Cuanza Norte">Cuanza Norte</option>
+                                        <option value="Cuanza Sul">Cuanza Sul</option>
+                                        <option value="Cunene">Cunene</option>
+                                        <option value="Huambo">Huambo</option>
+                                        <option value="Huíla">Huíla</option>
+                                        <option value="Luanda">Luanda</option>
+                                        <option value="Lunda Norte">Lunda Norte</option>
+                                        <option value="Lunda Sul">Lunda Sul</option>
+                                        <option value="Malanje">Malanje</option>
+                                        <option value="Moxico">Moxico</option>
+                                        <option value="Namibe">Namibe</option>
+                                        <option value="Uíge">Uíge</option>
+                                        <option value="Zaire">Zaire</option>
                                     </select>
                                 </div>
                             </div>
