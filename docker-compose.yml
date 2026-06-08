@@ -1,0 +1,38 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: ojj-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: ojj_academico
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./ojj_academico.sql:/docker-entrypoint-initdb.d/01_structure.sql
+      - ./db/seed_completo.sql:/docker-entrypoint-initdb.d/02_seed.sql
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
+      interval: 10s
+
+  app:
+    build: .
+    container_name: ojj-app
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=ojj_academico
+      - DB_USER=root
+      - DB_PASS=
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:

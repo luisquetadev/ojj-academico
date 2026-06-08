@@ -12,10 +12,22 @@ import java.sql.SQLException;
  */
 public class ConnectionFactory {
     
-    // Configurações de acesso ao banco de dados MySQL
-    private static final String URL = "jdbc:mysql://localhost:3306/ojj_academico";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
+    // Configurações de acesso ao banco de dados (usando variáveis de ambiente com fallbacks)
+    private static final String HOST = getEnv("DB_HOST", "localhost");
+    private static final String PORT = getEnv("DB_PORT", "3306");
+    private static final String DB_NAME = getEnv("DB_NAME", "ojj_academico");
+    private static final String USER = getEnv("DB_USER", "root");
+    private static final String PASSWORD = getEnv("DB_PASS", "");
+
+    private static final String URL = String.format("jdbc:mysql://%s:%s/%s?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", HOST, PORT, DB_NAME);
+
+    /**
+     * Auxiliar para ler variáveis de ambiente com valor padrão.
+     */
+    private static String getEnv(String name, String defaultValue) {
+        String value = System.getenv(name);
+        return value != null ? value : defaultValue;
+    }
 
     // Bloco estático: executado apenas uma vez quando a classe é carregada na memória
     static {

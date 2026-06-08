@@ -1,0 +1,10 @@
+target/
+.git/
+.gitignore
+.vscode/
+.idea/
+bin/
+*.log
+Dockerfile
+docker-compose.yml
+DOCKER_GUIDE.md
