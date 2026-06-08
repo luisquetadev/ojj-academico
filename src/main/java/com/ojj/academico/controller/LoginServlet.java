@@ -23,6 +23,7 @@ import java.sql.SQLException;
 public class LoginServlet extends HttpServlet {
 
     private final UtilizadorService utilizadorService = new UtilizadorService();
+    private final com.ojj.academico.dao.UtilizadorDAO utilizadorDAO = new com.ojj.academico.dao.UtilizadorDAO();
 
     /**
      * Exibe a página de login.
@@ -58,6 +59,13 @@ public class LoginServlet extends HttpServlet {
 
                 // Cria ou recupera a sessão do usuário
                 HttpSession session = request.getSession();
+
+                // Buscar nome real do usuário para exibir no dashboard
+                String nomeExibicao = utilizadorDAO.buscarNomeCompleto(utilizador);
+                session.setAttribute("nomeUsuario", nomeExibicao);
+
+                // Registrar log de acesso (IP e Data)
+                utilizadorDAO.atualizarUltimoAcesso(utilizador.getIdUtilizador(), request.getRemoteAddr());
                 
                 // Armazena o objeto utilizador na sessão para uso em filtros de autenticação
                 session.setAttribute(AppConfig.SESSION_USER_ATTRIBUTE, utilizador);

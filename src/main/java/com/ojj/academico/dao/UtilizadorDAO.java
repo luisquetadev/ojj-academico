@@ -115,6 +115,38 @@ public class UtilizadorDAO {
         }
     }
 
+    public void atualizarUltimoAcesso(int idUtilizador, String ip) throws SQLException {
+        String sql = "UPDATE utilizador SET data_ultimo_acesso = NOW(), ultimo_ip = ? WHERE id_utilizador = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, ip);
+            stmt.setInt(2, idUtilizador);
+            stmt.executeUpdate();
+        }
+    }
+
+    /**
+     * Busca o nome completo associado ao utilizador (seja ele estudante ou funcionário).
+     */
+    public String buscarNomeCompleto(Utilizador u) throws SQLException {
+        String sql;
+        if (u.getIdPerfil() == 7) { // Estudante
+            sql = "SELECT nome_completo FROM estudante WHERE id_utilizador = ?";
+        } else { // Funcionário
+            sql = "SELECT nome_completo FROM funcionario WHERE id_utilizador = ?";
+        }
+        
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, u.getIdUtilizador());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("nome_completo");
+            }
+            return u.getEmail(); // Fallback para o email se não encontrar nome
+        }
+    }
+
     /**
      * Método auxiliar (Privado) para converter um registro do banco (ResultSet) 
      * em um objeto Java (Utilizador).

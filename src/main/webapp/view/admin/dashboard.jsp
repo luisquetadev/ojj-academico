@@ -92,9 +92,12 @@
 
     <div class="container mt-4">
         <div class="row">
-            <div class="col-12">
-                <h2 style="color: white;"><i class="fas fa-tachometer-alt"></i> Dashboard Administrador</h2>
-                <p style="color: rgba(255, 255, 255, 0.8);">Bem-vindo ao painel de controle administrativo</p>
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 style="color: white;"><i class="fas fa-tachometer-alt"></i> Bem-vindo(a), ${sessionScope.nomeUsuario}</h2>
+                    <p style="color: rgba(255, 255, 255, 0.8);">Dashboard Administrativo • Gestão Completa do Sistema</p>
+                </div>
+                <a href="<%= request.getContextPath() %>/login" class="btn btn-outline-light"><i class="fas fa-chevron-left"></i> Voltar</a>
             </div>
         </div>
 
