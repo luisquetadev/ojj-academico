@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 21-Maio-2026 às 09:32
--- Versão do servidor: 10.4.27-MariaDB
--- versão do PHP: 8.2.0
+-- Tempo de geração: 06-Jun-2026 às 14:22
+-- Versão do servidor: 10.4.32-MariaDB
+-- versão do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -266,19 +266,6 @@ CREATE TABLE `perfil` (
   `nome_perfil` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Extraindo dados da tabela `perfil`
---
-
-INSERT INTO `perfil` (`id_perfil`, `nome_perfil`) VALUES
-(1, 'ADMIN'),
-(5, 'COORDENADOR'),
-(6, 'DIRECTOR'),
-(4, 'DOCENTE'),
-(7, 'ESTUDANTE'),
-(2, 'SECRETARIA'),
-(3, 'TESOURARIA');
-
 -- --------------------------------------------------------
 
 --
@@ -288,10 +275,21 @@ INSERT INTO `perfil` (`id_perfil`, `nome_perfil`) VALUES
 CREATE TABLE `plano_curricular` (
   `id_plano_curricular` int(11) NOT NULL,
   `id_curso` int(11) NOT NULL,
-  `id_disciplina` int(11) NOT NULL,
   `ano_curricular` int(11) NOT NULL,
   `semestre` int(11) NOT NULL,
   `carga_horaria` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `plano_curricular_disciplina`
+--
+
+CREATE TABLE `plano_curricular_disciplina` (
+  `id_plano_curricular_disciplina` int(11) NOT NULL,
+  `id_plano_curricular` int(11) NOT NULL,
+  `id_disciplina` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -429,7 +427,7 @@ ALTER TABLE `departamento`
 --
 ALTER TABLE `disciplina`
   ADD PRIMARY KEY (`id_disciplina`),
-  ADD UNIQUE KEY `uq_disciplina_codigo` (`codigo_disciplina`);
+  ADD KEY `uq_disciplina_codigo` (`codigo_disciplina`) USING BTREE;
 
 --
 -- Índices para tabela `estudante`
@@ -521,8 +519,15 @@ ALTER TABLE `perfil`
 --
 ALTER TABLE `plano_curricular`
   ADD PRIMARY KEY (`id_plano_curricular`),
-  ADD KEY `fk_pc_curso` (`id_curso`),
-  ADD KEY `fk_pc_disciplina` (`id_disciplina`);
+  ADD KEY `fk_pc_curso` (`id_curso`);
+
+--
+-- Índices para tabela `plano_curricular_disciplina`
+--
+ALTER TABLE `plano_curricular_disciplina`
+  ADD PRIMARY KEY (`id_plano_curricular_disciplina`),
+  ADD KEY `id_plano_curricular` (`id_plano_curricular`),
+  ADD KEY `id_disciplina` (`id_disciplina`);
 
 --
 -- Índices para tabela `professor`
@@ -577,7 +582,7 @@ ALTER TABLE `utilizador`
 -- AUTO_INCREMENT de tabela `ano_academico`
 --
 ALTER TABLE `ano_academico`
-  MODIFY `id_ano_academico` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_ano_academico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `avaliacao`
@@ -589,25 +594,25 @@ ALTER TABLE `avaliacao`
 -- AUTO_INCREMENT de tabela `curso`
 --
 ALTER TABLE `curso`
-  MODIFY `id_curso` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_curso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de tabela `departamento`
 --
 ALTER TABLE `departamento`
-  MODIFY `id_departamento` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_departamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de tabela `disciplina`
 --
 ALTER TABLE `disciplina`
-  MODIFY `id_disciplina` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_disciplina` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de tabela `estudante`
 --
 ALTER TABLE `estudante`
-  MODIFY `id_estudante` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_estudante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=403;
 
 --
 -- AUTO_INCREMENT de tabela `frequencia`
@@ -619,7 +624,7 @@ ALTER TABLE `frequencia`
 -- AUTO_INCREMENT de tabela `funcionario`
 --
 ALTER TABLE `funcionario`
-  MODIFY `id_funcionario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de tabela `historico_academico`
@@ -631,7 +636,7 @@ ALTER TABLE `historico_academico`
 -- AUTO_INCREMENT de tabela `matricula`
 --
 ALTER TABLE `matricula`
-  MODIFY `id_matricula` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_matricula` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=322;
 
 --
 -- AUTO_INCREMENT de tabela `nota`
@@ -643,7 +648,7 @@ ALTER TABLE `nota`
 -- AUTO_INCREMENT de tabela `operacao_log`
 --
 ALTER TABLE `operacao_log`
-  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de tabela `pagamento`
@@ -655,13 +660,19 @@ ALTER TABLE `pagamento`
 -- AUTO_INCREMENT de tabela `perfil`
 --
 ALTER TABLE `perfil`
-  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de tabela `plano_curricular`
 --
 ALTER TABLE `plano_curricular`
-  MODIFY `id_plano_curricular` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_plano_curricular` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de tabela `plano_curricular_disciplina`
+--
+ALTER TABLE `plano_curricular_disciplina`
+  MODIFY `id_plano_curricular_disciplina` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `professor`
@@ -679,25 +690,25 @@ ALTER TABLE `propina`
 -- AUTO_INCREMENT de tabela `sala`
 --
 ALTER TABLE `sala`
-  MODIFY `id_sala` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_sala` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de tabela `semestre`
 --
 ALTER TABLE `semestre`
-  MODIFY `id_semestre` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_semestre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `turma`
 --
 ALTER TABLE `turma`
-  MODIFY `id_turma` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_turma` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de tabela `utilizador`
 --
 ALTER TABLE `utilizador`
-  MODIFY `id_utilizador` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_utilizador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=418;
 
 --
 -- Restrições para despejos de tabelas
@@ -786,8 +797,14 @@ ALTER TABLE `pagamento`
 -- Limitadores para a tabela `plano_curricular`
 --
 ALTER TABLE `plano_curricular`
-  ADD CONSTRAINT `fk_pc_curso` FOREIGN KEY (`id_curso`) REFERENCES `curso` (`id_curso`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_pc_disciplina` FOREIGN KEY (`id_disciplina`) REFERENCES `disciplina` (`id_disciplina`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_pc_curso` FOREIGN KEY (`id_curso`) REFERENCES `curso` (`id_curso`) ON DELETE CASCADE;
+
+--
+-- Limitadores para a tabela `plano_curricular_disciplina`
+--
+ALTER TABLE `plano_curricular_disciplina`
+  ADD CONSTRAINT `plano_curricular_disciplina_ibfk_1` FOREIGN KEY (`id_plano_curricular`) REFERENCES `plano_curricular` (`id_plano_curricular`),
+  ADD CONSTRAINT `plano_curricular_disciplina_ibfk_2` FOREIGN KEY (`id_disciplina`) REFERENCES `disciplina` (`id_disciplina`);
 
 --
 -- Limitadores para a tabela `professor`

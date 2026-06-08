@@ -24,13 +24,56 @@ public class OperacaoLogDAO {
     }
 
     public List<OperacaoLog> listarTodos() throws SQLException {
-        String sql = "SELECT * FROM operacao_log";
+        String sql = "SELECT * FROM operacao_log ORDER BY data_hora DESC";
         List<OperacaoLog> list = new ArrayList<>();
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 list.add(mapOperacaoLog(rs));
+            }
+        }
+        return list;
+    }
+
+    public List<OperacaoLog> buscarPorFiltro(Integer idUtilizador, String tipoOperacao, String resultado,
+                                            LocalDateTime dataInicio, LocalDateTime dataFim) throws SQLException {
+        StringBuilder sql = new StringBuilder("SELECT * FROM operacao_log WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (idUtilizador != null) {
+            sql.append(" AND id_utilizador = ?");
+            params.add(idUtilizador);
+        }
+        if (tipoOperacao != null && !tipoOperacao.trim().isEmpty()) {
+            sql.append(" AND tipo_operacao LIKE ?");
+            params.add("%" + tipoOperacao.trim() + "%");
+        }
+        if (resultado != null && !resultado.trim().isEmpty()) {
+            sql.append(" AND resultado = ?");
+            params.add(resultado.trim().toUpperCase());
+        }
+        if (dataInicio != null) {
+            sql.append(" AND data_hora >= ?");
+            params.add(Timestamp.valueOf(dataInicio));
+        }
+        if (dataFim != null) {
+            sql.append(" AND data_hora <= ?");
+            params.add(Timestamp.valueOf(dataFim));
+        }
+
+        sql.append(" ORDER BY data_hora DESC");
+
+        List<OperacaoLog> list = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setObject(i + 1, params.get(i));
+            }
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapOperacaoLog(rs));
+                }
             }
         }
         return list;

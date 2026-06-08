@@ -88,6 +88,18 @@ public class MatriculaDAO {
         }
     }
 
+    public int contarAtivas() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM matricula WHERE status = 'ACTIVA'";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        }
+    }
+
     private Matricula mapMatricula(ResultSet rs) throws SQLException {
         Matricula m = new Matricula();
         m.setIdMatricula(rs.getInt("id_matricula"));

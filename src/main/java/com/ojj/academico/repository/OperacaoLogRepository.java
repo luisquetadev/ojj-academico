@@ -1,6 +1,7 @@
 package com.ojj.academico.repository;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ojj.academico.dao.OperacaoLogDAO;
@@ -16,6 +17,11 @@ public class OperacaoLogRepository {
 
     public List<OperacaoLog> findAll() throws SQLException {
         return operacaoLogDAO.listarTodos();
+    }
+
+    public List<OperacaoLog> findByFilter(Integer idUtilizador, String tipoOperacao, String resultado,
+                                          LocalDateTime dataInicio, LocalDateTime dataFim) throws SQLException {
+        return operacaoLogDAO.buscarPorFiltro(idUtilizador, tipoOperacao, resultado, dataInicio, dataFim);
     }
 
     public boolean save(OperacaoLog operacaoLog) throws SQLException {

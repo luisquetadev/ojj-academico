@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ojj.academico.model.Utilizador" %>
+<%@ page import="com.ojj.academico.model.OperacaoLog" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -33,6 +36,8 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/funcionario/list">Listar</a></li>
                             <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/funcionario/new">Cadastrar</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/funcionario/registrar"><i class="fas fa-key"></i> Registo Rápido (com Credenciais)</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -121,19 +126,72 @@
         </div>
 
         <div class="row mt-4">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="card-custom">
                     <div class="card-body">
-                        <h5 style="color: var(--primary-color);"><i class="fas fa-clock"></i> Ações Recentes</h5>
-                        <p style="color: var(--dark-color); opacity: 0.7;">Nenhuma ação recente registrada.</p>
+                        <h5 style="color: var(--primary-color);"><i class="fas fa-history"></i> Atividade em Tempo Real (Monitorização)</h5>
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Data/Hora</th>
+                                        <th>User ID</th>
+                                        <th>Operação</th>
+                                        <th>Descrição</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% 
+                                    List<OperacaoLog> logs = (List<OperacaoLog>) request.getAttribute("logsRecentes");
+                                    if (logs != null && !logs.isEmpty()) {
+                                        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM HH:mm");
+                                        for (OperacaoLog log : logs) {
+                                    %>
+                                        <tr>
+                                            <td class="small"><%= log.getDataHora().format(fmt) %></td>
+                                            <td><span class="badge bg-secondary">#<%= log.getIdUtilizador() %></span></td>
+                                            <td><strong><%= log.getTipoOperacao() %></strong></td>
+                                            <td class="small"><%= log.getDescricao() %></td>
+                                            <td>
+                                                <span class="badge <%= "SUCESSO".equals(log.getResultado()) ? "bg-success" : "bg-danger" %>">
+                                                    <%= log.getResultado() %>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    <% 
+                                        }
+                                    } else { 
+                                    %>
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted">Nenhuma atividade recente capturada.</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="card-custom">
                     <div class="card-body">
-                        <h5 style="color: var(--primary-color);"><i class="fas fa-bell"></i> Notificações</h5>
-                        <p style="color: var(--dark-color); opacity: 0.7;">Nenhuma notificação pendente.</p>
+                        <h5 style="color: var(--primary-color);"><i class="fas fa-bell"></i> Alertas do Sistema</h5>
+                        <hr>
+                        <div class="alert alert-info py-2" style="font-size: 0.9rem;">
+                            <i class="fas fa-info-circle"></i> O sistema está a operar normalmente.
+                        </div>
+                        <% if (logs != null && logs.stream().anyMatch(l -> "ERRO".equals(l.getResultado()))) { %>
+                            <div class="alert alert-warning py-2" style="font-size: 0.9rem;">
+                                <i class="fas fa-exclamation-triangle"></i> Foram detetados erros nas operações recentes.
+                            </div>
+                        <% } %>
+                        <div class="mt-3">
+                            <a href="<%= request.getContextPath() %>/sistema/logs" class="btn btn-sm btn-outline-primary w-100">
+                                Ver Log de Auditoria Completo
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

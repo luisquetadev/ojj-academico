@@ -15,32 +15,35 @@ public final class PasswordUtils {
     }
 
     /**
-     * Processa a senha para armazenamento.
+     * Processa a senha para armazenamento utilizando BCrypt.
      * 
      * @param plainPassword Senha digitada pelo usuário
-     * @return No momento retorna a própria senha (texto plano).
+     * @return Hash da senha gerado pelo BCrypt.
      */
     public static String hashPassword(String plainPassword) {
         if (plainPassword == null || plainPassword.isBlank()) {
             throw new IllegalArgumentException("Senha não pode ser vazia.");
         }
-        // TODO: Reativar BCrypt.hashpw(plainPassword, BCrypt.gensalt()) no futuro
-        return plainPassword; 
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt(12));
     }
 
     /**
-     * Valida se a senha digitada corresponde ao valor armazenado no banco.
+     * Valida se a senha digitada corresponde ao valor armazenado no banco utilizando BCrypt.
      * 
      * @param plainPassword Senha vinda do formulário
      * @param hashedPassword Valor armazenado na tabela 'utilizador'
-     * @return true se forem iguais
+     * @return true se as senhas coincidirem
      */
     public static boolean checkPassword(String plainPassword, String hashedPassword) {
         if (plainPassword == null || hashedPassword == null) {
             return false;
         }
-        // Comparação direta de strings (Temporário)
-        return plainPassword.equals(hashedPassword);
+        try {
+            return BCrypt.checkpw(plainPassword, hashedPassword);
+        } catch (Exception e) {
+            // Caso o hash não seja BCrypt (ex: legado), tenta comparação direta
+            return plainPassword.equals(hashedPassword);
+        }
     }
 
     /**

@@ -7,12 +7,13 @@ import org.junit.jupiter.api.Test;
 class PasswordUtilsTest {
 
     @Test
-    void hashPassword_shouldReturnPlainValue() {
+    void hashPassword_shouldReturnHashedValue() {
         String plain = "minhaSenha123";
         String hashed = PasswordUtils.hashPassword(plain);
 
         assertNotNull(hashed);
-        assertEquals(plain, hashed); // Alterado para validar texto plano temporariamente
+        assertNotEquals(plain, hashed);
+        assertTrue(hashed.startsWith("$2a$") || hashed.startsWith("$2b$") || hashed.startsWith("$2y$"));
     }
 
     @Test

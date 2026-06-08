@@ -85,6 +85,24 @@ public class PropinaDAO {
         }
     }
 
+    public String buscarStatusAtual(int idEstudante) throws SQLException {
+        String sql = "SELECT status FROM propina WHERE id_estudante = ? ORDER BY ano_referencia DESC, \n" +
+                     "CASE mes_referencia \n" +
+                     "WHEN 'DEZEMBRO' THEN 12 WHEN 'NOVEMBRO' THEN 11 WHEN 'OUTUBRO' THEN 10 \n" +
+                     "WHEN 'SETEMBRO' THEN 9 WHEN 'AGOSTO' THEN 8 WHEN 'JULHO' THEN 7 \n" +
+                     "WHEN 'JUNHO' THEN 6 WHEN 'MAIO' THEN 5 WHEN 'ABRIL' THEN 4 \n" +
+                     "WHEN 'MARCO' THEN 3 WHEN 'FEVEREIRO' THEN 2 WHEN 'JANEIRO' THEN 1 END DESC LIMIT 1";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idEstudante);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("status");
+            }
+            return "NENHUM"; // Sem registro de propina
+        }
+    }
+
     private Propina mapPropina(ResultSet rs) throws SQLException {
         Propina p = new Propina();
         p.setIdPropina(rs.getInt("id_propina"));

@@ -141,6 +141,35 @@ public class EstudanteDAO {
         }
     }
 
+    public int contarTodos() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM estudante";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        }
+    }
+
+    public List<Estudante> buscarComFiltro(String termo) throws SQLException {
+        String sql = "SELECT * FROM estudante WHERE nome_completo LIKE ? OR numero_estudante LIKE ? OR numero_bi LIKE ?";
+        List<Estudante> lista = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            String busca = "%" + termo + "%";
+            stmt.setString(1, busca);
+            stmt.setString(2, busca);
+            stmt.setString(3, busca);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                lista.add(mapEstudante(rs));
+            }
+        }
+        return lista;
+    }
+
     /**
      * Mapeia os dados do ResultSet para o objeto Estudante.
      */

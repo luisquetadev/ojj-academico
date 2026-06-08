@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.ojj.academico.model.Usuario" %>
+<%@ page import="com.ojj.academico.model.Utilizador" %>
+<%@ page import="com.ojj.academico.conf.AppConfig" %>
 <%
-    Usuario usuario = (Usuario) session.getAttribute("usuario");
-    if (usuario == null || !"Estudante".equals(usuario.getTipoPerfil())) {
-        response.sendRedirect("login.jsp");
+    Utilizador utilizador = (Utilizador) session.getAttribute(AppConfig.SESSION_USER_ATTRIBUTE);
+    if (utilizador == null || utilizador.getIdPerfil() != 7) {
+        response.sendRedirect(request.getContextPath() + "/login");
         return;
     }
 %>
@@ -135,7 +136,7 @@
             <h2><i class="fas fa-university"></i> OJJ Académico</h2>
         </div>
         <div class="user-info">
-            <span><i class="fas fa-user"></i> Bem-vindo, <%= usuario.getUsername() %></span>
+            <span><i class="fas fa-user"></i> Bem-vindo, <%= utilizador.getEmail() %></span>
             <a href="<%= request.getContextPath() %>/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
         </div>
     </div>

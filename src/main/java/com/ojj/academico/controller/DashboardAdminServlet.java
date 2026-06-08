@@ -12,9 +12,13 @@ import com.ojj.academico.service.EstudanteService;
 import com.ojj.academico.service.FuncionarioService;
 import com.ojj.academico.service.CursoService;
 import com.ojj.academico.service.TurmaService;
+import com.ojj.academico.service.OperacaoLogService;
+import com.ojj.academico.model.OperacaoLog;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Servlet que gerencia o painel principal (Dashboard) do Administrador.
@@ -31,6 +35,7 @@ public class DashboardAdminServlet extends HttpServlet {
     private final FuncionarioService funcionarioService = new FuncionarioService();
     private final CursoService cursoService = new CursoService();
     private final TurmaService turmaService = new TurmaService();
+    private final OperacaoLogService logService = new OperacaoLogService();
 
     /**
      * Processa a requisição para exibir o dashboard.
@@ -51,7 +56,7 @@ public class DashboardAdminServlet extends HttpServlet {
 
         // Verifica se o objeto de usuário está presente na sessão
         Utilizador utilizador = (Utilizador) session.getAttribute(AppConfig.SESSION_USER_ATTRIBUTE);
-        if (utilizador == null) {
+        if (utilizador == null || utilizador.getIdPerfil() != 1) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
@@ -63,6 +68,13 @@ public class DashboardAdminServlet extends HttpServlet {
             request.setAttribute("totalFuncionarios", funcionarioService.findAll().size());
             request.setAttribute("totalCursos", cursoService.findAll().size());
             request.setAttribute("totalTurmas", turmaService.findAll().size());
+            
+            // Buscar logs recentes (últimas 10 ações)
+            List<OperacaoLog> logs = logService.findAll().stream()
+                    .limit(10)
+                    .collect(Collectors.toList());
+            request.setAttribute("logsRecentes", logs);
+
         } catch (SQLException e) {
             // Em caso de erro no SQL, apenas logamos o erro. O dashboard exibirá '0' por padrão
             e.printStackTrace();

@@ -1,13 +1,22 @@
 package com.ojj.academico.controller;
 
+import com.ojj.academico.model.Estudante;
+import com.ojj.academico.model.Utilizador;
+import com.ojj.academico.service.EstudanteRegistroService;
+import com.ojj.academico.service.RegistroResult;
+import com.ojj.academico.conf.AppConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 public class MatriculaEstudanteServlet extends HttpServlet {
+
+    private final EstudanteRegistroService registroService = new EstudanteRegistroService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -19,21 +28,40 @@ public class MatriculaEstudanteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        try {
-            String idEstudanteStr = request.getParameter("idEstudante");
-            String idCursoStr = request.getParameter("idCurso");
-            String idTurmaStr = request.getParameter("idTurma");
-            String idAnoAcademicoStr = request.getParameter("idAnoAcademico");
-            String idSemestreStr = request.getParameter("idSemestre");
+        HttpSession session = request.getSession(false);
+        Utilizador operador = (Utilizador) session.getAttribute(AppConfig.SESSION_USER_ATTRIBUTE);
+        int idOperador = (operador != null) ? operador.getIdUtilizador() : 0;
 
-            if (idEstudanteStr == null || idCursoStr == null || idTurmaStr == null) {
-                request.setAttribute("erro", "Estudante, Curso e Turma são obrigatórios");
-                request.getRequestDispatcher("/view/secretaria/matricula/form.jsp").forward(request, response);
-                return;
+        try {
+            // Capturar dados do formulário
+            Estudante estudante = new Estudante();
+            estudante.setNomeCompleto(request.getParameter("nomeCompleto"));
+            estudante.setNumeroBi(request.getParameter("numeroBi"));
+            estudante.setDataNascimento(LocalDate.parse(request.getParameter("dataNascimento")));
+            estudante.setSexo(request.getParameter("sexo"));
+            estudante.setNacionalidade(request.getParameter("nacionalidade"));
+            estudante.setEmailPessoal(request.getParameter("emailPessoal"));
+            estudante.setTelefone(request.getParameter("telefone"));
+            estudante.setMorada(request.getParameter("morada"));
+            estudante.setProvincia(request.getParameter("provincia"));
+            estudante.setNomeEncarregado(request.getParameter("nomeEncarregado"));
+            estudante.setTelefoneEncarregado(request.getParameter("telefoneEncarregado"));
+
+            int idCurso = Integer.parseInt(request.getParameter("idCurso"));
+            int idTurma = Integer.parseInt(request.getParameter("idTurma"));
+            int idAnoAcademico = Integer.parseInt(request.getParameter("idAnoAcademico"));
+            int idSemestre = Integer.parseInt(request.getParameter("idSemestre"));
+
+            // Executar registro e matrícula
+            RegistroResult resultado = registroService.registrarEMatricular(
+                    estudante, idCurso, idTurma, idAnoAcademico, idSemestre, idOperador);
+
+            if (resultado.isErro()) {
+                request.setAttribute("erro", resultado.getMensagem());
+            } else {
+                request.setAttribute("resultado", resultado);
             }
 
-            // Implementação simplificada - em produção, usar o service completo
-            request.setAttribute("mensagem", "Funcionalidade de matrícula em desenvolvimento");
             request.getRequestDispatcher("/view/secretaria/matricula/form.jsp").forward(request, response);
 
         } catch (Exception e) {
