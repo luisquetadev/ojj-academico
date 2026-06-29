@@ -22,6 +22,19 @@ public class ProfessorDAO {
         }
     }
 
+    public Professor buscarPorIdFuncionario(int idFuncionario) throws SQLException {
+        String sql = "SELECT * FROM professor WHERE id_funcionario = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idFuncionario);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapProfessor(rs);
+            }
+            return null;
+        }
+    }
+
     public List<Professor> listarTodos() throws SQLException {
         String sql = "SELECT * FROM professor";
         List<Professor> list = new ArrayList<>();

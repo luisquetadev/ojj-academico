@@ -11,9 +11,17 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * Servlet responsavel pelo fluxo de EstudanteEdit.
+ * Rotas atendidas: /admin/estudante/edit. Encaminha para: /view/admin/estudante/edit.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 public class EstudanteEditServlet extends HttpServlet {
 
     private final EstudanteService estudanteService = new EstudanteService();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,6 +51,9 @@ public class EstudanteEditServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/admin/estudante/list");
         }
     }
+    /**
+     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
+     */
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

@@ -7,8 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Histórico de Pagamentos - OJJ Académico</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/all.min.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
 </head>
 <body>
@@ -60,7 +60,7 @@
                             <tr>
                                 <td><code>${p.numeroRecibo}</code></td>
                                 <td>${p.dataPagamento}</td>
-                                <td>${p.idEstudante}</td> <!-- Seria melhor o nome, mas simplificando para ID por agora -->
+                                <td>${not empty p.nomeEstudante ? p.nomeEstudante : p.idEstudante}</td>
                                 <td><span class="badge bg-info">${p.tipoPagamento}</span></td>
                                 <td><fmt:formatNumber value="${p.valorPago}" type="currency" currencySymbol="Kz " /></td>
                                 <td>${p.metodoPagamento}</td>
@@ -87,6 +87,6 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

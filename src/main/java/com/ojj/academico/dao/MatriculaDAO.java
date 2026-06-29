@@ -23,6 +23,34 @@ public class MatriculaDAO {
         }
     }
 
+    public List<Matricula> buscarPorIdTurma(int idTurma) throws SQLException {
+        String sql = "SELECT * FROM matricula WHERE id_turma = ? ORDER BY data_matricula DESC";
+        List<Matricula> list = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idTurma);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapMatricula(rs));
+            }
+        }
+        return list;
+    }
+
+    public List<Matricula> buscarPorIdEstudante(int idEstudante) throws SQLException {
+        String sql = "SELECT * FROM matricula WHERE id_estudante = ? ORDER BY data_matricula DESC";
+        List<Matricula> list = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idEstudante);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapMatricula(rs));
+            }
+        }
+        return list;
+    }
+
     public List<Matricula> listarTodos() throws SQLException {
         String sql = "SELECT * FROM matricula";
         List<Matricula> list = new ArrayList<>();

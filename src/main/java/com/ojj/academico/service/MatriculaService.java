@@ -22,6 +22,14 @@ public class MatriculaService {
         return matriculaRepository.findById(id);
     }
 
+    public List<Matricula> findByIdTurma(int idTurma) throws SQLException {
+        return matriculaRepository.findByIdTurma(idTurma);
+    }
+
+    public List<Matricula> findByEstudante(int idEstudante) throws SQLException {
+        return matriculaRepository.findByEstudante(idEstudante);
+    }
+
     public List<Matricula> findAll() throws SQLException {
         return matriculaRepository.findAll();
     }

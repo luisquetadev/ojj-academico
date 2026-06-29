@@ -15,9 +15,17 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servlet responsavel pelo fluxo de HistoricoAtendimento.
+ * Rotas atendidas: /secretario/historico-atendimento. Encaminha para: /view/secretaria/historico/index.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 public class HistoricoAtendimentoServlet extends HttpServlet {
 
     private final OperacaoLogService logService = new OperacaoLogService();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

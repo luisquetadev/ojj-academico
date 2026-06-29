@@ -1,6 +1,7 @@
 package com.ojj.academico.controller;
 
 import com.ojj.academico.conf.AppConfig;
+import com.ojj.academico.conf.PerfilConstants;
 import com.ojj.academico.model.Utilizador;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -20,6 +21,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Servlet que gerencia o painel principal (Dashboard) do Administrador.
  * 
@@ -29,6 +33,8 @@ import java.util.stream.Collectors;
  * - Encaminhar para a página de visualização do dashboard.
  */
 public class DashboardAdminServlet extends HttpServlet {
+
+    private static final Logger log = LoggerFactory.getLogger(DashboardAdminServlet.class);
 
     // Serviços necessários para coletar dados de diferentes módulos
     private final EstudanteService estudanteService = new EstudanteService();
@@ -43,6 +49,9 @@ public class DashboardAdminServlet extends HttpServlet {
      * 2. Recupera os totais de cada entidade para exibir nos cards de resumo.
      * 3. Despacha para o JSP correspondente.
      */
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,7 +65,7 @@ public class DashboardAdminServlet extends HttpServlet {
 
         // Verifica se o objeto de usuário está presente na sessão
         Utilizador utilizador = (Utilizador) session.getAttribute(AppConfig.SESSION_USER_ATTRIBUTE);
-        if (utilizador == null || utilizador.getIdPerfil() != 1) {
+        if (utilizador == null || !utilizador.isAdmin()) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
@@ -77,7 +86,7 @@ public class DashboardAdminServlet extends HttpServlet {
 
         } catch (SQLException e) {
             // Em caso de erro no SQL, apenas logamos o erro. O dashboard exibirá '0' por padrão
-            e.printStackTrace();
+            log.error("Erro ao carregar estatisticas do dashboard admin", e);
         }
 
         // Encaminha a requisição e a resposta para o JSP interno

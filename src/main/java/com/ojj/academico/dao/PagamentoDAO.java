@@ -26,13 +26,15 @@ public class PagamentoDAO {
     }
 
     public List<Pagamento> listarTodos() throws SQLException {
-        String sql = "SELECT * FROM pagamento";
+        String sql = "SELECT p.*, e.nome_completo AS nome_estudante FROM pagamento p LEFT JOIN estudante e ON p.id_estudante = e.id_estudante ORDER BY p.data_pagamento DESC";
         List<Pagamento> list = new ArrayList<>();
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                list.add(mapPagamento(rs));
+                Pagamento pag = mapPagamento(rs);
+                pag.setNomeEstudante(rs.getString("nome_estudante"));
+                list.add(pag);
             }
         }
         return list;

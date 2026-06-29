@@ -19,10 +19,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Servlet responsavel pelo fluxo de LogsAuditoria.
+ * Rotas atendidas: /sistema/logs. Encaminha para: /view/sistema/logs/index.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 public class LogsAuditoriaServlet extends HttpServlet {
+
+    private static final Logger log = LoggerFactory.getLogger(LogsAuditoriaServlet.class);
 
     private final OperacaoLogService logService = new OperacaoLogService();
     private final UtilizadorService utilizadorService = new UtilizadorService();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -75,7 +88,7 @@ public class LogsAuditoriaServlet extends HttpServlet {
 
             request.getRequestDispatcher("/view/sistema/logs/index.jsp").forward(request, response);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Erro ao carregar logs de auditoria", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao carregar logs: " + e.getMessage());
         }
     }

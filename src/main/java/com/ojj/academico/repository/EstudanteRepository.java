@@ -14,6 +14,10 @@ public class EstudanteRepository {
         return estudanteDAO.buscarPorId(id);
     }
 
+    public Estudante findByIdUtilizador(int idUtilizador) throws SQLException {
+        return estudanteDAO.buscarPorIdUtilizador(idUtilizador);
+    }
+
     public List<Estudante> findAll() throws SQLException {
         return estudanteDAO.listarTodos();
     }

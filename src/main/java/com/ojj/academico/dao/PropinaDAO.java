@@ -85,13 +85,32 @@ public class PropinaDAO {
         }
     }
 
+    public List<Propina> listarPorEstudante(int idEstudante) throws SQLException {
+        String sql = "SELECT * FROM propina WHERE id_estudante = ? ORDER BY ano_referencia DESC, \n" +
+                     "CASE mes_referencia \n" +
+                     "WHEN 'DEZEMBRO' THEN 12 WHEN 'NOVEMBRO' THEN 11 WHEN 'OUTUBRO' THEN 10 \n" +
+                     "WHEN 'SETEMBRO' THEN 9 WHEN 'AGOSTO' THEN 8 WHEN 'JULHO' THEN 7 \n" +
+                     "WHEN 'JUNHO' THEN 6 WHEN 'MAIO' THEN 5 WHEN 'ABRIL' THEN 4 \n" +
+                     "WHEN 'MARÇO' THEN 3 WHEN 'FEVEREIRO' THEN 2 WHEN 'JANEIRO' THEN 1 END";
+        List<Propina> list = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idEstudante);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapPropina(rs));
+            }
+        }
+        return list;
+    }
+
     public String buscarStatusAtual(int idEstudante) throws SQLException {
         String sql = "SELECT status FROM propina WHERE id_estudante = ? ORDER BY ano_referencia DESC, \n" +
                      "CASE mes_referencia \n" +
                      "WHEN 'DEZEMBRO' THEN 12 WHEN 'NOVEMBRO' THEN 11 WHEN 'OUTUBRO' THEN 10 \n" +
                      "WHEN 'SETEMBRO' THEN 9 WHEN 'AGOSTO' THEN 8 WHEN 'JULHO' THEN 7 \n" +
                      "WHEN 'JUNHO' THEN 6 WHEN 'MAIO' THEN 5 WHEN 'ABRIL' THEN 4 \n" +
-                     "WHEN 'MARCO' THEN 3 WHEN 'FEVEREIRO' THEN 2 WHEN 'JANEIRO' THEN 1 END DESC LIMIT 1";
+                     "WHEN 'MARÇO' THEN 3 WHEN 'FEVEREIRO' THEN 2 WHEN 'JANEIRO' THEN 1 END DESC LIMIT 1";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idEstudante);

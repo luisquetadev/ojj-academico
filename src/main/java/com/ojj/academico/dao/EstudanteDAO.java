@@ -153,6 +153,32 @@ public class EstudanteDAO {
         }
     }
 
+    public Estudante buscarPorNumeroEstudante(String numeroEstudante) throws SQLException {
+        String sql = "SELECT * FROM estudante WHERE numero_estudante = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, numeroEstudante);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapEstudante(rs);
+            }
+            return null;
+        }
+    }
+
+    public Estudante buscarPorIdUtilizador(int idUtilizador) throws SQLException {
+        String sql = "SELECT * FROM estudante WHERE id_utilizador = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idUtilizador);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapEstudante(rs);
+            }
+            return null;
+        }
+    }
+
     public List<Estudante> buscarComFiltro(String termo) throws SQLException {
         String sql = "SELECT * FROM estudante WHERE nome_completo LIKE ? OR numero_estudante LIKE ? OR numero_bi LIKE ?";
         List<Estudante> lista = new ArrayList<>();

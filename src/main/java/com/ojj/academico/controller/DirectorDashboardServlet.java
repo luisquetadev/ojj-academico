@@ -10,7 +10,15 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+/**
+ * Servlet responsavel pelo fluxo de DirectorDashboard.
+ * Rotas atendidas: /director/dashboard. Encaminha para: /view/director/dashboard.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 public class DirectorDashboardServlet extends HttpServlet {
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

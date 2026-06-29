@@ -9,11 +9,16 @@ import java.time.LocalDateTime;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Serviço para registrar novos estudantes, gerar credenciais automáticas e realizar a matrícula inicial.
  * Utiliza transações para garantir a integridade dos dados.
  */
 public class EstudanteRegistroService {
+
+    private static final Logger log = LoggerFactory.getLogger(EstudanteRegistroService.class);
     
     private UtilizadorDAO utilizadorDAO = new UtilizadorDAO();
     private EstudanteDAO estudanteDAO = new EstudanteDAO();
@@ -125,14 +130,14 @@ public class EstudanteRegistroService {
             
         } catch (Exception e) {
             if (conn != null) {
-                try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+                try { conn.rollback(); } catch (SQLException ex) { log.error("Erro ao fazer rollback", ex); }
             }
             resultado.setErro(true);
             resultado.setMensagem("Erro durante o processo: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Erro durante registro de estudante", e);
         } finally {
             if (conn != null) {
-                try { conn.setAutoCommit(true); conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+                try { conn.setAutoCommit(true); conn.close(); } catch (SQLException ex) { log.error("Erro ao fechar conexao", ex); }
             }
         }
         

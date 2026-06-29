@@ -25,6 +25,10 @@ public class AvaliacaoRepository {
         return avaliacaoDAO.atualizar(avaliacao);
     }
 
+    public List<Avaliacao> findByDisciplina(int idDisciplina) throws SQLException {
+        return avaliacaoDAO.listarPorDisciplina(idDisciplina);
+    }
+
     public boolean delete(int id) throws SQLException {
         return avaliacaoDAO.excluir(id);
     }

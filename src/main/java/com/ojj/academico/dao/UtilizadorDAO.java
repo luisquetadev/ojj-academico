@@ -4,7 +4,8 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Map;
+import com.ojj.academico.conf.PerfilConstants;
 import com.ojj.academico.model.Utilizador;
 import com.ojj.academico.utils.ConnectionFactory;
 import com.ojj.academico.utils.PasswordUtils;
@@ -130,7 +131,7 @@ public class UtilizadorDAO {
      */
     public String buscarNomeCompleto(Utilizador u) throws SQLException {
         String sql;
-        if (u.getIdPerfil() == 7) { // Estudante
+        if (u.getIdPerfil() == PerfilConstants.ESTUDANTE) {
             sql = "SELECT nome_completo FROM estudante WHERE id_utilizador = ?";
         } else { // Funcionário
             sql = "SELECT nome_completo FROM funcionario WHERE id_utilizador = ?";

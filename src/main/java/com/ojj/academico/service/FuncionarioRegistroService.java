@@ -9,10 +9,15 @@ import java.time.LocalDate;
 import java.sql.SQLException;
 import java.math.BigDecimal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Serviço para registrar novos funcionários e gerar credenciais automáticas.
  */
 public class FuncionarioRegistroService {
+
+    private static final Logger log = LoggerFactory.getLogger(FuncionarioRegistroService.class);
     
     private UtilizadorDAO utilizadorDAO = new UtilizadorDAO();
     private FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
@@ -118,11 +123,11 @@ public class FuncionarioRegistroService {
         } catch (SQLException e) {
             resultado.setErro(true);
             resultado.setMensagem("Erro ao registrar funcionário: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Erro SQL ao registrar funcionario {}", nomeCompleto, e);
         } catch (Exception e) {
             resultado.setErro(true);
             resultado.setMensagem("Erro ao registrar funcionário: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Erro ao registrar funcionario {}", nomeCompleto, e);
         }
         
         return resultado;

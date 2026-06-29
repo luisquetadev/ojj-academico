@@ -13,9 +13,17 @@ import java.io.IOException;
 import com.ojj.academico.dao.PagamentoDAO;
 import java.sql.SQLException;
 
+/**
+ * Servlet responsavel pelo fluxo de TesourariaDashboard.
+ * Rotas atendidas: /tesouraria/dashboard. Encaminha para: /view/tesouraria/dashboard.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 public class TesourariaDashboardServlet extends HttpServlet {
 
     private final PagamentoDAO pagamentoDAO = new PagamentoDAO();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

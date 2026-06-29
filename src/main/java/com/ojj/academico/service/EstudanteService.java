@@ -38,6 +38,10 @@ public class EstudanteService {
         return estudanteRepository.findById(id);
     }
 
+    public Estudante findByIdUtilizador(int idUtilizador) throws SQLException {
+        return estudanteRepository.findByIdUtilizador(idUtilizador);
+    }
+
     /**
      * Lista todos os estudantes cadastrados na instituição.
      */

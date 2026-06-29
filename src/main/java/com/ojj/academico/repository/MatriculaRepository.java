@@ -14,8 +14,16 @@ public class MatriculaRepository {
         return matriculaDAO.buscarPorId(id);
     }
 
+    public List<Matricula> findByIdTurma(int idTurma) throws SQLException {
+        return matriculaDAO.buscarPorIdTurma(idTurma);
+    }
+
     public List<Matricula> findAll() throws SQLException {
         return matriculaDAO.listarTodos();
+    }
+
+    public List<Matricula> findByEstudante(int idEstudante) throws SQLException {
+        return matriculaDAO.buscarPorIdEstudante(idEstudante);
     }
 
     public boolean save(Matricula matricula) throws SQLException {

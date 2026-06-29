@@ -26,6 +26,14 @@ public class PropinaService {
         return propinaRepository.findAll();
     }
 
+    public List<Propina> findByEstudante(int idEstudante) throws SQLException {
+        return propinaRepository.findByEstudante(idEstudante);
+    }
+
+    public String findStatusByEstudante(int idEstudante) throws SQLException {
+        return propinaRepository.findStatusByEstudante(idEstudante);
+    }
+
     public boolean save(Propina propina) throws SQLException {
         return propinaRepository.save(propina);
     }

@@ -13,10 +13,23 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Servlet responsavel pelo fluxo de SecretarioDashboard.
+ * Rotas atendidas: /secretario/dashboard. Encaminha para: /view/secretario/dashboard.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 public class SecretarioDashboardServlet extends HttpServlet {
+
+    private static final Logger log = LoggerFactory.getLogger(SecretarioDashboardServlet.class);
 
     private final EstudanteDAO estudanteDAO = new EstudanteDAO();
     private final MatriculaDAO matriculaDAO = new MatriculaDAO();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,7 +55,7 @@ public class SecretarioDashboardServlet extends HttpServlet {
             request.setAttribute("matriculasAtivas", matriculasAtivas);
             
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Erro ao carregar estatisticas do dashboard secretario", e);
         }
 
         request.getRequestDispatcher("/view/secretario/dashboard.jsp").forward(request, response);

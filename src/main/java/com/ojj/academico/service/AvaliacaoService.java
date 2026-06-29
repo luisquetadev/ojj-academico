@@ -26,6 +26,10 @@ public class AvaliacaoService {
         return repository.findAll();
     }
 
+    public List<Avaliacao> findByDisciplina(int idDisciplina) throws SQLException {
+        return repository.findByDisciplina(idDisciplina);
+    }
+
     public boolean save(Avaliacao avaliacao) throws SQLException {
         return repository.save(avaliacao);
     }

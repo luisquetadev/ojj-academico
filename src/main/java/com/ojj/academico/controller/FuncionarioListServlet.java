@@ -11,9 +11,17 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Servlet responsavel pelo fluxo de FuncionarioList.
+ * Rotas atendidas: /admin/funcionario/list. Encaminha para: /view/admin/funcionario/list.jsp, /view/error.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 public class FuncionarioListServlet extends HttpServlet {
 
     private final FuncionarioService funcionarioService = new FuncionarioService();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

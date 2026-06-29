@@ -1,0 +1,116 @@
+==================================================
+   CREDENCIAIS DE ACESSO - SEED AUTOMATICO
+   OJJ Academico
+==================================================
+
+Gerado em: 2026-06-29 17:58:12
+
+--------------------------------------------------
+           UTILIZADORES DO SISTEMA
+--------------------------------------------------
+
+Nome: Administrador do Sistema
+Email: admin@ojj.edu
+Senha: Admin@123
+Perfil: ADMIN
+--------------------------------------------------
+Nome: Secretaria Geral
+Email: secretaria@ojj.edu
+Senha: Secretaria@123
+Perfil: SECRETARIA
+--------------------------------------------------
+Nome: Tesoureiro
+Email: tesouraria@ojj.edu
+Senha: Tesouraria@123
+Perfil: TESOURARIA
+--------------------------------------------------
+Nome: Professor Carlos Silva
+Email: professor1@ojj.edu
+Senha: Professor@123
+Perfil: DOCENTE
+--------------------------------------------------
+Nome: Professora Ana Costa
+Email: professor2@ojj.edu
+Senha: Professor@123
+Perfil: DOCENTE
+--------------------------------------------------
+Nome: Coordenador Pedro Santos
+Email: coordenador@ojj.edu
+Senha: Coordenador@123
+Perfil: COORDENADOR
+--------------------------------------------------
+Nome: Diretor Jose Cardoso
+Email: diretor@ojj.edu
+Senha: Diretor@123
+Perfil: DIRECTOR
+--------------------------------------------------
+Nome: Coordenador Curso
+Email: coordenador.curso@ojj.edu
+Senha: Coordenador@123
+Perfil: COORDENADOR_CURSO
+--------------------------------------------------
+Nome: Milton Caetano
+Email: estudante0001@ojj.edu
+Senha: Estudante@123
+Perfil: ESTUDANTE
+--------------------------------------------------
+Nome: Victor Pedro
+Email: estudante0002@ojj.edu
+Senha: Estudante@123
+Perfil: ESTUDANTE
+--------------------------------------------------
+Nome: Mariano Armando
+Email: estudante0003@ojj.edu
+Senha: Estudante@123
+Perfil: ESTUDANTE
+--------------------------------------------------
+Nome: Fátima Costa
+Email: estudante0004@ojj.edu
+Senha: Estudante@123
+Perfil: ESTUDANTE
+--------------------------------------------------
+Nome: Joao da Silva
+Email: estudante0005@ojj.edu
+Senha: Estudante@123
+Perfil: ESTUDANTE
+--------------------------------------------------
+Nome: Ana Beatriz
+Email: estudante0006@ojj.edu
+Senha: Estudante@123
+Perfil: ESTUDANTE
+--------------------------------------------------
+Nome: Pedro Henriques
+Email: estudante0007@ojj.edu
+Senha: Estudante@123
+Perfil: ESTUDANTE
+--------------------------------------------------
+Nome: Luciana Mendes
+Email: estudante0008@ojj.edu
+Senha: Estudante@123
+Perfil: ESTUDANTE
+--------------------------------------------------
+Nome: Rafael Costa
+Email: estudante0009@ojj.edu
+Senha: Estudante@123
+Perfil: ESTUDANTE
+--------------------------------------------------
+Nome: Carla Souza
+Email: estudante0010@ojj.edu
+Senha: Estudante@123
+Perfil: ESTUDANTE
+--------------------------------------------------
+Nome: Luis Fernando Gomes
+Email: luis.fernando@ojj.edu
+Senha: Professor@123
+Perfil: DOCENTE
+--------------------------------------------------
+Nome: Sofia Isabel Martins
+Email: sofia.martins@ojj.edu
+Senha: Professor@123
+Perfil: DOCENTE
+--------------------------------------------------
+
+==================================================
+   Todas as senhas foram hasheadas com BCrypt
+   Guarde este ficheiro num local seguro.
+==================================================

@@ -10,9 +10,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Servlet responsavel pelo fluxo de FuncionarioPerfil.
+ * Rotas atendidas: /admin/funcionario/profile. Encaminha para: /view/admin/funcionario/profile.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 public class FuncionarioPerfilServlet extends HttpServlet {
 
     private final FuncionarioService funcionarioService = new FuncionarioService();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

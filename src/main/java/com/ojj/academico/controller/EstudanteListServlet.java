@@ -1,5 +1,6 @@
 package com.ojj.academico.controller;
 
+import com.ojj.academico.conf.PerfilConstants;
 import com.ojj.academico.model.Estudante;
 import com.ojj.academico.dao.EstudanteDAO;
 import com.ojj.academico.dao.PropinaDAO;
@@ -18,10 +19,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Servlet responsavel pelo fluxo de EstudanteList.
+ * Rotas atendidas: /admin/estudante/list. Encaminha para: /view/admin/estudante/list.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 public class EstudanteListServlet extends HttpServlet {
 
     private final EstudanteDAO estudanteDAO = new EstudanteDAO();
     private final PropinaDAO propinaDAO = new PropinaDAO();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -30,8 +39,7 @@ public class EstudanteListServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         Utilizador user = (Utilizador) (session != null ? session.getAttribute(AppConfig.SESSION_USER_ATTRIBUTE) : null);
 
-        // Bloquear se não for Admin, Secretaria ou Tesouraria
-        if (user == null || (user.getIdPerfil() != 1 && user.getIdPerfil() != 2 && user.getIdPerfil() != 3)) {
+        if (user == null || (!user.isAdmin() && !user.isSecretaria() && !user.isTesouraria())) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }

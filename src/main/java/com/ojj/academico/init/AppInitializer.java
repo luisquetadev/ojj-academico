@@ -1,43 +1,27 @@
 package com.ojj.academico.init;
 
-import com.ojj.academico.model.Utilizador;
-import com.ojj.academico.repository.UtilizadorRepository;
-import com.ojj.academico.service.UtilizadorService;
-import com.ojj.academico.exception.ValidationException;
-
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 
-import com.ojj.academico.utils.PasswordUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebListener
 public class AppInitializer implements ServletContextListener {
 
+    private static final Logger log = LoggerFactory.getLogger(AppInitializer.class);
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        UtilizadorRepository repository = new UtilizadorRepository();
-        UtilizadorService usuarioService = new UtilizadorService(repository);
-
-        seedUsuario(repository, usuarioService, "admin", "Admin@123", 1, 0);
-        seedUsuario(repository, usuarioService, "funcionario", "Funcionario@123", 2, 0);
-        seedUsuario(repository, usuarioService, "estudante", "Estudante@123", 3, 0);
-    }
-
-    private void seedUsuario(UtilizadorRepository repository, UtilizadorService service,
-                             String email, String password, int IdPerfil, int idRef) {
-        try {
-            if (repository.findByUsername(email) == null) {
-                Utilizador utilizador = new Utilizador();
-                utilizador.setEmail(email);
-                utilizador.setPasswordHash(PasswordUtils.hashPassword(password));
-                utilizador.setIdPerfil(IdPerfil);
-                utilizador.setStatus("ATIVO");
-                
-                service.save(utilizador);
-            }
-        } catch (java.sql.SQLException e) {
-            e.printStackTrace();
+        SeedService seedService = new SeedService();
+        if (seedService.isDatabaseEmpty()) {
+            log.info("Banco de dados vazio. A executar seed automatico...");
+            seedService.seedAll();
+            log.info("Seed automatico concluido com sucesso!");
+            log.info("Ficheiro de credenciais gerado em: credenciais_geradas/");
+        } else {
+            log.info("Banco de dados ja contem dados. Seed ignorado.");
         }
     }
 }

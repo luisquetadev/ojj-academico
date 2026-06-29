@@ -1,6 +1,7 @@
 package com.ojj.academico.controller;
 
 import com.ojj.academico.conf.AppConfig;
+import com.ojj.academico.conf.PerfilConstants;
 import com.ojj.academico.model.Utilizador;
 import com.ojj.academico.service.UtilizadorService;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,9 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Servlet responsável por gerenciar a autenticação dos usuários no sistema.
  * 
@@ -22,11 +26,16 @@ import java.sql.SQLException;
  */
 public class LoginServlet extends HttpServlet {
 
+    private static final Logger log = LoggerFactory.getLogger(LoginServlet.class);
+
     private final UtilizadorService utilizadorService = new UtilizadorService();
     private final com.ojj.academico.dao.UtilizadorDAO utilizadorDAO = new com.ojj.academico.dao.UtilizadorDAO();
 
     /**
      * Exibe a página de login.
+     */
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,6 +50,9 @@ public class LoginServlet extends HttpServlet {
      * 2. Valida as credenciais através do UtilizadorService.
      * 3. Se válido e ativo, cria a sessão e redireciona.
      * 4. Se inválido, retorna para a tela de login com mensagem de erro.
+     */
+    /**
+     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -77,7 +89,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + redirectUrl);
                 
                 // Log de depuração simples no console do servidor
-                System.out.println("Usuário " + username + " logado com sucesso. Redirecionando para: " + redirectUrl);
+                log.info("Usuario {} logado com sucesso. Redirecionando para: {}", username, redirectUrl);
             } else {
                 // Caso falhe, define um atributo de erro para ser exibido no JSP
                 request.setAttribute("erro", "Credenciais inválidas ou utilizador inativo/bloqueado");
@@ -86,7 +98,7 @@ public class LoginServlet extends HttpServlet {
             
         } catch (Exception e) {
             // Tratamento genérico de exceções para evitar a página de erro branca do servidor
-            e.printStackTrace(); // Registra o erro completo no log do servidor para o desenvolvedor
+            log.error("Erro interno ao processar login para {}", username, e);
             request.setAttribute("erro", "Erro interno ao processar login: " + e.getMessage());
             request.getRequestDispatcher("/view/auth/login.jsp").forward(request, response);
         }
@@ -99,24 +111,22 @@ public class LoginServlet extends HttpServlet {
      * @return String contendo o caminho relativo da URL do dashboard
      */
     private String getDashboardUrl(int idPerfil) {
-        // Mapeamento baseado nos IDs da tabela 'perfil' no banco de dados
         switch (idPerfil) {
-            case 1: // ADMIN
+            case PerfilConstants.ADMIN:
                 return "/admin/dashboard";
-            case 2: // SECRETARIA
+            case PerfilConstants.SECRETARIA:
                 return "/secretario/dashboard";
-            case 3: // TESOURARIA
+            case PerfilConstants.TESOURARIA:
                 return "/tesouraria/dashboard";
-            case 4: // DOCENTE/PROFESSOR
+            case PerfilConstants.DOCENTE:
                 return "/professor/dashboard";
-            case 5: // COORDENADOR
+            case PerfilConstants.COORDENADOR:
                 return "/coordenador/dashboard";
-            case 6: // DIRECTOR
+            case PerfilConstants.DIRECTOR:
                 return "/director/dashboard";
-            case 7: // ESTUDANTE
+            case PerfilConstants.ESTUDANTE:
                 return "/estudante/dashboard";
             default:
-                // Por segurança, se o perfil não for reconhecido, manda para o admin (que é protegido pelo AuthFilter)
                 return "/admin/dashboard";
         }
     }

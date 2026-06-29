@@ -82,6 +82,20 @@ public class AvaliacaoDAO {
         }
     }
 
+    public List<Avaliacao> listarPorDisciplina(int idDisciplina) throws SQLException {
+        String sql = "SELECT * FROM avaliacao WHERE id_disciplina = ? ORDER BY data_avaliacao";
+        List<Avaliacao> list = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idDisciplina);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapAvaliacao(rs));
+            }
+        }
+        return list;
+    }
+
     public boolean excluir(int idAvaliacao) throws SQLException {
         String sql = "DELETE FROM avaliacao WHERE id_avaliacao = ?";
         try (Connection conn = ConnectionFactory.getConnection();

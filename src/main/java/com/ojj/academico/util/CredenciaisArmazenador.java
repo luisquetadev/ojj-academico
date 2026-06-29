@@ -5,11 +5,16 @@ import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Utilitário para armazenar credenciais geradas no sistema de arquivos.
  * Facilita o acesso às credenciais após o cadastro de um novo funcionário.
  */
 public class CredenciaisArmazenador {
+
+    private static final Logger log = LoggerFactory.getLogger(CredenciaisArmazenador.class);
     
     private static final String CREDENCIAIS_DIR = "credenciais_geradas";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -60,8 +65,7 @@ public class CredenciaisArmazenador {
             
             return caminhoArquivo.toString();
         } catch (IOException e) {
-            System.err.println("Erro ao armazenar credenciais: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Erro ao armazenar credenciais para {}", email, e);
             return null;
         }
     }
@@ -78,7 +82,7 @@ public class CredenciaisArmazenador {
                 return new String(Files.readAllBytes(path));
             }
         } catch (IOException e) {
-            System.err.println("Erro ao ler credenciais: " + e.getMessage());
+            log.error("Erro ao ler credenciais de {}", caminhoArquivo, e);
         }
         return null;
     }

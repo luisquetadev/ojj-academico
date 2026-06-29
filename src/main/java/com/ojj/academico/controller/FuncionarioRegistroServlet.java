@@ -1,5 +1,6 @@
 package com.ojj.academico.controller;
 
+import com.ojj.academico.conf.PerfilConstants;
 import com.ojj.academico.model.Departamento;
 import com.ojj.academico.repository.DepartamentoRepository;
 import com.ojj.academico.service.FuncionarioRegistroService;
@@ -18,11 +19,18 @@ import java.util.List;
  * Servlet para registar novos funcionários (Secretário, Tesoureiro, Coordenador, etc.)
  * com geração automática de credenciais.
  */
-@WebServlet("/admin/funcionario/registrar")
+/**
+ * Servlet responsavel pelo fluxo de FuncionarioRegistro.
+ * Rotas atendidas: /admin/funcionario/registrar. Encaminha para: /view/admin/funcionario/registrar.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */@WebServlet("/admin/funcionario/registrar")
 public class FuncionarioRegistroServlet extends HttpServlet {
     
     private FuncionarioRegistroService registroService = new FuncionarioRegistroService();
     private DepartamentoRepository departamentoRepo = new DepartamentoRepository();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,7 +40,7 @@ public class FuncionarioRegistroServlet extends HttpServlet {
         
         // Verificar se o utilizador é admin
         com.ojj.academico.model.Utilizador utilizador = (com.ojj.academico.model.Utilizador) session.getAttribute(com.ojj.academico.conf.AppConfig.SESSION_USER_ATTRIBUTE);
-        if (utilizador == null || utilizador.getIdPerfil() != 1) {
+        if (utilizador == null || !utilizador.isAdmin()) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
@@ -47,6 +55,9 @@ public class FuncionarioRegistroServlet extends HttpServlet {
         
         request.getRequestDispatcher("/view/admin/funcionario/registrar.jsp").forward(request, response);
     }
+    /**
+     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
+     */
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -56,7 +67,7 @@ public class FuncionarioRegistroServlet extends HttpServlet {
         
         // Verificar se o utilizador é admin
         com.ojj.academico.model.Utilizador utilizador = (com.ojj.academico.model.Utilizador) session.getAttribute(com.ojj.academico.conf.AppConfig.SESSION_USER_ATTRIBUTE);
-        if (utilizador == null || utilizador.getIdPerfil() != 1) {
+        if (utilizador == null || !utilizador.isAdmin()) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }

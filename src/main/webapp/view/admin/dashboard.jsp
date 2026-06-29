@@ -8,9 +8,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OJJ Académico • Dashboard Administrador</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>OJJ Académico • Administrador</title>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/all.min.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/main.css">
 </head>
 <body>
@@ -34,10 +34,10 @@
                             <i class="fas fa-users"></i> Funcionários
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/funcionario/list">Listar</a></li>
-                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/funcionario/new">Cadastrar</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/funcionario/list"><i class="fas fa-list"></i> Listar</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/funcionario/new"><i class="fas fa-plus-circle"></i> Cadastrar</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/funcionario/registrar"><i class="fas fa-key"></i> Registo Rápido (com Credenciais)</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/funcionario/registrar"><i class="fas fa-key"></i> Registo Rápido</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -45,8 +45,8 @@
                             <i class="fas fa-user-graduate"></i> Estudantes
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/estudante/list">Listar</a></li>
-                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/estudante/new">Cadastrar</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/estudante/list"><i class="fas fa-list"></i> Listar</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/estudante/new"><i class="fas fa-plus-circle"></i> Cadastrar</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -54,9 +54,9 @@
                             <i class="fas fa-book"></i> Cursos
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/curso">Gestão Cursos</a></li>
-                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/disciplina">Gestão Disciplinas</a></li>
-                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/turma">Gestão Turmas</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/curso"><i class="fas fa-graduation-cap"></i> Gestão Cursos</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/disciplina"><i class="fas fa-book-open"></i> Gestão Disciplinas</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/turma"><i class="fas fa-chalkboard"></i> Gestão Turmas</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -64,9 +64,9 @@
                             <i class="fas fa-chart-bar"></i> Relatórios
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/relatorios/estudantes">Estudantes</a></li>
-                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/relatorios/financeiro">Financeiro</a></li>
-                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/relatorios/academico">Académico</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/relatorios/estudantes"><i class="fas fa-users"></i> Estudantes</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/relatorios/financeiro"><i class="fas fa-coins"></i> Financeiro</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/relatorios/academico"><i class="fas fa-school"></i> Académico</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -74,8 +74,8 @@
                             <i class="fas fa-cogs"></i> Sistema
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/sistema/utilizadores">Gestão Utilizadores</a></li>
-                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/sistema/logs">Logs/Auditoria</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/sistema/utilizadores"><i class="fas fa-user-lock"></i> Gestão Utilizadores</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/sistema/logs"><i class="fas fa-clipboard-list"></i> Logs/Auditoria</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -91,116 +91,120 @@
     </nav>
 
     <div class="container mt-4">
-        <div class="row">
-            <div class="col-12 d-flex justify-content-between align-items-center">
-                <div>
-                    <h2 style="color: white;"><i class="fas fa-tachometer-alt"></i> Bem-vindo(a), ${sessionScope.nomeUsuario}</h2>
-                    <p style="color: rgba(255, 255, 255, 0.8);">Dashboard Administrativo • Gestão Completa do Sistema</p>
-                </div>
-                <a href="<%= request.getContextPath() %>/login" class="btn btn-outline-light"><i class="fas fa-chevron-left"></i> Voltar</a>
+        <div class="page-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h2><i class="fas fa-tachometer-alt"></i> Bem-vindo(a), ${sessionScope.nomeUsuario}</h2>
+                <p>Dashboard Administrativo — Gestão Completa do Sistema</p>
             </div>
+            <a href="<%= request.getContextPath() %>/login" class="btn btn-secondary-custom btn-sm">
+                <i class="fas fa-chevron-left"></i> Voltar
+            </a>
         </div>
 
-        <div class="row mt-4">
+        <div class="row g-4">
             <div class="col-md-3">
-                <div class="stat-card">
+                <div class="stat-card stat-card-primary">
+                    <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
                     <div class="stat-number"><%= request.getAttribute("totalEstudantes") != null ? request.getAttribute("totalEstudantes") : 0 %></div>
-                    <div class="stat-label"><i class="fas fa-user-graduate"></i> Estudantes</div>
+                    <div class="stat-label">Estudantes</div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="stat-card">
+                <div class="stat-card stat-card-success">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
                     <div class="stat-number"><%= request.getAttribute("totalFuncionarios") != null ? request.getAttribute("totalFuncionarios") : 0 %></div>
-                    <div class="stat-label"><i class="fas fa-users"></i> Funcionários</div>
+                    <div class="stat-label">Funcionários</div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="stat-card">
+                <div class="stat-card stat-card-warning">
+                    <div class="stat-icon"><i class="fas fa-book"></i></div>
                     <div class="stat-number"><%= request.getAttribute("totalCursos") != null ? request.getAttribute("totalCursos") : 0 %></div>
-                    <div class="stat-label"><i class="fas fa-book"></i> Cursos</div>
+                    <div class="stat-label">Cursos</div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="stat-card">
+                <div class="stat-card stat-card-purple">
+                    <div class="stat-icon"><i class="fas fa-chalkboard-teacher"></i></div>
                     <div class="stat-number"><%= request.getAttribute("totalTurmas") != null ? request.getAttribute("totalTurmas") : 0 %></div>
-                    <div class="stat-label"><i class="fas fa-chalkboard-teacher"></i> Turmas</div>
+                    <div class="stat-label">Turmas</div>
                 </div>
             </div>
         </div>
 
-        <div class="row mt-4">
+        <div class="row g-4 mt-2">
             <div class="col-md-8">
                 <div class="card-custom">
-                    <div class="card-body">
-                        <h5 style="color: var(--primary-color);"><i class="fas fa-history"></i> Atividade em Tempo Real (Monitorização)</h5>
-                        <hr>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
+                    <div class="card-header-custom">
+                        <h4><i class="fas fa-history"></i> Atividade em Tempo Real</h4>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-custom">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-clock"></i> Data/Hora</th>
+                                    <th><i class="fas fa-hashtag"></i> User</th>
+                                    <th><i class="fas fa-code-branch"></i> Operação</th>
+                                    <th><i class="fas fa-align-left"></i> Descrição</th>
+                                    <th><i class="fas fa-check-circle"></i> Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% 
+                                List<OperacaoLog> logs = (List<OperacaoLog>) request.getAttribute("logsRecentes");
+                                if (logs != null && !logs.isEmpty()) {
+                                    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM HH:mm");
+                                    for (OperacaoLog log : logs) {
+                                %>
                                     <tr>
-                                        <th>Data/Hora</th>
-                                        <th>User ID</th>
-                                        <th>Operação</th>
-                                        <th>Descrição</th>
-                                        <th>Status</th>
+                                        <td class="small"><%= log.getDataHora().format(fmt) %></td>
+                                        <td><span class="badge badge-custom badge-secondary">#<%= log.getIdUtilizador() %></span></td>
+                                        <td><strong><%= log.getTipoOperacao() %></strong></td>
+                                        <td class="small"><%= log.getDescricao() %></td>
+                                        <td>
+                                            <span class="badge badge-custom <%= "SUCESSO".equals(log.getResultado()) ? "badge-success" : "badge-danger" %>">
+                                                <%= log.getResultado() %>
+                                            </span>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <% 
-                                    List<OperacaoLog> logs = (List<OperacaoLog>) request.getAttribute("logsRecentes");
-                                    if (logs != null && !logs.isEmpty()) {
-                                        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM HH:mm");
-                                        for (OperacaoLog log : logs) {
-                                    %>
-                                        <tr>
-                                            <td class="small"><%= log.getDataHora().format(fmt) %></td>
-                                            <td><span class="badge bg-secondary">#<%= log.getIdUtilizador() %></span></td>
-                                            <td><strong><%= log.getTipoOperacao() %></strong></td>
-                                            <td class="small"><%= log.getDescricao() %></td>
-                                            <td>
-                                                <span class="badge <%= "SUCESSO".equals(log.getResultado()) ? "bg-success" : "bg-danger" %>">
-                                                    <%= log.getResultado() %>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    <% 
-                                        }
-                                    } else { 
-                                    %>
-                                        <tr>
-                                            <td colspan="5" class="text-center text-muted">Nenhuma atividade recente capturada.</td>
-                                        </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                        </div>
+                                <% 
+                                    }
+                                } else { 
+                                %>
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted">Nenhuma atividade recente.</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card-custom">
-                    <div class="card-body">
-                        <h5 style="color: var(--primary-color);"><i class="fas fa-bell"></i> Alertas do Sistema</h5>
-                        <hr>
-                        <div class="alert alert-info py-2" style="font-size: 0.9rem;">
-                            <i class="fas fa-info-circle"></i> O sistema está a operar normalmente.
+                    <div class="card-header-custom">
+                        <h4><i class="fas fa-bell"></i> Alertas</h4>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="alert-content">O sistema está a operar normalmente.</span>
+                    </div>
+                    <% if (logs != null && logs.stream().anyMatch(l -> "ERRO".equals(l.getResultado()))) { %>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span class="alert-content">Foram detetados erros nas operações recentes.</span>
                         </div>
-                        <% if (logs != null && logs.stream().anyMatch(l -> "ERRO".equals(l.getResultado()))) { %>
-                            <div class="alert alert-warning py-2" style="font-size: 0.9rem;">
-                                <i class="fas fa-exclamation-triangle"></i> Foram detetados erros nas operações recentes.
-                            </div>
-                        <% } %>
-                        <div class="mt-3">
-                            <a href="<%= request.getContextPath() %>/sistema/logs" class="btn btn-sm btn-outline-primary w-100">
-                                Ver Log de Auditoria Completo
-                            </a>
-                        </div>
+                    <% } %>
+                    <div class="mt-4">
+                        <a href="<%= request.getContextPath() %>/sistema/logs" class="btn btn-info-custom w-100">
+                            <i class="fas fa-clipboard-list"></i> Ver Log Completo
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

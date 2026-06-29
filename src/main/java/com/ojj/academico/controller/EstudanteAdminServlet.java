@@ -25,6 +25,9 @@ public class EstudanteAdminServlet extends HttpServlet {
     /**
      * Exibe o formulário de cadastro de novo estudante.
      */
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -37,6 +40,9 @@ public class EstudanteAdminServlet extends HttpServlet {
      * 2. Realiza validações básicas de campos obrigatórios.
      * 3. Monta o objeto Estudante.
      * 4. Chama o serviço para persistir no banco de dados.
+     */
+    /**
+     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

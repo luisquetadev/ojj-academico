@@ -332,7 +332,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>PagamentoServicosServlet</servlet-name>
-        <url-pattern>/tesouraria/pagamento-servicos</url-pattern>
+        <url-pattern>/tesouraria/servicos</url-pattern>
     </servlet-mapping>
 
     <!-- 22. Histórico de Pagamentos -->
@@ -393,7 +393,27 @@
         <url-pattern>/coordenador/aprovacao-pautas</url-pattern>
     </servlet-mapping>
 
-    <!-- 27. Calendário Académico -->
+    <!-- 27. Notas do Estudante -->
+    <servlet>
+        <servlet-name>EstudanteNotasServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.EstudanteNotasServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EstudanteNotasServlet</servlet-name>
+        <url-pattern>/estudante/notas</url-pattern>
+    </servlet-mapping>
+
+    <!-- 28. Propinas do Estudante -->
+    <servlet>
+        <servlet-name>EstudantePropinaServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.EstudantePropinaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EstudantePropinaServlet</servlet-name>
+        <url-pattern>/estudante/propina</url-pattern>
+    </servlet-mapping>
+
+    <!-- 29. Calendário Académico -->
     <servlet>
         <servlet-name>CalendarioAcademicoServlet</servlet-name>
         <servlet-class>com.ojj.academico.controller.CalendarioAcademicoServlet</servlet-class>
@@ -404,10 +424,34 @@
     </servlet-mapping>
 
     <!-- =================================================================== -->
+    <!-- MÓDULO 7.5: ESTUDANTE -->
+    <!-- =================================================================== -->
+
+    <!-- 30. Matrícula do Estudante -->
+    <servlet>
+        <servlet-name>EstudanteMatriculaServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.EstudanteMatriculaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EstudanteMatriculaServlet</servlet-name>
+        <url-pattern>/estudante/matricula</url-pattern>
+    </servlet-mapping>
+
+    <!-- 31. Histórico do Estudante -->
+    <servlet>
+        <servlet-name>EstudanteHistoricoServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.EstudanteHistoricoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EstudanteHistoricoServlet</servlet-name>
+        <url-pattern>/estudante/historico</url-pattern>
+    </servlet-mapping>
+
+    <!-- =================================================================== -->
     <!-- MÓDULO 8: RELATÓRIOS -->
     <!-- =================================================================== -->
 
-    <!-- 28. Relatório de Estudantes -->
+    <!-- 32. Relatório de Estudantes -->
     <servlet>
         <servlet-name>RelatorioEstudantesServlet</servlet-name>
         <servlet-class>com.ojj.academico.controller.RelatorioEstudantesServlet</servlet-class>
@@ -479,6 +523,22 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!-- =================================================================== -->
+    <!-- FILTRO: Bloquear acesso directo a JSPs em /view/ -->
+    <!-- =================================================================== -->
+    <filter>
+        <filter-name>JspProtectionFilter</filter-name>
+        <filter-class>com.ojj.academico.filters.JspProtectionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>JspProtectionFilter</filter-name>
+        <url-pattern>/view/*</url-pattern>
+    </filter-mapping>
+
+    <!-- =================================================================== -->
+    <!-- FILTROS DE AUTENTICAÇÃO (AuthFilter) -->
+    <!-- =================================================================== -->
+
     <!-- Proteger URLs administrativas -->
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
@@ -515,6 +575,12 @@
         <url-pattern>/coordenador/*</url-pattern>
     </filter-mapping>
 
+    <!-- Proteger URLs de director -->
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/director/*</url-pattern>
+    </filter-mapping>
+
     <!-- Proteger URLs de relatórios -->
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
@@ -524,6 +590,180 @@
     <!-- Proteger URLs do sistema -->
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
+        <url-pattern>/sistema/*</url-pattern>
+    </filter-mapping>
+
+    <!-- =================================================================== -->
+    <!-- FILTROS DE AUTORIZAÇÃO POR PERFIL (RoleFilter) -->
+    <!-- =================================================================== -->
+
+    <!-- Admin: perfil 1 -->
+    <filter>
+        <filter-name>RoleFilterAdmin</filter-name>
+        <filter-class>com.ojj.academico.filters.RoleFilter</filter-class>
+        <init-param>
+            <param-name>role</param-name>
+            <param-value>1</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>RoleFilterAdmin</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Secretaria: perfil 2 -->
+    <filter>
+        <filter-name>RoleFilterSecretario</filter-name>
+        <filter-class>com.ojj.academico.filters.RoleFilter</filter-class>
+        <init-param>
+            <param-name>role</param-name>
+            <param-value>2</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>RoleFilterSecretario</filter-name>
+        <url-pattern>/secretario/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Tesouraria: perfil 3 -->
+    <filter>
+        <filter-name>RoleFilterTesouraria</filter-name>
+        <filter-class>com.ojj.academico.filters.RoleFilter</filter-class>
+        <init-param>
+            <param-name>role</param-name>
+            <param-value>3</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>RoleFilterTesouraria</filter-name>
+        <url-pattern>/tesouraria/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Professor: perfil 4 -->
+    <filter>
+        <filter-name>RoleFilterProfessor</filter-name>
+        <filter-class>com.ojj.academico.filters.RoleFilter</filter-class>
+        <init-param>
+            <param-name>role</param-name>
+            <param-value>4</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>RoleFilterProfessor</filter-name>
+        <url-pattern>/professor/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Coordenador: perfil 5 -->
+    <filter>
+        <filter-name>RoleFilterCoordenador</filter-name>
+        <filter-class>com.ojj.academico.filters.RoleFilter</filter-class>
+        <init-param>
+            <param-name>role</param-name>
+            <param-value>5</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>RoleFilterCoordenador</filter-name>
+        <url-pattern>/coordenador/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Director: perfil 6 -->
+    <filter>
+        <filter-name>RoleFilterDirector</filter-name>
+        <filter-class>com.ojj.academico.filters.RoleFilter</filter-class>
+        <init-param>
+            <param-name>role</param-name>
+            <param-value>6</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>RoleFilterDirector</filter-name>
+        <url-pattern>/director/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Estudante: perfil 7 -->
+    <filter>
+        <filter-name>RoleFilterEstudante</filter-name>
+        <filter-class>com.ojj.academico.filters.RoleFilter</filter-class>
+        <init-param>
+            <param-name>role</param-name>
+            <param-value>7</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>RoleFilterEstudante</filter-name>
+        <url-pattern>/estudante/*</url-pattern>
+    </filter-mapping>
+
+    <!-- =================================================================== -->
+    <!-- FILTROS DE AUTORIZAÇÃO PARA RELATÓRIOS E SISTEMA -->
+    <!-- =================================================================== -->
+
+    <!-- Relatório de Estudantes: Admin(1), Secretaria(2), Director(6) -->
+    <filter>
+        <filter-name>RoleFilterRelatorioEstudantes</filter-name>
+        <filter-class>com.ojj.academico.filters.RoleFilter</filter-class>
+        <init-param>
+            <param-name>role</param-name>
+            <param-value>1,2,6</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>RoleFilterRelatorioEstudantes</filter-name>
+        <url-pattern>/relatorios/estudantes</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>RoleFilterRelatorioEstudantes</filter-name>
+        <url-pattern>/relatorios/estudantes/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Relatório Financeiro: Admin(1), Tesouraria(3), Director(6) -->
+    <filter>
+        <filter-name>RoleFilterRelatorioFinanceiro</filter-name>
+        <filter-class>com.ojj.academico.filters.RoleFilter</filter-class>
+        <init-param>
+            <param-name>role</param-name>
+            <param-value>1,3,6</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>RoleFilterRelatorioFinanceiro</filter-name>
+        <url-pattern>/relatorios/financeiro</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>RoleFilterRelatorioFinanceiro</filter-name>
+        <url-pattern>/relatorios/financeiro/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Relatório Académico: Admin(1), Coordenador(5), Director(6) -->
+    <filter>
+        <filter-name>RoleFilterRelatorioAcademico</filter-name>
+        <filter-class>com.ojj.academico.filters.RoleFilter</filter-class>
+        <init-param>
+            <param-name>role</param-name>
+            <param-value>1,5,6</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>RoleFilterRelatorioAcademico</filter-name>
+        <url-pattern>/relatorios/academico</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>RoleFilterRelatorioAcademico</filter-name>
+        <url-pattern>/relatorios/academico/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Sistema (utilizadores, logs): apenas Admin(1) -->
+    <filter>
+        <filter-name>RoleFilterSistema</filter-name>
+        <filter-class>com.ojj.academico.filters.RoleFilter</filter-class>
+        <init-param>
+            <param-name>role</param-name>
+            <param-value>1</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>RoleFilterSistema</filter-name>
         <url-pattern>/sistema/*</url-pattern>
     </filter-mapping>
 
@@ -561,11 +801,13 @@
         <location>/WEB-INF/views/error/403.jsp</location>
     </error-page>
 
-    <!-- Tempo de sessão em minutos -->
+    <!-- Configuração de sessão -->
     <session-config>
+        <session-timeout>30</session-timeout>
         <cookie-config>
-            <secure>false</secure>
             <http-only>true</http-only>
+            <secure>false</secure>
+            <comment>SameSite=Strict</comment>
         </cookie-config>
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>

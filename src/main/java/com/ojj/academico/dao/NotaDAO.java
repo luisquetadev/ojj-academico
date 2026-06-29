@@ -2,8 +2,10 @@ package com.ojj.academico.dao;
 
 import java.sql.*;
 import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.ojj.academico.model.Nota;
 import com.ojj.academico.utils.ConnectionFactory;
@@ -67,6 +69,80 @@ public class NotaDAO {
             stmt.setInt(5, nota.getIdNota());
             return stmt.executeUpdate() > 0;
         }
+    }
+
+    public List<Nota> listarPorAvaliacao(int idAvaliacao) throws SQLException {
+        String sql = "SELECT * FROM nota WHERE id_avaliacao = ?";
+        List<Nota> list = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idAvaliacao);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapNota(rs));
+            }
+        }
+        return list;
+    }
+
+    public Nota buscarPorAvaliacaoEEstudante(int idAvaliacao, int idEstudante) throws SQLException {
+        String sql = "SELECT * FROM nota WHERE id_avaliacao = ? AND id_estudante = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idAvaliacao);
+            stmt.setInt(2, idEstudante);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapNota(rs);
+            }
+        }
+        return null;
+    }
+
+    public List<Nota> listarPorEstudante(int idEstudante) throws SQLException {
+        String sql = "SELECT * FROM nota WHERE id_estudante = ? ORDER BY id_avaliacao";
+        List<Nota> list = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idEstudante);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapNota(rs));
+            }
+        }
+        return list;
+    }
+
+    public List<Map<String, Object>> listarPorEstudanteComAvaliacao(int idEstudante) throws SQLException {
+        String sql = "SELECT n.*, a.tipo, a.descricao AS avaliacao_descricao, a.data_avaliacao, " +
+                     "d.nome_disciplina, d.codigo_disciplina, d.id_disciplina " +
+                     "FROM nota n " +
+                     "JOIN avaliacao a ON n.id_avaliacao = a.id_avaliacao " +
+                     "JOIN disciplina d ON a.id_disciplina = d.id_disciplina " +
+                     "WHERE n.id_estudante = ? " +
+                     "ORDER BY d.nome_disciplina, a.data_avaliacao";
+        List<Map<String, Object>> list = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idEstudante);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> map = new java.util.HashMap<>();
+                map.put("idNota", rs.getInt("id_nota"));
+                map.put("idAvaliacao", rs.getInt("id_avaliacao"));
+                map.put("idEstudante", rs.getInt("id_estudante"));
+                map.put("nota", rs.getBigDecimal("nota"));
+                map.put("observacao", rs.getString("observacao"));
+                map.put("tipo", rs.getString("tipo"));
+                map.put("avaliacaoDescricao", rs.getString("avaliacao_descricao"));
+                map.put("dataAvaliacao", rs.getDate("data_avaliacao"));
+                map.put("nomeDisciplina", rs.getString("nome_disciplina"));
+                map.put("codigoDisciplina", rs.getString("codigo_disciplina"));
+                map.put("idDisciplina", rs.getInt("id_disciplina"));
+                list.add(map);
+            }
+        }
+        return list;
     }
 
     public boolean excluir(int idNota) throws SQLException {

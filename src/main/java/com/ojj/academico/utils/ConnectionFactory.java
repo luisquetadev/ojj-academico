@@ -1,5 +1,7 @@
 package com.ojj.academico.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,6 +13,8 @@ import java.sql.SQLException;
  * ativas para os DAOs.
  */
 public class ConnectionFactory {
+
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
     
     // Configurações de acesso ao banco de dados (usando variáveis de ambiente com fallbacks)
     private static final String HOST = getEnv("DB_HOST", "localhost");
@@ -60,7 +64,7 @@ public class ConnectionFactory {
                 conn.close();
             } catch (SQLException e) {
                 // Log do erro ao fechar, mas não interrompe a aplicação
-                e.printStackTrace();
+                log.error("Erro ao fechar conexao", e);
             }
         }
     }

@@ -21,6 +21,7 @@ public class Pagamento {
     private String comprovativo;
     private String status; // PENDENTE,PAGO,PARCIAL,ATRASADO
     private String observacao;
+    private String nomeEstudante;
 
     public Pagamento() {}
 
@@ -78,4 +79,7 @@ public class Pagamento {
 
     public String getObservacao() { return observacao; }
     public void setObservacao(String observacao) { this.observacao = observacao; }
+
+    public String getNomeEstudante() { return nomeEstudante; }
+    public void setNomeEstudante(String nomeEstudante) { this.nomeEstudante = nomeEstudante; }
 }

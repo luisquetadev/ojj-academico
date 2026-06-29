@@ -20,11 +20,24 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Servlet responsavel pelo fluxo de PagamentoServicos.
+ * Rotas atendidas: /tesouraria/servicos. Encaminha para: /view/tesouraria/servicos.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 public class PagamentoServicosServlet extends HttpServlet {
+
+    private static final Logger log = LoggerFactory.getLogger(PagamentoServicosServlet.class);
 
     private final PagamentoService pagamentoService = new PagamentoService();
     private final EstudanteDAO estudanteDAO = new EstudanteDAO();
     private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -51,6 +64,9 @@ public class PagamentoServicosServlet extends HttpServlet {
 
         request.getRequestDispatcher("/view/tesouraria/servicos.jsp").forward(request, response);
     }
+    /**
+     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
+     */
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -93,7 +109,7 @@ public class PagamentoServicosServlet extends HttpServlet {
 
         } catch (Exception e) {
             request.setAttribute("erro", "Erro ao processar pagamento: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Erro ao processar pagamento de servico", e);
         }
 
         doGet(request, response);

@@ -20,7 +20,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class LoggingFilter implements Filter {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoggingFilter.class);
 
     private final OperacaoLogService logService = new OperacaoLogService();
     private static final Set<String> EXCLUDED_PATHS = new HashSet<>(Arrays.asList(
@@ -55,7 +60,7 @@ public class LoggingFilter implements Filter {
                     try {
                         logService.save(log);
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        logger.error("Erro ao salvar log de auditoria", e);
                     }
                 }
             }

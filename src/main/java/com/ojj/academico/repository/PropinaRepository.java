@@ -25,6 +25,14 @@ public class PropinaRepository {
         return propinaDAO.atualizar(propina);
     }
 
+    public List<Propina> findByEstudante(int idEstudante) throws SQLException {
+        return propinaDAO.listarPorEstudante(idEstudante);
+    }
+
+    public String findStatusByEstudante(int idEstudante) throws SQLException {
+        return propinaDAO.buscarStatusAtual(idEstudante);
+    }
+
     public boolean delete(int id) throws SQLException {
         return propinaDAO.excluir(id);
     }

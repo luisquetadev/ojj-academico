@@ -14,17 +14,28 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Servlet responsavel pelo fluxo de CartaoEstudante.
+ * Rotas atendidas: /secretario/cartao-estudante. Encaminha para: /view/secretaria/cartao/index.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 public class CartaoEstudanteServlet extends HttpServlet {
 
     private final EstudanteService estudanteService = new EstudanteService();
     private final MatriculaService matriculaService = new MatriculaService();
     private final CursoService cursoService = new CursoService();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         request.getRequestDispatcher("/view/secretaria/cartao/index.jsp").forward(request, response);
     }
+    /**
+     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
+     */
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 

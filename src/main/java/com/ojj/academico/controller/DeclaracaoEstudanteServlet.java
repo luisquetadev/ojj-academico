@@ -1,10 +1,10 @@
 package com.ojj.academico.controller;
 
+import com.ojj.academico.dao.CursoDAO;
+import com.ojj.academico.dao.EstudanteDAO;
+import com.ojj.academico.dao.MatriculaDAO;
 import com.ojj.academico.model.Estudante;
 import com.ojj.academico.model.Matricula;
-import com.ojj.academico.service.EstudanteService;
-import com.ojj.academico.service.MatriculaService;
-import com.ojj.academico.service.CursoService;
 import com.ojj.academico.util.PDFGenerator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -15,17 +15,28 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Servlet responsavel pelo fluxo de DeclaracaoEstudante.
+ * Rotas atendidas: /secretario/declaracao. Encaminha para: /view/secretaria/declaracao/index.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 public class DeclaracaoEstudanteServlet extends HttpServlet {
 
-    private final EstudanteService estudanteService = new EstudanteService();
-    private final MatriculaService matriculaService = new MatriculaService();
-    private final CursoService cursoService = new CursoService();
+    private final EstudanteDAO estudanteDAO = new EstudanteDAO();
+    private final MatriculaDAO matriculaDAO = new MatriculaDAO();
+    private final CursoDAO cursoDAO = new CursoDAO();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         request.getRequestDispatcher("/view/secretaria/declaracao/index.jsp").forward(request, response);
     }
+    /**
+     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
+     */
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -34,12 +45,7 @@ public class DeclaracaoEstudanteServlet extends HttpServlet {
         String numeroEstudante = request.getParameter("numeroEstudante");
         
         try {
-            // 1. Buscar estudante pelo número
-            List<Estudante> estudantes = estudanteService.findAll(); // Idealmente ter um buscarPorNumero
-            Estudante estudante = estudantes.stream()
-                    .filter(e -> e.getNumeroEstudante().equals(numeroEstudante))
-                    .findFirst()
-                    .orElse(null);
+            Estudante estudante = estudanteDAO.buscarPorNumeroEstudante(numeroEstudante);
 
             if (estudante == null) {
                 request.setAttribute("erro", "Estudante não encontrado com o número informado.");
@@ -47,24 +53,15 @@ public class DeclaracaoEstudanteServlet extends HttpServlet {
                 return;
             }
 
-            // 2. Buscar curso do estudante (através da matrícula mais recente)
-            List<Matricula> matriculas = matriculaService.findAll();
-            Matricula ultimaMatricula = matriculas.stream()
-                    .filter(m -> m.getIdEstudante() == estudante.getIdEstudante())
-                    .sorted((m1, m2) -> m2.getDataMatricula().compareTo(m1.getDataMatricula()))
-                    .findFirst()
-                    .orElse(null);
-
-            String nomeCurso = "Não matriculado";
-            if (ultimaMatricula != null) {
-                nomeCurso = cursoService.findById(ultimaMatricula.getIdCurso()).getNomeCurso();
+            List<Matricula> matriculas = matriculaDAO.buscarPorIdEstudante(estudante.getIdEstudante());
+            String nomeCurso = "Nao matriculado";
+            if (matriculas != null && !matriculas.isEmpty()) {
+                nomeCurso = cursoDAO.buscarPorId(matriculas.get(0).getIdCurso()).getNomeCurso();
             }
 
-            // 3. Configurar resposta para PDF
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "attachment; filename=Declaracao_" + numeroEstudante + ".pdf");
 
-            // 4. Gerar PDF
             PDFGenerator.gerarDeclaracaoEstudante(estudante, nomeCurso, response.getOutputStream());
 
         } catch (Exception e) {

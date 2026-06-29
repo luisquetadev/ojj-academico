@@ -1,5 +1,6 @@
 package com.ojj.academico.model;
 
+import com.ojj.academico.conf.PerfilConstants;
 import java.time.LocalDateTime;
 
 /**
@@ -11,7 +12,7 @@ public class Utilizador {
     private int idUtilizador;
     private int idPerfil; // FK para a tabela perfil (ADMIN, SECRETARIA, etc)
     private String email; // Usado como username no login
-    private String passwordHash; // Senha (atualmente em texto plano)
+    private String passwordHash; // Senha (criptografada com BCrypt)
     private String status; // Estados possíveis: ATIVO, INATIVO, BLOQUEADO
     private int tentativasLogin; // Controle de segurança contra ataques de força bruta
     private String ultimoIp;
@@ -118,5 +119,37 @@ public class Utilizador {
 
     public void setDataUltimoAcesso(LocalDateTime dataUltimoAcesso) {
         this.dataUltimoAcesso = dataUltimoAcesso;
+    }
+
+    public boolean isAdmin() {
+        return idPerfil == PerfilConstants.ADMIN;
+    }
+
+    public boolean isSecretaria() {
+        return idPerfil == PerfilConstants.SECRETARIA;
+    }
+
+    public boolean isTesouraria() {
+        return idPerfil == PerfilConstants.TESOURARIA;
+    }
+
+    public boolean isDocente() {
+        return idPerfil == PerfilConstants.DOCENTE;
+    }
+
+    public boolean isCoordenador() {
+        return idPerfil == PerfilConstants.COORDENADOR;
+    }
+
+    public boolean isDirector() {
+        return idPerfil == PerfilConstants.DIRECTOR;
+    }
+
+    public boolean isEstudante() {
+        return idPerfil == PerfilConstants.ESTUDANTE;
+    }
+
+    public boolean isCoordenadorCurso() {
+        return idPerfil == PerfilConstants.COORDENADOR_CURSO;
     }
 }

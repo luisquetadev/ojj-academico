@@ -7,6 +7,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Servlet responsavel pelo fluxo de AbstractPage.
+ * Rotas atendidas: sem rota propria; usado como base interna. Encaminha para: /view/shared/module.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 abstract class AbstractPageServlet extends HttpServlet {
 
     protected void forward(HttpServletRequest request, HttpServletResponse response, String title, String module, String description)

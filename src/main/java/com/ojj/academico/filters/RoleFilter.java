@@ -31,7 +31,7 @@ public class RoleFilter implements Filter {
         // O parâmetro "role" pode conter múltiplos perfis separados por vírgula
         String[] requiredRoles = roleParam.split(",");
         for (String requiredRole : requiredRoles) {
-            if (String.valueOf(utilizador.getIdPerfil()).equals(requiredRole.trim())) {
+            if (utilizador.getIdPerfil() == Integer.parseInt(requiredRole.trim())) {
                 return true;
             }
         }

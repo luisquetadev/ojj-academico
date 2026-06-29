@@ -1,19 +1,166 @@
 package com.ojj.academico.controller;
 
+import com.ojj.academico.conf.AppConfig;
+import com.ojj.academico.dao.EstudanteDAO;
+import com.ojj.academico.dao.FuncionarioDAO;
+import com.ojj.academico.dao.ProfessorDAO;
+import com.ojj.academico.model.*;
+import com.ojj.academico.service.*;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.*;
 
-public class LancamentoNotasServlet extends AbstractPageServlet {
+/**
+ * Servlet responsavel pelo fluxo de LancamentoNotas.
+ * Rotas atendidas: /professor/lancar-notas. Encaminha para: /view/professor/lancar_notas.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
+public class LancamentoNotasServlet extends HttpServlet {
+
+    private final TurmaService turmaService = new TurmaService();
+    private final DisciplinaService disciplinaService = new DisciplinaService();
+    private final MatriculaService matriculaService = new MatriculaService();
+    private final EstudanteDAO estudanteDAO = new EstudanteDAO();
+    private final AvaliacaoService avaliacaoService = new AvaliacaoService();
+    private final NotaService notaService = new NotaService();
+    private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+    private final ProfessorDAO professorDAO = new ProfessorDAO();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        forward(request, response, "Lancamento de Notas", "Professor", "Registo de MAC, NPP, exame e recurso por disciplina.");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            List<Turma> turmas = turmaService.findAll();
+            List<Disciplina> disciplinas = disciplinaService.findAll();
+            request.setAttribute("turmas", turmas);
+            request.setAttribute("disciplinas", disciplinas);
+            request.getRequestDispatcher("/view/professor/lancar_notas.jsp").forward(request, response);
+        } catch (SQLException e) {
+            request.setAttribute("erro", "Erro ao carregar dados: " + e.getMessage());
+            request.getRequestDispatcher("/view/professor/lancar_notas.jsp").forward(request, response);
+        }
+    }
+    /**
+     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
+     */
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            String action = request.getParameter("action");
+
+            if ("carregar".equals(action)) {
+                handleCarregarTurma(request, response);
+            } else if ("salvar".equals(action)) {
+                handleSalvarNotas(request, response);
+            } else {
+                response.sendRedirect(request.getContextPath() + "/professor/lancar-notas");
+            }
+        } catch (Exception e) {
+            request.setAttribute("erro", "Erro no processamento: " + e.getMessage());
+            doGet(request, response);
+        }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        confirmAndForward(request, response, "Lancamento de Notas", "Professor", "Notas submetidas para conferencia.");
+    private void handleCarregarTurma(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
+        int idTurma = Integer.parseInt(request.getParameter("idTurma"));
+        int idDisciplina = Integer.parseInt(request.getParameter("idDisciplina"));
+        String tipoAvaliacao = request.getParameter("tipoAvaliacao");
+        String descricao = request.getParameter("descricao");
+        String dataStr = request.getParameter("dataAvaliacao");
+
+        Turma turma = turmaService.findById(idTurma);
+        Disciplina disciplina = disciplinaService.findById(idDisciplina);
+        List<Matricula> matriculas = matriculaService.findByIdTurma(idTurma);
+
+        List<Map<String, Object>> alunos = new ArrayList<>();
+        for (Matricula m : matriculas) {
+            Estudante e = estudanteDAO.buscarPorId(m.getIdEstudante());
+            if (e != null) {
+                Map<String, Object> aluno = new HashMap<>();
+                aluno.put("idEstudante", e.getIdEstudante());
+                aluno.put("nomeCompleto", e.getNomeCompleto());
+                aluno.put("numeroEstudante", e.getNumeroEstudante());
+                alunos.add(aluno);
+            }
+        }
+
+        List<Turma> turmas = turmaService.findAll();
+        List<Disciplina> disciplinas = disciplinaService.findAll();
+        request.setAttribute("turmas", turmas);
+        request.setAttribute("disciplinas", disciplinas);
+        request.setAttribute("turmaSelecionada", turma);
+        request.setAttribute("disciplinaSelecionada", disciplina);
+        request.setAttribute("alunos", alunos);
+        request.setAttribute("tipoAvaliacao", tipoAvaliacao);
+        request.setAttribute("idDisciplina", idDisciplina);
+        request.setAttribute("descricao", descricao);
+        request.setAttribute("dataAvaliacao", dataStr);
+        request.getRequestDispatcher("/view/professor/lancar_notas.jsp").forward(request, response);
+    }
+
+    private void handleSalvarNotas(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
+        HttpSession session = request.getSession();
+        Utilizador utilizador = (Utilizador) session.getAttribute(AppConfig.SESSION_USER_ATTRIBUTE);
+
+        int idTurma = Integer.parseInt(request.getParameter("idTurma"));
+        int idDisciplina = Integer.parseInt(request.getParameter("idDisciplina"));
+        String tipoAvaliacao = request.getParameter("tipoAvaliacao");
+        String descricao = request.getParameter("descricao");
+        String dataStr = request.getParameter("dataAvaliacao");
+
+        Funcionario funcionario = funcionarioDAO.buscarPorIdUtilizador(utilizador.getIdUtilizador());
+        Professor professor = professorDAO.buscarPorIdFuncionario(funcionario.getIdFuncionario());
+
+        String[] idEstudantes = request.getParameterValues("idEstudante");
+        String[] notas = request.getParameterValues("nota");
+        String[] observacoes = request.getParameterValues("observacao");
+
+        if (idEstudantes == null || notas == null) {
+            request.setAttribute("erro", "Nenhuma nota foi submetida.");
+            handleCarregarTurma(request, response);
+            return;
+        }
+
+        Avaliacao avaliacao = new Avaliacao();
+        avaliacao.setIdDisciplina(idDisciplina);
+        avaliacao.setIdProfessor(professor.getIdProfessor());
+        avaliacao.setTipo(tipoAvaliacao);
+        avaliacao.setDescricao(descricao);
+        if (dataStr != null && !dataStr.isEmpty()) {
+            avaliacao.setDataAvaliacao(LocalDate.parse(dataStr));
+        }
+        avaliacao.setPeso(new BigDecimal("10.00"));
+        avaliacaoService.save(avaliacao);
+
+        int salvos = 0;
+        for (int i = 0; i < idEstudantes.length; i++) {
+            String notaStr = notas[i];
+            if (notaStr == null || notaStr.trim().isEmpty()) continue;
+
+            Nota nota = new Nota();
+            nota.setIdAvaliacao(avaliacao.getIdAvaliacao());
+            nota.setIdEstudante(Integer.parseInt(idEstudantes[i]));
+            nota.setNota(new BigDecimal(notaStr));
+            nota.setObservacao(observacoes != null && i < observacoes.length ? observacoes[i] : null);
+            if (notaService.save(nota)) salvos++;
+        }
+
+        request.setAttribute("sucesso", salvos + " nota(s) lançada(s) com sucesso (" + tipoAvaliacao + ")!");
+        doGet(request, response);
     }
 }

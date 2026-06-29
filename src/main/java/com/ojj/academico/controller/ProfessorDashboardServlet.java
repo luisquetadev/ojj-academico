@@ -10,7 +10,15 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+/**
+ * Servlet responsavel pelo fluxo de ProfessorDashboard.
+ * Rotas atendidas: /professor/dashboard. Encaminha para: /view/professor/dashboard.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */
 public class ProfessorDashboardServlet extends HttpServlet {
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

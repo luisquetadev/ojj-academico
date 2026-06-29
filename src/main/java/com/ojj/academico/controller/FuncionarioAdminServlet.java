@@ -13,16 +13,26 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-@WebServlet(name = "FuncionarioAdminServlet", urlPatterns = {"/admin/funcionario/new"})
+/**
+ * Servlet responsavel pelo fluxo de FuncionarioAdmin.
+ * Rotas atendidas: /admin/funcionario/new. Encaminha para: /view/admin/funcionario/form.jsp.
+ * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ */@WebServlet(name = "FuncionarioAdminServlet", urlPatterns = {"/admin/funcionario/new"})
 public class FuncionarioAdminServlet extends HttpServlet {
 
     private final FuncionarioService funcionarioService = new FuncionarioService();
+    /**
+     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     */
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("/view/admin/funcionario/form.jsp").forward(request, response);
     }
+    /**
+     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
+     */
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
