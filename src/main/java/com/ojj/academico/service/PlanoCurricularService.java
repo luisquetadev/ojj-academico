@@ -30,6 +30,10 @@ public class PlanoCurricularService {
         return repository.save(plano);
     }
 
+    public List<PlanoCurricular> findByCursoId(int idCurso) throws SQLException {
+        return repository.findByCursoId(idCurso);
+    }
+
     public boolean delete(int id) throws SQLException {
         return repository.delete(id);
     }

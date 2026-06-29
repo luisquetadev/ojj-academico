@@ -25,6 +25,10 @@ public class PlanoCurricularRepository {
         return planoCurricularDAO.atualizar(planoCurricular);
     }
 
+    public List<PlanoCurricular> findByCursoId(int idCurso) throws SQLException {
+        return planoCurricularDAO.listarPorCurso(idCurso);
+    }
+
     public boolean delete(int id) throws SQLException {
         return planoCurricularDAO.excluir(id);
     }

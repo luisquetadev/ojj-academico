@@ -56,6 +56,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/curso"><i class="fas fa-graduation-cap"></i> Gestão Cursos</a></li>
                             <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/disciplina"><i class="fas fa-book-open"></i> Gestão Disciplinas</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/plano-curricular"><i class="fas fa-layer-group"></i> Plano Curricular</a></li>
                             <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/turma"><i class="fas fa-chalkboard"></i> Gestão Turmas</a></li>
                         </ul>
                     </li>

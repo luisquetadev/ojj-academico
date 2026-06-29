@@ -1,4 +1,4 @@
-package com.ojj.academico.dao;
+﻿package com.ojj.academico.dao;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -96,7 +96,22 @@ public class AvaliacaoDAO {
         return list;
     }
 
-    public boolean excluir(int idAvaliacao) throws SQLException {
+   
+    public List<Avaliacao> listarPorProfessor(int idProfessor) throws SQLException {
+        String sql = "SELECT * FROM avaliacao WHERE id_professor = ? ORDER BY data_avaliacao";
+        List<Avaliacao> list = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idProfessor);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapAvaliacao(rs));
+            }
+        }
+        return list;
+    }
+
+     public boolean excluir(int idAvaliacao) throws SQLException {
         String sql = "DELETE FROM avaliacao WHERE id_avaliacao = ?";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -120,3 +135,4 @@ public class AvaliacaoDAO {
         return a;
     }
 }
+

@@ -1,12 +1,18 @@
-package com.ojj.academico.controller;
+﻿package com.ojj.academico.controller;
 
+import com.ojj.academico.conf.AppConfig;
 import com.ojj.academico.dao.EstudanteDAO;
+import com.ojj.academico.dao.FuncionarioDAO;
+import com.ojj.academico.dao.ProfessorDAO;
+import com.ojj.academico.dao.TurmaDAO;
+import com.ojj.academico.dao.DisciplinaDAO;
 import com.ojj.academico.model.*;
 import com.ojj.academico.service.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -16,7 +22,6 @@ import java.util.*;
 /**
  * Servlet responsavel pelo fluxo de GestiaoPautas.
  * Rotas atendidas: /professor/pautas. Encaminha para: /view/professor/pautas.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
  */
 public class GestiaoPautasServlet extends HttpServlet {
 
@@ -26,16 +31,25 @@ public class GestiaoPautasServlet extends HttpServlet {
     private final AvaliacaoService avaliacaoService = new AvaliacaoService();
     private final NotaService notaService = new NotaService();
     private final EstudanteDAO estudanteDAO = new EstudanteDAO();
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
+    private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+    private final ProfessorDAO professorDAO = new ProfessorDAO();
+    private final TurmaDAO turmaDAO = new TurmaDAO();
+    private final DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            List<Turma> turmas = turmaService.findAll();
-            List<Disciplina> disciplinas = disciplinaService.findAll();
+            HttpSession session = request.getSession(false);
+            Utilizador utilizador = getUtilizador(session, response);
+            if (utilizador == null) return;
+
+            Funcionario funcionario = funcionarioDAO.buscarPorIdUtilizador(utilizador.getIdUtilizador());
+            Professor professor = professorDAO.buscarPorIdFuncionario(funcionario.getIdFuncionario());
+
+            List<Turma> turmas = turmaDAO.listarPorProfessor(professor.getIdProfessor());
+            List<Disciplina> disciplinas = disciplinaDAO.listarPorProfessor(professor.getIdProfessor());
+
             request.setAttribute("turmas", turmas);
             request.setAttribute("disciplinas", disciplinas);
             request.getRequestDispatcher("/view/professor/pautas.jsp").forward(request, response);
@@ -44,9 +58,6 @@ public class GestiaoPautasServlet extends HttpServlet {
             request.getRequestDispatcher("/view/professor/pautas.jsp").forward(request, response);
         }
     }
-    /**
-     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
-     */
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -73,6 +84,13 @@ public class GestiaoPautasServlet extends HttpServlet {
 
     private void handleCarregar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
+        HttpSession session = request.getSession(false);
+        Utilizador utilizador = getUtilizador(session, response);
+        if (utilizador == null) return;
+
+        Funcionario funcionario = funcionarioDAO.buscarPorIdUtilizador(utilizador.getIdUtilizador());
+        Professor professor = professorDAO.buscarPorIdFuncionario(funcionario.getIdFuncionario());
+
         int idTurma = Integer.parseInt(request.getParameter("idTurma"));
         int idDisciplina = Integer.parseInt(request.getParameter("idDisciplina"));
 
@@ -106,8 +124,10 @@ public class GestiaoPautasServlet extends HttpServlet {
             }
         }
 
-        List<Turma> turmas = turmaService.findAll();
-        List<Disciplina> disciplinas = disciplinaService.findAll();
+        // Reload filtered lists
+        List<Turma> turmas = turmaDAO.listarPorProfessor(professor.getIdProfessor());
+        List<Disciplina> disciplinas = disciplinaDAO.listarPorProfessor(professor.getIdProfessor());
+
         request.setAttribute("turmas", turmas);
         request.setAttribute("disciplinas", disciplinas);
         request.setAttribute("turmaSelecionada", turma);
@@ -156,5 +176,12 @@ public class GestiaoPautasServlet extends HttpServlet {
         request.setAttribute("sucesso", salvos + " nota(s) atualizada(s) com sucesso!");
         handleCarregar(request, response);
         request.getRequestDispatcher("/view/professor/pautas.jsp").forward(request, response);
+    }
+
+    private Utilizador getUtilizador(HttpSession session, HttpServletResponse response) throws IOException {
+        if (session == null) return null;
+        Utilizador u = (Utilizador) session.getAttribute(AppConfig.SESSION_USER_ATTRIBUTE);
+        if (u == null) return null;
+        return u;
     }
 }

@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OJJ Académico • Dashboard Professor</title>
+    <title>OJJ AcadÃ©mico â€¢ Dashboard Professor</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/all.min.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/main.css">
@@ -13,7 +13,7 @@
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="<%= request.getContextPath() %>/dashboard">
-                <i class="fas fa-university"></i> OJJ Académico
+                <i class="fas fa-university"></i> OJJ AcadÃ©mico
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -32,12 +32,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<%= request.getContextPath() %>/professor/lancar-notas">
-                            <i class="fas fa-edit"></i> Lançar Notas
+                            <i class="fas fa-edit"></i> LanÃ§ar Notas
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<%= request.getContextPath() %>/professor/pautas">
-                            <i class="fas fa-list-alt"></i> Gestão Pautas
+                            <i class="fas fa-list-alt"></i> GestÃ£o Pautas
                         </a>
                     </li>
                 </ul>
@@ -62,21 +62,21 @@
             <div class="col-md-4">
                 <div class="stat-card stat-card-primary">
                     <div class="stat-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                    <div class="stat-number">0</div>
+                    <div class="stat-number">${totalTurmas}</div>
                     <div class="stat-label">Minhas Turmas</div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="stat-card stat-card-success">
                     <div class="stat-icon"><i class="fas fa-edit"></i></div>
-                    <div class="stat-number">0</div>
+                    <div class="stat-number">${totalAvaliacoes}</div>
                     <div class="stat-label">Notas Pendentes</div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="stat-card stat-card-warning">
                     <div class="stat-icon"><i class="fas fa-list-alt"></i></div>
-                    <div class="stat-number">0</div>
+                    <div class="stat-number">${totalAvaliacoes}</div>
                     <div class="stat-label">Pautas Ativas</div>
                 </div>
             </div>
@@ -86,3 +86,4 @@
     <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

@@ -1,4 +1,4 @@
-package com.ojj.academico.dao;
+﻿package com.ojj.academico.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -35,7 +35,25 @@ public class DisciplinaDAO {
         return list;
     }
 
-    public boolean inserir(Disciplina disciplina) throws SQLException {
+   
+    public List<Disciplina> listarPorProfessor(int idProfessor) throws SQLException {
+        String sql = "SELECT d.* FROM disciplina d "
+                + "JOIN professor_disciplina pd ON d.id_disciplina = pd.id_disciplina "
+                + "WHERE pd.id_professor = ? "
+                + "ORDER BY d.nome_disciplina";
+        List<Disciplina> list = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idProfessor);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapDisciplina(rs));
+            }
+        }
+        return list;
+    }
+
+     public boolean inserir(Disciplina disciplina) throws SQLException {
         String sql = "INSERT INTO disciplina (codigo_disciplina, nome_disciplina, carga_horaria) VALUES (?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -97,3 +115,4 @@ public class DisciplinaDAO {
         return d;
     }
 }
+

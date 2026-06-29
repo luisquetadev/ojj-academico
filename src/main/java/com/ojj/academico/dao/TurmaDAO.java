@@ -1,4 +1,4 @@
-package com.ojj.academico.dao;
+﻿package com.ojj.academico.dao;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -36,7 +36,28 @@ public class TurmaDAO {
         return list;
     }
 
-    public boolean inserir(Turma turma) throws SQLException {
+   
+    public List<Turma> listarPorProfessor(int idProfessor) throws SQLException {
+        String sql = "SELECT DISTINCT t.* FROM turma t "
+                + "JOIN curso c ON t.id_curso = c.id_curso "
+                + "JOIN plano_curricular pc ON c.id_curso = pc.id_curso "
+                + "JOIN plano_curricular_disciplina pcd ON pc.id_plano_curricular = pcd.id_plano_curricular "
+                + "JOIN professor_disciplina pd ON pcd.id_disciplina = pd.id_disciplina "
+                + "WHERE pd.id_professor = ? "
+                + "ORDER BY t.codigo_turma";
+        List<Turma> list = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idProfessor);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapTurma(rs));
+            }
+        }
+        return list;
+    }
+
+     public boolean inserir(Turma turma) throws SQLException {
         String sql = "INSERT INTO turma (id_curso, id_sala, codigo_turma, turno, ano_curricular, capacidade_maxima, estudantes_inscritos, horario, data_criacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -129,3 +150,4 @@ public class TurmaDAO {
         return ts != null ? ts.toLocalDateTime() : null;
     }
 }
+

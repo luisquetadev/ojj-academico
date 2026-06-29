@@ -1,9 +1,11 @@
-package com.ojj.academico.controller;
+﻿package com.ojj.academico.controller;
 
 import com.ojj.academico.conf.AppConfig;
 import com.ojj.academico.dao.EstudanteDAO;
 import com.ojj.academico.dao.FuncionarioDAO;
 import com.ojj.academico.dao.ProfessorDAO;
+import com.ojj.academico.dao.TurmaDAO;
+import com.ojj.academico.dao.DisciplinaDAO;
 import com.ojj.academico.model.*;
 import com.ojj.academico.service.*;
 import jakarta.servlet.ServletException;
@@ -21,7 +23,6 @@ import java.util.*;
 /**
  * Servlet responsavel pelo fluxo de LancamentoNotas.
  * Rotas atendidas: /professor/lancar-notas. Encaminha para: /view/professor/lancar_notas.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
  */
 public class LancamentoNotasServlet extends HttpServlet {
 
@@ -33,16 +34,23 @@ public class LancamentoNotasServlet extends HttpServlet {
     private final NotaService notaService = new NotaService();
     private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
     private final ProfessorDAO professorDAO = new ProfessorDAO();
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
+    private final TurmaDAO turmaDAO = new TurmaDAO();
+    private final DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            List<Turma> turmas = turmaService.findAll();
-            List<Disciplina> disciplinas = disciplinaService.findAll();
+            HttpSession session = request.getSession(false);
+            Utilizador utilizador = getUtilizador(session, response);
+            if (utilizador == null) return;
+
+            Funcionario funcionario = funcionarioDAO.buscarPorIdUtilizador(utilizador.getIdUtilizador());
+            Professor professor = professorDAO.buscarPorIdFuncionario(funcionario.getIdFuncionario());
+
+            List<Turma> turmas = turmaDAO.listarPorProfessor(professor.getIdProfessor());
+            List<Disciplina> disciplinas = disciplinaDAO.listarPorProfessor(professor.getIdProfessor());
+
             request.setAttribute("turmas", turmas);
             request.setAttribute("disciplinas", disciplinas);
             request.getRequestDispatcher("/view/professor/lancar_notas.jsp").forward(request, response);
@@ -51,9 +59,6 @@ public class LancamentoNotasServlet extends HttpServlet {
             request.getRequestDispatcher("/view/professor/lancar_notas.jsp").forward(request, response);
         }
     }
-    /**
-     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
-     */
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -76,6 +81,13 @@ public class LancamentoNotasServlet extends HttpServlet {
 
     private void handleCarregarTurma(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
+        HttpSession session = request.getSession(false);
+        Utilizador utilizador = getUtilizador(session, response);
+        if (utilizador == null) return;
+
+        Funcionario funcionario = funcionarioDAO.buscarPorIdUtilizador(utilizador.getIdUtilizador());
+        Professor professor = professorDAO.buscarPorIdFuncionario(funcionario.getIdFuncionario());
+
         int idTurma = Integer.parseInt(request.getParameter("idTurma"));
         int idDisciplina = Integer.parseInt(request.getParameter("idDisciplina"));
         String tipoAvaliacao = request.getParameter("tipoAvaliacao");
@@ -98,8 +110,10 @@ public class LancamentoNotasServlet extends HttpServlet {
             }
         }
 
-        List<Turma> turmas = turmaService.findAll();
-        List<Disciplina> disciplinas = disciplinaService.findAll();
+        // Reload filtered lists
+        List<Turma> turmas = turmaDAO.listarPorProfessor(professor.getIdProfessor());
+        List<Disciplina> disciplinas = disciplinaDAO.listarPorProfessor(professor.getIdProfessor());
+
         request.setAttribute("turmas", turmas);
         request.setAttribute("disciplinas", disciplinas);
         request.setAttribute("turmaSelecionada", turma);
@@ -160,7 +174,16 @@ public class LancamentoNotasServlet extends HttpServlet {
             if (notaService.save(nota)) salvos++;
         }
 
-        request.setAttribute("sucesso", salvos + " nota(s) lançada(s) com sucesso (" + tipoAvaliacao + ")!");
+        request.setAttribute("sucesso", salvos + " nota(s) lancada(s) com sucesso (" + tipoAvaliacao + ")!");
         doGet(request, response);
     }
+
+    private Utilizador getUtilizador(HttpSession session, HttpServletResponse response) throws IOException {
+        if (session == null) return null;
+        Utilizador u = (Utilizador) session.getAttribute(AppConfig.SESSION_USER_ATTRIBUTE);
+        if (u == null) return null;
+        return u;
+    }
 }
+
+

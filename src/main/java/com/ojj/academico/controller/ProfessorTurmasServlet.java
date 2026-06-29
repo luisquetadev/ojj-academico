@@ -1,14 +1,17 @@
-package com.ojj.academico.controller;
+﻿package com.ojj.academico.controller;
 
-import com.ojj.academico.model.Disciplina;
-import com.ojj.academico.model.Turma;
+import com.ojj.academico.conf.AppConfig;
+import com.ojj.academico.dao.FuncionarioDAO;
+import com.ojj.academico.dao.ProfessorDAO;
+import com.ojj.academico.dao.TurmaDAO;
+import com.ojj.academico.model.*;
 import com.ojj.academico.service.CursoService;
 import com.ojj.academico.service.DisciplinaService;
-import com.ojj.academico.service.TurmaService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,18 +24,33 @@ import java.util.*;
  */
 public class ProfessorTurmasServlet extends HttpServlet {
 
-    private final TurmaService turmaService = new TurmaService();
+    private final TurmaDAO turmaDAO = new TurmaDAO();
     private final CursoService cursoService = new CursoService();
     private final DisciplinaService disciplinaService = new DisciplinaService();
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
+    private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+    private final ProfessorDAO professorDAO = new ProfessorDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            List<Turma> turmas = turmaService.findAll();
+            // Get logged-in professor
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.sendRedirect(request.getContextPath() + "/login");
+                return;
+            }
+            Utilizador utilizador = (Utilizador) session.getAttribute(AppConfig.SESSION_USER_ATTRIBUTE);
+            if (utilizador == null) {
+                response.sendRedirect(request.getContextPath() + "/login");
+                return;
+            }
+
+            Funcionario funcionario = funcionarioDAO.buscarPorIdUtilizador(utilizador.getIdUtilizador());
+            Professor professor = professorDAO.buscarPorIdFuncionario(funcionario.getIdFuncionario());
+
+            // Load turmas filtered by professor
+            List<Turma> turmas = turmaDAO.listarPorProfessor(professor.getIdProfessor());
             List<Map<String, Object>> turmasInfo = new ArrayList<>();
             for (Turma t : turmas) {
                 Map<String, Object> info = new HashMap<>();

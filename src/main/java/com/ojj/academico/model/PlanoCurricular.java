@@ -3,16 +3,14 @@ package com.ojj.academico.model;
 public class PlanoCurricular {
     private int idPlanoCurricular;
     private int idCurso;
-    private int idDisciplina;
     private int anoCurricular;
     private int semestre;
     private Integer cargaHoraria;
 
     public PlanoCurricular() {}
 
-    public PlanoCurricular(int idCurso, int idDisciplina, int anoCurricular, int semestre) {
+    public PlanoCurricular(int idCurso, int anoCurricular, int semestre) {
         this.idCurso = idCurso;
-        this.idDisciplina = idDisciplina;
         this.anoCurricular = anoCurricular;
         this.semestre = semestre;
     }
@@ -22,9 +20,6 @@ public class PlanoCurricular {
 
     public int getIdCurso() { return idCurso; }
     public void setIdCurso(int idCurso) { this.idCurso = idCurso; }
-
-    public int getIdDisciplina() { return idDisciplina; }
-    public void setIdDisciplina(int idDisciplina) { this.idDisciplina = idDisciplina; }
 
     public int getAnoCurricular() { return anoCurricular; }
     public void setAnoCurricular(int anoCurricular) { this.anoCurricular = anoCurricular; }

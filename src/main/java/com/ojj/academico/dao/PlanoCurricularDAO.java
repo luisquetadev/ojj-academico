@@ -36,17 +36,16 @@ public class PlanoCurricularDAO {
     }
 
     public boolean inserir(PlanoCurricular plano) throws SQLException {
-        String sql = "INSERT INTO plano_curricular (id_curso, id_disciplina, ano_curricular, semestre, carga_horaria) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO plano_curricular (id_curso, ano_curricular, semestre, carga_horaria) VALUES (?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, plano.getIdCurso());
-            stmt.setInt(2, plano.getIdDisciplina());
-            stmt.setInt(3, plano.getAnoCurricular());
-            stmt.setInt(4, plano.getSemestre());
+            stmt.setInt(2, plano.getAnoCurricular());
+            stmt.setInt(3, plano.getSemestre());
             if (plano.getCargaHoraria() == null) {
-                stmt.setNull(5, Types.INTEGER);
+                stmt.setNull(4, Types.INTEGER);
             } else {
-                stmt.setInt(5, plano.getCargaHoraria());
+                stmt.setInt(4, plano.getCargaHoraria());
             }
             int affected = stmt.executeUpdate();
             if (affected > 0) {
@@ -61,21 +60,34 @@ public class PlanoCurricularDAO {
     }
 
     public boolean atualizar(PlanoCurricular plano) throws SQLException {
-        String sql = "UPDATE plano_curricular SET id_curso = ?, id_disciplina = ?, ano_curricular = ?, semestre = ?, carga_horaria = ? WHERE id_plano_curricular = ?";
+        String sql = "UPDATE plano_curricular SET id_curso = ?, ano_curricular = ?, semestre = ?, carga_horaria = ? WHERE id_plano_curricular = ?";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, plano.getIdCurso());
-            stmt.setInt(2, plano.getIdDisciplina());
-            stmt.setInt(3, plano.getAnoCurricular());
-            stmt.setInt(4, plano.getSemestre());
+            stmt.setInt(2, plano.getAnoCurricular());
+            stmt.setInt(3, plano.getSemestre());
             if (plano.getCargaHoraria() == null) {
-                stmt.setNull(5, Types.INTEGER);
+                stmt.setNull(4, Types.INTEGER);
             } else {
-                stmt.setInt(5, plano.getCargaHoraria());
+                stmt.setInt(4, plano.getCargaHoraria());
             }
-            stmt.setInt(6, plano.getIdPlanoCurricular());
+            stmt.setInt(5, plano.getIdPlanoCurricular());
             return stmt.executeUpdate() > 0;
         }
+    }
+
+    public List<PlanoCurricular> listarPorCurso(int idCurso) throws SQLException {
+        String sql = "SELECT * FROM plano_curricular WHERE id_curso = ?";
+        List<PlanoCurricular> list = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idCurso);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapPlano(rs));
+            }
+        }
+        return list;
     }
 
     public boolean excluir(int idPlanoCurricular) throws SQLException {
@@ -91,7 +103,6 @@ public class PlanoCurricularDAO {
         PlanoCurricular p = new PlanoCurricular();
         p.setIdPlanoCurricular(rs.getInt("id_plano_curricular"));
         p.setIdCurso(rs.getInt("id_curso"));
-        p.setIdDisciplina(rs.getInt("id_disciplina"));
         p.setAnoCurricular(rs.getInt("ano_curricular"));
         p.setSemestre(rs.getInt("semestre"));
         int carga = rs.getInt("carga_horaria");

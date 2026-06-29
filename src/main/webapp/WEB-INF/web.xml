@@ -267,6 +267,16 @@
         <url-pattern>/admin/turma</url-pattern>
     </servlet-mapping>
 
+    <!-- 15.1. Plano Curricular -->
+    <servlet>
+        <servlet-name>PlanoCurricularServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.PlanoCurricularServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PlanoCurricularServlet</servlet-name>
+        <url-pattern>/admin/plano-curricular</url-pattern>
+    </servlet-mapping>
+
     <!-- =================================================================== -->
     <!-- MÓDULO 4: SECRETARIA -->
     <!-- =================================================================== -->
