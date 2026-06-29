@@ -18,6 +18,10 @@ public class TurmaRepository {
         return turmaDAO.listarTodos();
     }
 
+    public List<Turma> findByProfessor(int idProfessor) throws SQLException {
+        return turmaDAO.listarPorProfessor(idProfessor);
+    }
+
     public boolean save(Turma turma) throws SQLException {
         if (turma.getIdTurma() == 0) {
             return turmaDAO.inserir(turma);

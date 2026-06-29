@@ -4,6 +4,7 @@ import com.ojj.academico.conf.AppConfig;
 import com.ojj.academico.model.OperacaoLog;
 import com.ojj.academico.model.Utilizador;
 import com.ojj.academico.service.OperacaoLogService;
+import com.ojj.academico.util.OperacaoLogFormatter;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -49,10 +50,11 @@ public class LoggingFilter implements Filter {
                 Object usuarioObj = session.getAttribute(AppConfig.SESSION_USER_ATTRIBUTE);
                 if (usuarioObj instanceof Utilizador) {
                     Utilizador usuario = (Utilizador) usuarioObj;
+                    String tipoOp = http.getMethod() + " " + relativePath;
                     OperacaoLog log = new OperacaoLog();
                     log.setIdUtilizador(usuario.getIdUtilizador());
-                    log.setTipoOperacao(http.getMethod() + " " + relativePath);
-                    log.setDescricao("Acesso ao recurso: " + relativePath);
+                    log.setTipoOperacao(tipoOp);
+                    log.setDescricao(OperacaoLogFormatter.formatarOperacao(tipoOp));
                     log.setEnderecoIp(request.getRemoteAddr());
                     log.setUserAgent(http.getHeader("User-Agent"));
                     log.setResultado("SUCESSO");

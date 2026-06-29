@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ojj.academico.model.OperacaoLog" %>
 <%@ page import="com.ojj.academico.model.Utilizador" %>
+<%@ page import="com.ojj.academico.util.OperacaoLogFormatter" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <!DOCTYPE html>
@@ -164,7 +165,7 @@
                         <tr>
                             <td><%= log.getDataHora() != null ? log.getDataHora().toString().replace('T',' ') : "-" %></td>
                             <td><%= userEmail %></td>
-                            <td><%= log.getTipoOperacao() %></td>
+                            <td><%= OperacaoLogFormatter.formatarOperacao(log.getTipoOperacao()) %></td>
                             <td><%= alvo %></td>
                             <td class="<%= statusClass %>"><%= log.getResultado() %></td>
                             <td><%= log.getEnderecoIp() != null ? log.getEnderecoIp() : "-" %></td>

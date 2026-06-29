@@ -1,4 +1,4 @@
-﻿package com.ojj.academico.model;
+package com.ojj.academico.model;
 
 public class ProfessorDisciplina {
     private int idProfessorDisciplina;

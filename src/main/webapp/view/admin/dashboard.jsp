@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ojj.academico.model.Utilizador" %>
 <%@ page import="com.ojj.academico.model.OperacaoLog" %>
+<%@ page import="com.ojj.academico.util.OperacaoLogFormatter" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
@@ -58,6 +59,7 @@
                             <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/disciplina"><i class="fas fa-book-open"></i> Gestão Disciplinas</a></li>
                             <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/plano-curricular"><i class="fas fa-layer-group"></i> Plano Curricular</a></li>
                             <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/turma"><i class="fas fa-chalkboard"></i> Gestão Turmas</a></li>
+                            <li><a class="dropdown-item" href="<%= request.getContextPath() %>/admin/professor-disciplina"><i class="fas fa-chalkboard-teacher"></i> Professor x Disciplina</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -160,7 +162,7 @@
                                     <tr>
                                         <td class="small"><%= log.getDataHora().format(fmt) %></td>
                                         <td><span class="badge badge-custom badge-secondary">#<%= log.getIdUtilizador() %></span></td>
-                                        <td><strong><%= log.getTipoOperacao() %></strong></td>
+                                        <td><strong><%= OperacaoLogFormatter.formatarOperacao(log.getTipoOperacao()) %></strong></td>
                                         <td class="small"><%= log.getDescricao() %></td>
                                         <td>
                                             <span class="badge badge-custom <%= "SUCESSO".equals(log.getResultado()) ? "badge-success" : "badge-danger" %>">

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.ojj.academico.model.OperacaoLog" %>
+<%@ page import="com.ojj.academico.util.OperacaoLogFormatter" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="pt">
@@ -75,7 +76,7 @@
                     <div class="log-item">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <span class="log-type"><%= log.getTipoOperacao() %></span>
+                                <span class="log-type"><%= OperacaoLogFormatter.formatarOperacao(log.getTipoOperacao()) %></span>
                                 <span class="badge <%= "SUCESSO".equals(log.getResultado()) ? "badge-sucesso" : "badge-erro" %> ms-2">
                                     <%= log.getResultado() %>
                                 </span>

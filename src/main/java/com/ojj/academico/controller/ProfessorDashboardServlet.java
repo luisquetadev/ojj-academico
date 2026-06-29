@@ -1,11 +1,11 @@
-﻿package com.ojj.academico.controller;
+package com.ojj.academico.controller;
 
 import com.ojj.academico.conf.AppConfig;
-import com.ojj.academico.dao.AvaliacaoDAO;
-import com.ojj.academico.dao.FuncionarioDAO;
-import com.ojj.academico.dao.ProfessorDAO;
-import com.ojj.academico.dao.TurmaDAO;
 import com.ojj.academico.model.*;
+import com.ojj.academico.service.AvaliacaoService;
+import com.ojj.academico.service.FuncionarioService;
+import com.ojj.academico.service.ProfessorService;
+import com.ojj.academico.service.TurmaService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,10 +21,10 @@ import java.sql.SQLException;
  */
 public class ProfessorDashboardServlet extends HttpServlet {
 
-    private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-    private final ProfessorDAO professorDAO = new ProfessorDAO();
-    private final TurmaDAO turmaDAO = new TurmaDAO();
-    private final AvaliacaoDAO avaliacaoDAO = new AvaliacaoDAO();
+    private final FuncionarioService funcionarioService = new FuncionarioService();
+    private final ProfessorService professorService = new ProfessorService();
+    private final TurmaService turmaService = new TurmaService();
+    private final AvaliacaoService avaliacaoService = new AvaliacaoService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,16 +43,14 @@ public class ProfessorDashboardServlet extends HttpServlet {
         }
 
         try {
-            Funcionario funcionario = funcionarioDAO.buscarPorIdUtilizador(utilizador.getIdUtilizador());
+            Funcionario funcionario = funcionarioService.findByIdUtilizador(utilizador.getIdUtilizador());
             if (funcionario != null) {
-                Professor professor = professorDAO.buscarPorIdFuncionario(funcionario.getIdFuncionario());
+                Professor professor = professorService.findByFuncionarioId(funcionario.getIdFuncionario());
                 if (professor != null) {
-                    // Count assigned turmas
-                    int totalTurmas = turmaDAO.listarPorProfessor(professor.getIdProfessor()).size();
-                    request.setAttribute("totalTurmas", totalTurmas);
+                    int totalTurmas = turmaService.findByProfessor(professor.getIdProfessor()).size();
+                    int totalAvaliacoes = avaliacaoService.findByProfessor(professor.getIdProfessor()).size();
 
-                    // Count evaluations created by this professor
-                    int totalAvaliacoes = avaliacaoDAO.listarPorProfessor(professor.getIdProfessor()).size();
+                    request.setAttribute("totalTurmas", totalTurmas);
                     request.setAttribute("totalAvaliacoes", totalAvaliacoes);
                 } else {
                     request.setAttribute("totalTurmas", 0);

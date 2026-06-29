@@ -458,6 +458,19 @@
     </servlet-mapping>
 
     <!-- =================================================================== -->
+    <!-- MÓDULO 7.6: PROFESSOR-DISCIPLINA -->
+    <!-- =================================================================== -->
+
+    <servlet>
+        <servlet-name>ProfessorDisciplinaServlet</servlet-name>
+        <servlet-class>com.ojj.academico.controller.ProfessorDisciplinaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProfessorDisciplinaServlet</servlet-name>
+        <url-pattern>/admin/professor-disciplina</url-pattern>
+    </servlet-mapping>
+
+    <!-- =================================================================== -->
     <!-- MÓDULO 8: RELATÓRIOS -->
     <!-- =================================================================== -->
 
@@ -607,13 +620,14 @@
     <!-- FILTROS DE AUTORIZAÇÃO POR PERFIL (RoleFilter) -->
     <!-- =================================================================== -->
 
-    <!-- Admin: perfil 1 -->
+    <!-- Admin: perfis 1 (Admin), 2 (Secretaria), 3 (Tesouraria) -->
+    <!-- Nota: Cada servlet faz a sua propria verificacao de perfil especifica -->
     <filter>
         <filter-name>RoleFilterAdmin</filter-name>
         <filter-class>com.ojj.academico.filters.RoleFilter</filter-class>
         <init-param>
             <param-name>role</param-name>
-            <param-value>1</param-value>
+            <param-value>1,2,3</param-value>
         </init-param>
     </filter>
     <filter-mapping>

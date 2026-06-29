@@ -22,6 +22,10 @@ public class TurmaService {
         return turmaRepository.findById(id);
     }
 
+    public List<Turma> findByProfessor(int idProfessor) throws SQLException {
+        return turmaRepository.findByProfessor(idProfessor);
+    }
+
     public List<Turma> findAll() throws SQLException {
         return turmaRepository.findAll();
     }

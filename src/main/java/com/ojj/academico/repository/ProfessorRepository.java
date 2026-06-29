@@ -18,6 +18,10 @@ public class ProfessorRepository {
         return professorDAO.listarTodos();
     }
 
+    public Professor findByFuncionarioId(int idFuncionario) throws SQLException {
+        return professorDAO.buscarPorIdFuncionario(idFuncionario);
+    }
+
     public boolean save(Professor professor) throws SQLException {
         if (professor.getIdProfessor() == 0) {
             return professorDAO.inserir(professor);

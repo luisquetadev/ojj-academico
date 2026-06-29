@@ -1,4 +1,4 @@
-﻿package com.ojj.academico.dao;
+package com.ojj.academico.dao;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -22,6 +22,10 @@ public class ProfessorService {
         return professorRepository.findById(id);
     }
 
+    public Professor findByFuncionarioId(int idFuncionario) throws SQLException {
+        return professorRepository.findByFuncionarioId(idFuncionario);
+    }
+
     public List<Professor> findAll() throws SQLException {
         return professorRepository.findAll();
     }

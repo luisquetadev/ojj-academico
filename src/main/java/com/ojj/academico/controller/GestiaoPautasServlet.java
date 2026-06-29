@@ -1,4 +1,4 @@
-﻿package com.ojj.academico.controller;
+package com.ojj.academico.controller;
 
 import com.ojj.academico.conf.AppConfig;
 import com.ojj.academico.dao.EstudanteDAO;
