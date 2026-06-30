@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <!--
+        OJJ Academico — Configuração para execução local no Tomcat 10+ (NetBeans)
+
+        Requisitos:
+        1. MySQL 8+ a correr em localhost:3306
+        2. Criar a base de dados:
+           CREATE DATABASE ojj_academico CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+        3. Executar os scripts SQL (por ordem):
+           - db/schema_ojj.sql
+           - db/seed_completo.sql
+        4. (Opcional) Variáveis de ambiente para ConnectionFactory:
+           DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASS
+           Valores padrão: localhost, 3306, ojj_academico, root, (vazio)
+
+        Nota: A aplicação usa JDBC directo (DriverManager) e NÃO JNDI.
+        Este context.xml é apenas para documentação/configuração do Tomcat.
+    -->
+</Context>
