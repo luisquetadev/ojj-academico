@@ -3,6 +3,12 @@ package com.ojj.academico.model;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 
+/**
+ * Modelo que representa uma avaliação (prova, trabalho, exame).
+ * <p>
+ * Cada avaliação está associada a uma disciplina e a um professor,
+ * possui um tipo (MAC, NPP, EXAME, RECURSO) e um peso percentual na nota final.
+ */
 public class Avaliacao {
     private int idAvaliacao;
     private int idDisciplina;

@@ -1,5 +1,8 @@
 package com.ojj.academico.dto;
 
+/**
+ * DTO que transporta a associação entre plano curricular e disciplina entre camadas.
+ */
 public class PlanoCurricularDisciplinaDTO {
     private int idPlanoCurricularDisciplina;
     private int idPlanoCurricular;

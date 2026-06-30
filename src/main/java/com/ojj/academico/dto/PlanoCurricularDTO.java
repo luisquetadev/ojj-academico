@@ -1,5 +1,8 @@
 package com.ojj.academico.dto;
 
+/**
+ * DTO que transporta os dados de um plano curricular entre camadas.
+ */
 public class PlanoCurricularDTO {
     private int idPlanoCurricular;
     private int idCurso;

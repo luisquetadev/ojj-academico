@@ -1,5 +1,8 @@
 package com.ojj.academico.dto;
 
+/**
+ * DTO que transporta as credenciais de login (email e password) entre camadas.
+ */
 public class LoginDTO {
     private String email;
     private String password;

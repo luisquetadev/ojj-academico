@@ -1,5 +1,9 @@
 package com.ojj.academico.model;
 
+/**
+ * Modelo que representa a associação entre um professor e as disciplinas
+ * que leciona.
+ */
 public class ProfessorDisciplina {
     private int idProfessorDisciplina;
     private int idProfessor;

@@ -7,8 +7,21 @@ import java.util.List;
 import com.ojj.academico.model.Perfil;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code perfil}.
+ * <p>
+ * Consulta dos perfis de acesso (papéis) do sistema.
+ * </p>
+ */
 public class PerfilDAO {
 
+    /**
+     * Busca um perfil pelo ID.
+     *
+     * @param idPerfil chave primária
+     * @return o perfil encontrado ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public Perfil buscarPorId(int idPerfil) throws SQLException {
         String sql = "SELECT * FROM perfil WHERE id_perfil = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -25,6 +38,12 @@ public class PerfilDAO {
         }
     }
 
+    /**
+     * Lista todos os perfis de acesso.
+     *
+     * @return lista de perfis
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Perfil> listarTodos() throws SQLException {
         String sql = "SELECT * FROM perfil";
         List<Perfil> list = new ArrayList<>();
@@ -41,6 +60,13 @@ public class PerfilDAO {
         return list;
     }
 
+    /**
+     * Insere um novo perfil de acesso.
+     *
+     * @param perfil dados do perfil
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(Perfil perfil) throws SQLException {
         String sql = "INSERT INTO perfil (nome_perfil) VALUES (?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -58,6 +84,13 @@ public class PerfilDAO {
         }
     }
 
+    /**
+     * Actualiza o nome de um perfil.
+     *
+     * @param perfil dados actualizados
+     * @return {@code true} se algum registo foi alterado
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean atualizar(Perfil perfil) throws SQLException {
         String sql = "UPDATE perfil SET nome_perfil = ? WHERE id_perfil = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -68,6 +101,13 @@ public class PerfilDAO {
         }
     }
 
+    /**
+     * Exclui um perfil pelo ID.
+     *
+     * @param idPerfil chave primária
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluir(int idPerfil) throws SQLException {
         String sql = "DELETE FROM perfil WHERE id_perfil = ?";
         try (Connection conn = ConnectionFactory.getConnection();

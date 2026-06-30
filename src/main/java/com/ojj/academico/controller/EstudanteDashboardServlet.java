@@ -11,15 +11,19 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Servlet responsavel pelo fluxo de EstudanteDashboard.
- * Rotas atendidas: /estudante/dashboard. Encaminha para: /view/estudante/dashboard_estudante.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pelo dashboard do Estudante.
+ * Rota: /estudante/dashboard
+ * Metodos: doGet (exibe o painel principal)
+ * Acesso: Estudante (validado por sessao)
+ * Encaminha para: /view/estudante/dashboard_estudante.jsp
  */
 public class EstudanteDashboardServlet extends HttpServlet {
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
 
+    /**
+     * Exibe o dashboard do estudante.
+     * Verifica a existencia de sessao activa e do utilizador autenticado
+     * antes de encaminhar para o JSP do painel.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

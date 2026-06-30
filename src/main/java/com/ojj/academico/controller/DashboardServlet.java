@@ -11,15 +11,21 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Servlet responsavel pelo fluxo de Dashboard.
- * Rotas atendidas: sem rota propria; usado como base interna.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pelo encaminhamento do dashboard principal.
+ * Rota: /dashboard (com pathInfo opcional para perfil especifico)
+ * Metodos: doGet (redirecciona para o dashboard do perfil do utilizador)
+ * Acesso: qualquer utilizador autenticado
+ * Encaminha para: JSP especifico do perfil ou redirecciona para URL interna
  */
 public class DashboardServlet extends HttpServlet {
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
 
+    /**
+     * Verifica a sessao e redirecciona para o dashboard apropriado.
+     * Se o pathInfo especificar um perfil (/admin, /secretario, etc.), usa esse.
+     * Caso contrario, determina pelo idPerfil do utilizador autenticado.
+     * Se a URL retornada comecar com /view/, faz forward interno;
+     * caso contrario, faz redirect HTTP.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -36,11 +42,9 @@ public class DashboardServlet extends HttpServlet {
             return;
         }
 
-        // Extrair o caminho específico do dashboard
         String pathInfo = request.getPathInfo();
         String dashboardPath = (pathInfo != null && !pathInfo.equals("/")) ? pathInfo : "";
 
-        // Redirecionar para o dashboard apropriado baseado no perfil
         String redirectUrl = getDashboardUrl(utilizador.getIdPerfil(), dashboardPath);
         
         if (redirectUrl.startsWith("/view/")) {
@@ -50,8 +54,15 @@ public class DashboardServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Determina a URL do dashboard com base no perfil e no pathInfo opcional.
+     * Se pathInfo for fornecido e valido, usa-o; senao, mapeia o idPerfil numerico para a URL.
+     *
+     * @param idPerfil ID do perfil do utilizador (1-ADMIN, 2-SECRETARIA, 3-TESOURARIA, 4-DOCENTE, 5-COORDENADOR, 6-DIRECTOR, 7-ESTUDANTE)
+     * @param pathInfo caminho opcional especificando o perfil desejado
+     * @return caminho para o JSP do dashboard ou URL de redirect
+     */
     private String getDashboardUrl(int idPerfil, String pathInfo) {
-        // Se o pathInfo já especifica um dashboard específico, usar ele
         if (pathInfo != null && !pathInfo.isEmpty() && !pathInfo.equals("/")) {
             switch (pathInfo) {
                 case "/admin":
@@ -73,21 +84,20 @@ public class DashboardServlet extends HttpServlet {
             }
         }
 
-        // Caso contrário, redirecionar baseado no perfil
         switch (idPerfil) {
-            case 1: // ADMIN
+            case 1:
                 return "/view/admin/dashboard.jsp";
-            case 2: // SECRETARIA
+            case 2:
                 return "/view/secretario/dashboard.jsp";
-            case 3: // TESOURARIA
+            case 3:
                 return "/view/tesouraria/dashboard.jsp";
-            case 4: // DOCENTE/PROFESSOR
+            case 4:
                 return "/view/professor/dashboard.jsp";
-            case 5: // COORDENADOR
+            case 5:
                 return "/view/coordenador/dashboard.jsp";
-            case 6: // DIRECTOR
+            case 6:
                 return "/view/director/dashboard.jsp";
-            case 7: // ESTUDANTE
+            case 7:
                 return "/view/estudante/dashboard_estudante.jsp";
             default:
                 return "/view/dashboard/dashboard_principal.jsp";

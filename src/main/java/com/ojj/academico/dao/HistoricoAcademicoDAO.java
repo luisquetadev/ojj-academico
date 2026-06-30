@@ -8,8 +8,22 @@ import java.math.BigDecimal;
 import com.ojj.academico.model.HistoricoAcademico;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code historico_academico}.
+ * <p>
+ * Registo do desempenho dos estudantes disciplina a disciplina,
+ * incluindo média final e resultado (aprovado/reprovado).
+ * </p>
+ */
 public class HistoricoAcademicoDAO {
 
+    /**
+     * Busca um registo histórico pelo ID.
+     *
+     * @param idHistorico chave primária
+     * @return o registo encontrado ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public HistoricoAcademico buscarPorId(int idHistorico) throws SQLException {
         String sql = "SELECT * FROM historico_academico WHERE id_historico = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -23,6 +37,12 @@ public class HistoricoAcademicoDAO {
         }
     }
 
+    /**
+     * Lista todo o histórico académico.
+     *
+     * @return lista de registos históricos
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<HistoricoAcademico> listarTodos() throws SQLException {
         String sql = "SELECT * FROM historico_academico";
         List<HistoricoAcademico> list = new ArrayList<>();
@@ -36,6 +56,13 @@ public class HistoricoAcademicoDAO {
         return list;
     }
 
+    /**
+     * Insere um novo registo no histórico académico.
+     *
+     * @param historico dados do histórico
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(HistoricoAcademico historico) throws SQLException {
         String sql = "INSERT INTO historico_academico (id_estudante, id_disciplina, media_final, resultado, ano_letivo) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -57,6 +84,13 @@ public class HistoricoAcademicoDAO {
         }
     }
 
+    /**
+     * Actualiza um registo do histórico.
+     *
+     * @param historico dados actualizados
+     * @return {@code true} se algum registo foi alterado
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean atualizar(HistoricoAcademico historico) throws SQLException {
         String sql = "UPDATE historico_academico SET id_estudante = ?, id_disciplina = ?, media_final = ?, resultado = ?, ano_letivo = ? WHERE id_historico = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -71,6 +105,13 @@ public class HistoricoAcademicoDAO {
         }
     }
 
+    /**
+     * Exclui um registo do histórico pelo ID.
+     *
+     * @param idHistorico chave primária
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluir(int idHistorico) throws SQLException {
         String sql = "DELETE FROM historico_academico WHERE id_historico = ?";
         try (Connection conn = ConnectionFactory.getConnection();

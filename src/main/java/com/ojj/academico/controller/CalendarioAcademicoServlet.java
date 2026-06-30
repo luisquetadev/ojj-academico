@@ -7,22 +7,26 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Servlet responsavel pelo fluxo de CalendarioAcademico.
- * Rotas atendidas: /coordenador/calendario.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pela gestao do calendario academico.
+ * Rota: /coordenador/calendario
+ * Metodos: doGet (exibe o calendario), doPost (registra novo evento academico)
+ * Acesso: Coordenador
+ * Encaminha para: /view/shared/module.jsp via AbstractPageServlet
  */
 public class CalendarioAcademicoServlet extends AbstractPageServlet {
     /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     * Apresenta a pagina de gestao do calendario academico.
+     * Atributos: pageTitle, moduleName, pageDescription.
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         forward(request, response, "Calendario Academico", "Coordenacao", "Gestao de periodos letivos, avaliacoes e prazos administrativos.");
     }
-    /**
-     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
-     */
 
+    /**
+     * Processa o registo de um novo evento academico (periodo letivo, avaliacao, prazo).
+     * Atribui mensagem de confirmacao e redireciona para a pagina modular.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         confirmAndForward(request, response, "Calendario Academico", "Coordenacao", "Evento academico registado.");

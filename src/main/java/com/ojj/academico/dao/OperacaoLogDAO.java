@@ -8,8 +8,21 @@ import java.util.List;
 import com.ojj.academico.model.OperacaoLog;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code operacao_log}.
+ * <p>
+ * Auditoria: regista todas as operações relevantes realizadas no sistema.
+ * </p>
+ */
 public class OperacaoLogDAO {
 
+    /**
+     * Busca um registo de log pelo ID.
+     *
+     * @param idLog chave primária
+     * @return o log encontrado ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public OperacaoLog buscarPorId(int idLog) throws SQLException {
         String sql = "SELECT * FROM operacao_log WHERE id_log = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -23,6 +36,12 @@ public class OperacaoLogDAO {
         }
     }
 
+    /**
+     * Lista todos os logs, do mais recente ao mais antigo.
+     *
+     * @return lista de logs
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<OperacaoLog> listarTodos() throws SQLException {
         String sql = "SELECT * FROM operacao_log ORDER BY data_hora DESC";
         List<OperacaoLog> list = new ArrayList<>();
@@ -36,6 +55,18 @@ public class OperacaoLogDAO {
         return list;
     }
 
+    /**
+     * Busca logs com filtros dinâmicos (todos os parâmetros são opcionais).
+     * A query é montada dinamicamente com {@code WHERE 1=1}.
+     *
+     * @param idUtilizador  filtrar por utilizador (opcional)
+     * @param tipoOperacao  filtrar por tipo (opcional, LIKE)
+     * @param resultado     filtrar por resultado (opcional)
+     * @param dataInicio    filtrar a partir desta data (opcional)
+     * @param dataFim       filtrar até esta data (opcional)
+     * @return lista de logs que correspondem aos filtros
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<OperacaoLog> buscarPorFiltro(Integer idUtilizador, String tipoOperacao, String resultado,
                                             LocalDateTime dataInicio, LocalDateTime dataFim) throws SQLException {
         StringBuilder sql = new StringBuilder("SELECT * FROM operacao_log WHERE 1=1");
@@ -79,6 +110,13 @@ public class OperacaoLogDAO {
         return list;
     }
 
+    /**
+     * Insere um novo registo de log (auditoria).
+     *
+     * @param log dados do log
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(OperacaoLog log) throws SQLException {
         String sql = "INSERT INTO operacao_log (id_utilizador, tipo_operacao, id_estudante_alvo, descricao, endereco_ip, user_agent, dados_alterados, resultado, data_hora) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -104,6 +142,13 @@ public class OperacaoLogDAO {
         }
     }
 
+    /**
+     * Exclui um log pelo ID.
+     *
+     * @param idLog chave primária
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluir(int idLog) throws SQLException {
         String sql = "DELETE FROM operacao_log WHERE id_log = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -150,7 +195,14 @@ public class OperacaoLogDAO {
         return ts != null ? ts.toLocalDateTime() : null;
     }
 
-        public boolean atualizar(OperacaoLog log) throws SQLException {
+    /**
+     * Actualiza os dados de um log de auditoria.
+     *
+     * @param log dados actualizados
+     * @return {@code true} se algum registo foi alterado
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
+    public boolean atualizar(OperacaoLog log) throws SQLException {
             String sql = "UPDATE operacao_log SET id_utilizador = ?, tipo_operacao = ?, id_estudante_alvo = ?, descricao = ?, endereco_ip = ?, user_agent = ?, dados_alterados = ?, resultado = ?, data_hora = ? WHERE id_log = ?";
             try (Connection conn = ConnectionFactory.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {

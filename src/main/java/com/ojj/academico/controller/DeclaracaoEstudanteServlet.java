@@ -16,28 +16,34 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Servlet responsavel pelo fluxo de DeclaracaoEstudante.
- * Rotas atendidas: /secretario/declaracao. Encaminha para: /view/secretaria/declaracao/index.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pela geracao de declaracoes de estudante em PDF.
+ * Rota: /secretario/declaracao
+ * Metodos: doGet (exibe formulario de pesquisa), doPost (gera o PDF da declaracao)
+ * Acesso: Secretaria
+ * Encaminha para: /view/secretaria/declaracao/index.jsp ou stream de PDF
  */
 public class DeclaracaoEstudanteServlet extends HttpServlet {
 
     private final EstudanteDAO estudanteDAO = new EstudanteDAO();
     private final MatriculaDAO matriculaDAO = new MatriculaDAO();
     private final CursoDAO cursoDAO = new CursoDAO();
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
 
+    /**
+     * Apresenta o formulario para o secretario inserir o numero do estudante e gerar a declaracao.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         request.getRequestDispatcher("/view/secretaria/declaracao/index.jsp").forward(request, response);
     }
-    /**
-     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
-     */
 
+    /**
+     * Processa o pedido de geracao da declaracao de estudante.
+     * 1. Busca o estudante pelo numero informado.
+     * 2. Obtem a primeira matricula para determinar o curso.
+     * 3. Gera o PDF da declaracao e envia como attachment.
+     * Em caso de erro, reexibe o formulario com mensagem de erro.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {

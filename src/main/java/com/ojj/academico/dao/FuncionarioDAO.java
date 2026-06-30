@@ -9,8 +9,21 @@ import java.util.List;
 import com.ojj.academico.model.Funcionario;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code funcionario}.
+ * <p>
+ * Operações de CRUD para os funcionários administrativos e docentes.
+ * </p>
+ */
 public class FuncionarioDAO {
 
+    /**
+     * Busca um funcionário pelo seu ID.
+     *
+     * @param idFuncionario chave primária
+     * @return o funcionário encontrado ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public Funcionario buscarPorId(int idFuncionario) throws SQLException {
         String sql = "SELECT * FROM funcionario WHERE id_funcionario = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -24,6 +37,13 @@ public class FuncionarioDAO {
         }
     }
 
+    /**
+     * Busca um funcionário pelo ID da sua conta de utilizador.
+     *
+     * @param idUtilizador ID do utilizador associado
+     * @return o funcionário encontrado ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public Funcionario buscarPorIdUtilizador(int idUtilizador) throws SQLException {
         String sql = "SELECT * FROM funcionario WHERE id_utilizador = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -37,10 +57,19 @@ public class FuncionarioDAO {
         }
     }
 
+    /**
+     * Busca o perfil (nome) associado a um funcionário através dos joins
+     * funcionario → utilizador → perfil.
+     *
+     * @param idFuncionario ID do funcionário
+     * @return funcionário com dados do perfil ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public Funcionario buscarPerfilFuncionario(int idFuncionario) throws SQLException {
-        String sql = "SELECT  p.nome_perfil FROM funcionario f INNER JOIN utilizador u ON f.id_utilizador = u.id_utilizador \r\n"
-                + //
-                "INNER JOIN perfil p ON u.id_perfil = p.id_perfil WHERE f.id_funcionario = ?;  ";
+        // Join de 3 tabelas para obter o nome do perfil do funcionário
+        String sql = "SELECT p.nome_perfil FROM funcionario f "
+                + "INNER JOIN utilizador u ON f.id_utilizador = u.id_utilizador "
+                + "INNER JOIN perfil p ON u.id_perfil = p.id_perfil WHERE f.id_funcionario = ?";
         try(Connection conn = ConnectionFactory.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1,idFuncionario);
@@ -55,6 +84,12 @@ public class FuncionarioDAO {
 
     }
 
+    /**
+     * Lista todos os funcionários.
+     *
+     * @return lista de funcionários
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Funcionario> listarTodos() throws SQLException {
         String sql = "SELECT * FROM funcionario";
         List<Funcionario> list = new ArrayList<>();
@@ -68,6 +103,13 @@ public class FuncionarioDAO {
         return list;
     }
 
+    /**
+     * Insere um novo funcionário no banco.
+     *
+     * @param funcionario dados do funcionário
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(Funcionario funcionario) throws SQLException {
         String sql = "INSERT INTO funcionario (id_utilizador, id_departamento, nome_completo, telefone, numero_bi, sexo, data_nascimento, morada, salario, data_admissao, id_admin_criador) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -95,6 +137,13 @@ public class FuncionarioDAO {
         }
     }
 
+    /**
+     * Actualiza os dados de um funcionário.
+     *
+     * @param funcionario dados actualizados
+     * @return {@code true} se algum registo foi alterado
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean atualizar(Funcionario funcionario) throws SQLException {
         String sql = "UPDATE funcionario SET id_utilizador = ?, id_departamento = ?, nome_completo = ?, telefone = ?, numero_bi = ?, sexo = ?, data_nascimento = ?, morada = ?, salario = ?, data_admissao = ?, id_admin_criador = ? WHERE id_funcionario = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -115,6 +164,13 @@ public class FuncionarioDAO {
         }
     }
 
+    /**
+     * Exclui um funcionário pelo ID.
+     *
+     * @param idFuncionario chave primária
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluir(int idFuncionario) throws SQLException {
         String sql = "DELETE FROM funcionario WHERE id_funcionario = ?";
         try (Connection conn = ConnectionFactory.getConnection();

@@ -1,5 +1,8 @@
 package com.ojj.academico.dto;
 
+/**
+ * DTO simplificado que transporta apenas os dados essenciais de um estudante.
+ */
 public class EstudanteSimpleDTO {
     private int idEstudante;
     private String numeroEstudante;

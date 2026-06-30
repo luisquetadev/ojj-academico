@@ -1,5 +1,8 @@
 package com.ojj.academico.dto;
 
+/**
+ * DTO que transporta os dados de um professor entre camadas.
+ */
 public class ProfessorDTO {
     private int idProfessor;
     private int idFuncionario;

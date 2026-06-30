@@ -12,17 +12,21 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 /**
- * Servlet responsavel pelo fluxo de EstudanteEdit.
- * Rotas atendidas: /admin/estudante/edit. Encaminha para: /view/admin/estudante/edit.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pela edicao de dados de um estudante (Admin).
+ * Rota: /admin/estudante/edit
+ * Metodos: doGet (exibe formulario preenchido), doPost (processa e persiste alteracoes)
+ * Acesso: Admin
+ * Encaminha para: /view/admin/estudante/edit.jsp ou redirect para /admin/estudante/list
  */
 public class EstudanteEditServlet extends HttpServlet {
 
     private final EstudanteService estudanteService = new EstudanteService();
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
 
+    /**
+     * Exibe o formulario de edicao preenchido com os dados do estudante.
+     * Atributos: estudante (Estudante).
+     * Redirecciona para a lista se o ID for invalido ou estudante nao encontrado.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,10 +55,13 @@ public class EstudanteEditServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/admin/estudante/list");
         }
     }
-    /**
-     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
-     */
 
+    /**
+     * Processa a actualizacao dos dados do estudante.
+     * 1. Valida campos obrigatorios (nome e BI).
+     * 2. Actualiza o objecto estudante com os novos valores.
+     * 3. Persiste via service e redirecciona para a lista.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

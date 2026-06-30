@@ -1,5 +1,10 @@
 package com.ojj.academico.model;
 
+/**
+ * Modelo que representa uma sala ou laboratório da instituição.
+ * <p>
+ * Contém o código, bloco de localização e capacidade máxima de lugares.
+ */
 public class Sala {
     private int idSala;
     private String codigoSala;

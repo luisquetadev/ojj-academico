@@ -1,5 +1,11 @@
 package com.ojj.academico.model;
 
+/**
+ * Modelo que representa um professor da instituição.
+ * <p>
+ * Extende a informação de funcionário com o grau académico
+ * (LICENCIADO, MESTRE, DOUTOR) e a especialidade.
+ */
 public class Professor {
     private int idProfessor;
     private int idFuncionario;

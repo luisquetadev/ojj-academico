@@ -8,8 +8,21 @@ import java.util.List;
 import com.ojj.academico.model.Matricula;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code matricula}.
+ * <p>
+ * Gestão das matrículas dos estudantes nos cursos/turmas.
+ * </p>
+ */
 public class MatriculaDAO {
 
+    /**
+     * Busca uma matrícula pelo ID.
+     *
+     * @param idMatricula chave primária
+     * @return a matrícula encontrada ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public Matricula buscarPorId(int idMatricula) throws SQLException {
         String sql = "SELECT * FROM matricula WHERE id_matricula = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -23,6 +36,13 @@ public class MatriculaDAO {
         }
     }
 
+    /**
+     * Lista as matrículas de uma turma específica.
+     *
+     * @param idTurma ID da turma
+     * @return matrículas da turma
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Matricula> buscarPorIdTurma(int idTurma) throws SQLException {
         String sql = "SELECT * FROM matricula WHERE id_turma = ? ORDER BY data_matricula DESC";
         List<Matricula> list = new ArrayList<>();
@@ -37,6 +57,13 @@ public class MatriculaDAO {
         return list;
     }
 
+    /**
+     * Lista as matrículas de um estudante.
+     *
+     * @param idEstudante ID do estudante
+     * @return matrículas do estudante
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Matricula> buscarPorIdEstudante(int idEstudante) throws SQLException {
         String sql = "SELECT * FROM matricula WHERE id_estudante = ? ORDER BY data_matricula DESC";
         List<Matricula> list = new ArrayList<>();
@@ -51,6 +78,12 @@ public class MatriculaDAO {
         return list;
     }
 
+    /**
+     * Lista todas as matrículas.
+     *
+     * @return lista de matrículas
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Matricula> listarTodos() throws SQLException {
         String sql = "SELECT * FROM matricula";
         List<Matricula> list = new ArrayList<>();
@@ -64,6 +97,13 @@ public class MatriculaDAO {
         return list;
     }
 
+    /**
+     * Insere uma nova matrícula.
+     *
+     * @param matricula dados da matrícula
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(Matricula matricula) throws SQLException {
         String sql = "INSERT INTO matricula (id_estudante, id_curso, id_turma, id_ano_academico, id_semestre, data_matricula, data_confirmacao, status, observacoes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -89,6 +129,13 @@ public class MatriculaDAO {
         }
     }
 
+    /**
+     * Actualiza os dados de uma matrícula.
+     *
+     * @param matricula dados actualizados
+     * @return {@code true} se algum registo foi alterado
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean atualizar(Matricula matricula) throws SQLException {
         String sql = "UPDATE matricula SET id_estudante = ?, id_curso = ?, id_turma = ?, id_ano_academico = ?, id_semestre = ?, data_matricula = ?, data_confirmacao = ?, status = ?, observacoes = ? WHERE id_matricula = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -107,6 +154,13 @@ public class MatriculaDAO {
         }
     }
 
+    /**
+     * Exclui uma matrícula pelo ID.
+     *
+     * @param idMatricula chave primária
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluir(int idMatricula) throws SQLException {
         String sql = "DELETE FROM matricula WHERE id_matricula = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -116,6 +170,12 @@ public class MatriculaDAO {
         }
     }
 
+    /**
+     * Conta quantas matrículas estão activas (status = 'ACTIVA').
+     *
+     * @return total de matrículas activas
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public int contarAtivas() throws SQLException {
         String sql = "SELECT COUNT(*) FROM matricula WHERE status = 'ACTIVA'";
         try (Connection conn = ConnectionFactory.getConnection();

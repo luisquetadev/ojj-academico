@@ -14,9 +14,11 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
- * Servlet responsavel pelo fluxo de EstudanteMatricula.
- * Rotas atendidas: /estudante/matricula. Encaminha para: /view/estudante/matricula.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pela visualizacao das matriculas do estudante logado.
+ * Rota: /estudante/matricula
+ * Metodos: doGet (exibe lista de matriculas do estudante)
+ * Acesso: Estudante (autenticado por sessao)
+ * Encaminha para: /view/estudante/matricula.jsp
  */
 public class EstudanteMatriculaServlet extends HttpServlet {
 
@@ -26,10 +28,12 @@ public class EstudanteMatriculaServlet extends HttpServlet {
     private final TurmaService turmaService = new TurmaService();
     private final AnoAcademicoService anoAcademicoService = new AnoAcademicoService();
     private final SemestreService semestreService = new SemestreService();
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
 
+    /**
+     * Carrega e exibe todas as matriculas do estudante autenticado,
+     * com informacoes detalhadas de curso, turma, ano academico e semestre.
+     * Atributos: estudante, matriculasInfo (List<Map> com matricula e dados associados).
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

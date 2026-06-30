@@ -12,21 +12,18 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 /**
- * Servlet responsável pelo cadastro administrativo de novos estudantes.
- * 
- * Responsabilidades:
- * - Exibir o formulário de cadastro (GET).
- * - Processar a submissão do formulário, validar campos e persistir o estudante (POST).
+ * Servlet responsavel pelo cadastro administrativo de novos estudantes (Admin).
+ * Rota: /admin/estudante/new
+ * Metodos: doGet (exibe formulario de cadastro), doPost (processa e persiste o estudante)
+ * Acesso: Admin
+ * Encaminha para: /view/admin/estudante/form.jsp ou redirect para /admin/estudante/list
  */
 public class EstudanteAdminServlet extends HttpServlet {
 
     private final EstudanteService estudanteService = new EstudanteService();
 
     /**
-     * Exibe o formulário de cadastro de novo estudante.
-     */
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     * Exibe o formulario de cadastro de novo estudante.
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,21 +32,17 @@ public class EstudanteAdminServlet extends HttpServlet {
     }
 
     /**
-     * Processa a criação de um novo estudante.
-     * 1. Extrai todos os campos do formulário.
-     * 2. Realiza validações básicas de campos obrigatórios.
-     * 3. Monta o objeto Estudante.
-     * 4. Chama o serviço para persistir no banco de dados.
-     */
-    /**
-     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
+     * Processa a criacao de um novo estudante.
+     * 1. Extrai todos os campos do formulario.
+     * 2. Valida campos obrigatorios (nome e BI).
+     * 3. Monta o objeto Estudante e persiste via service.
+     * 4. Redirecciona para a lista em caso de sucesso (PRG) ou reexibe formulario com erro.
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         try {
-            // Coleta de parâmetros vindos do formulário JSP
             String numeroEstudante = request.getParameter("numeroEstudante");
             String nomeCompleto = request.getParameter("nomeCompleto");
             String sexo = request.getParameter("sexo");
@@ -64,20 +57,18 @@ public class EstudanteAdminServlet extends HttpServlet {
             String telefoneEncarregado = request.getParameter("telefoneEncarregado");
             String idUtilizadorStr = request.getParameter("idUtilizador");
 
-            // Validação simples de servidor (Server-side validation)
+            // Validacao de campos obrigatorios (nome e BI)
             if (nomeCompleto == null || nomeCompleto.trim().isEmpty() || numeroBi == null || numeroBi.trim().isEmpty()) {
                 request.setAttribute("erro", "Nome e BI são obrigatórios");
                 request.getRequestDispatcher("/view/admin/estudante/form.jsp").forward(request, response);
                 return;
             }
 
-            // Mapeamento dos parâmetros para o objeto Model
             Estudante estudante = new Estudante();
             estudante.setNumeroEstudante(numeroEstudante);
             estudante.setNomeCompleto(nomeCompleto);
             estudante.setSexo(sexo);
             
-            // Tratamento de conversão de data
             if (dataNascimentoStr != null && !dataNascimentoStr.isEmpty()) {
                 estudante.setDataNascimento(LocalDate.parse(dataNascimentoStr));
             }
@@ -90,17 +81,16 @@ public class EstudanteAdminServlet extends HttpServlet {
             estudante.setNumeroBi(numeroBi);
             estudante.setNomeEncarregado(nomeEncarregado);
             estudante.setTelefoneEncarregado(telefoneEncarregado);
-            
-            // Associação opcional com um utilizador (conta de login)
+
+            // Associacao opcional do estudante a uma conta de login
             if (idUtilizadorStr != null && !idUtilizadorStr.isEmpty()) {
                 estudante.setIdUtilizador(Integer.parseInt(idUtilizadorStr));
             }
 
-            // Persistência através da camada de serviço
             boolean salvo = estudanteService.save(estudante);
 
             if (salvo) {
-                // Redireciona para a lista em caso de sucesso (padrão Post-Redirect-Get)
+                // Redireciona para a lista (Post-Redirect-Get)
                 response.sendRedirect(request.getContextPath() + "/admin/estudante/list");
             } else {
                 request.setAttribute("erro", "Erro ao salvar estudante: operação falhou no banco.");
@@ -108,11 +98,9 @@ public class EstudanteAdminServlet extends HttpServlet {
             }
 
         } catch (SQLException e) {
-            // Tratamento de erros de banco de dados (ex: BI duplicado ou violação de FK)
             request.setAttribute("erro", "Erro ao salvar estudante no banco: " + e.getMessage());
             request.getRequestDispatcher("/view/admin/estudante/form.jsp").forward(request, response);
         } catch (Exception e) {
-            // Tratamento de erros inesperados (ex: parse de data inválido)
             request.setAttribute("erro", "Erro inesperado: " + e.getMessage());
             request.getRequestDispatcher("/view/admin/estudante/form.jsp").forward(request, response);
         }

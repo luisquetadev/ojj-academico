@@ -3,6 +3,9 @@ package com.ojj.academico.dto;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 
+/**
+ * DTO que transporta os dados de um funcionário entre camadas.
+ */
 public class FuncionarioDTO {
     private int idFuncionario;
     private int idUtilizador;

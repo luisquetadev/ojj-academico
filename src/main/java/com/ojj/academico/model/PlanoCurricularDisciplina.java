@@ -1,5 +1,9 @@
 package com.ojj.academico.model;
 
+/**
+ * Modelo que representa a associação entre um plano curricular
+ * e as disciplinas que o compõem.
+ */
 public class PlanoCurricularDisciplina {
     private int idPlanoCurricularDisciplina;
     private int idPlanoCurricular;

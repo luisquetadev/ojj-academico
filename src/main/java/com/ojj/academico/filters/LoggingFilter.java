@@ -24,6 +24,13 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Filtro de auditoria que regista as operações dos utilizadores no sistema.
+ * <p>
+ * Interceta os pedidos HTTP e regista no banco de dados as operações
+ * realizadas por utilizadores autenticados, excluindo recursos estáticos
+ * (CSS, JS, imagens, etc.).
+ */
 public class LoggingFilter implements Filter {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggingFilter.class);
@@ -36,6 +43,9 @@ public class LoggingFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {}
 
+    /**
+     * Interceta o pedido e regista a operação se o utilizador estiver autenticado.
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {

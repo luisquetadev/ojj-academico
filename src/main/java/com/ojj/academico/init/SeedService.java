@@ -21,6 +21,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Serviço responsável pela população inicial do banco de dados (seed).
+ * <p>
+ * Insere dados de exemplo em todas as tabelas do sistema (perfis,
+ * departamentos, anos académicos, salas, cursos, utilizadores, etc.)
+ * e gera um ficheiro com as credenciais de acesso criadas.
+ */
 public class SeedService {
 
     private static final Logger log = LoggerFactory.getLogger(SeedService.class);
@@ -35,6 +42,11 @@ public class SeedService {
 
     private final List<Credencial> credenciais = new ArrayList<>();
 
+    /**
+     * Verifica se a tabela de perfis está vazia.
+     *
+     * @return true se o banco de dados não contém registos de perfil
+     */
     public boolean isDatabaseEmpty() {
         String sql = "SELECT COUNT(*) FROM perfil";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -47,6 +59,10 @@ public class SeedService {
         return true;
     }
 
+    /**
+     * Executa o seed completo de todas as tabelas do sistema numa única transação.
+     * As credenciais geradas são escritas num ficheiro após a conclusão.
+     */
     public void seedAll() {
         try (Connection conn = ConnectionFactory.getConnection()) {
             conn.setAutoCommit(false);

@@ -2,6 +2,9 @@ package com.ojj.academico.dto;
 
 import java.time.LocalDate;
 
+/**
+ * DTO que transporta os dados de uma frequência entre camadas.
+ */
 public class FrequenciaDTO {
     private int idFrequencia;
     private int idEstudante;

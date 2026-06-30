@@ -2,6 +2,9 @@ package com.ojj.academico.dto;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO que transporta os dados de um registo de operação (log) entre camadas.
+ */
 public class OperacaoLogDTO {
     private int idLog;
     private int idUtilizador;

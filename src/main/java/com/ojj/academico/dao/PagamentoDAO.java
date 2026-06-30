@@ -10,8 +10,21 @@ import java.math.BigDecimal;
 import com.ojj.academico.model.Pagamento;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code pagamento}.
+ * <p>
+ * Gestão de pagamentos de propinas e outras taxas.
+ * </p>
+ */
 public class PagamentoDAO {
 
+    /**
+     * Busca um pagamento pelo ID.
+     *
+     * @param idPagamento chave primária
+     * @return o pagamento encontrado ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public Pagamento buscarPorId(int idPagamento) throws SQLException {
         String sql = "SELECT * FROM pagamento WHERE id_pagamento = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -25,7 +38,14 @@ public class PagamentoDAO {
         }
     }
 
+    /**
+     * Lista todos os pagamentos com o nome do estudante (LEFT JOIN).
+     *
+     * @return lista de pagamentos
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Pagamento> listarTodos() throws SQLException {
+        // LEFT JOIN com estudante para obter o nome mesmo se o estudante não existir
         String sql = "SELECT p.*, e.nome_completo AS nome_estudante FROM pagamento p LEFT JOIN estudante e ON p.id_estudante = e.id_estudante ORDER BY p.data_pagamento DESC";
         List<Pagamento> list = new ArrayList<>();
         try (Connection conn = ConnectionFactory.getConnection();
@@ -40,6 +60,13 @@ public class PagamentoDAO {
         return list;
     }
 
+    /**
+     * Insere um novo pagamento.
+     *
+     * @param pagamento dados do pagamento
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(Pagamento pagamento) throws SQLException {
         String sql = "INSERT INTO pagamento (id_estudante, id_tesoureiro, tipo_pagamento, periodo_referencia, valor_devido, valor_pago, multa, data_pagamento, data_vencimento, metodo_pagamento, numero_recibo, referencia, comprovativo, status, observacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -71,6 +98,13 @@ public class PagamentoDAO {
         }
     }
 
+    /**
+     * Actualiza os dados de um pagamento.
+     *
+     * @param pagamento dados actualizados
+     * @return {@code true} se algum registo foi alterado
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean atualizar(Pagamento pagamento) throws SQLException {
         String sql = "UPDATE pagamento SET id_estudante = ?, id_tesoureiro = ?, tipo_pagamento = ?, periodo_referencia = ?, valor_devido = ?, valor_pago = ?, multa = ?, data_pagamento = ?, data_vencimento = ?, metodo_pagamento = ?, numero_recibo = ?, referencia = ?, comprovativo = ?, status = ?, observacao = ? WHERE id_pagamento = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -95,6 +129,13 @@ public class PagamentoDAO {
         }
     }
 
+    /**
+     * Exclui um pagamento pelo ID.
+     *
+     * @param idPagamento chave primária
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluir(int idPagamento) throws SQLException {
         String sql = "DELETE FROM pagamento WHERE id_pagamento = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -104,6 +145,12 @@ public class PagamentoDAO {
         }
     }
 
+    /**
+     * Calcula o total de receitas (valor_pago) do dia actual.
+     *
+     * @return total recebido hoje ou {@link BigDecimal#ZERO}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public BigDecimal calcularReceitaHoje() throws SQLException {
         String sql = "SELECT SUM(valor_pago) FROM pagamento WHERE DATE(data_pagamento) = CURDATE()";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -117,6 +164,12 @@ public class PagamentoDAO {
         }
     }
 
+    /**
+     * Conta quantos pagamentos estão com status 'PENDENTE'.
+     *
+     * @return total de pagamentos pendentes
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public int contarPagamentosPendentes() throws SQLException {
         String sql = "SELECT COUNT(*) FROM pagamento WHERE status = 'PENDENTE'";
         try (Connection conn = ConnectionFactory.getConnection();

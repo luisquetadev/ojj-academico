@@ -9,17 +9,21 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 /**
- * Servlet responsavel pelo fluxo de Curso.
- * Rotas atendidas: /admin/curso. Encaminha para: /view/admin/academico/catalogo.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pela listagem e gestao de cursos.
+ * Rota: /admin/curso
+ * Metodos: doGet (lista todos os cursos)
+ * Acesso: Admin
+ * Atribui e encaminha para: /view/admin/academico/catalogo.jsp com cursos e entityType
  */
 public class CursoServlet extends AbstractPageServlet {
 
     private final CursoService cursoService = new CursoService();
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
 
+    /**
+     * Lista todos os cursos registados no sistema.
+     * Atributos: cursos (List<Curso>), entityType ("curso").
+     * Redireciona para o catalogo de cursos.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

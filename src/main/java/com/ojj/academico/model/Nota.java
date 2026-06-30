@@ -2,6 +2,9 @@ package com.ojj.academico.model;
 
 import java.math.BigDecimal;
 
+/**
+ * Modelo que representa a nota obtida por um estudante numa avaliação.
+ */
 public class Nota {
     private int idNota;
     private int idAvaliacao;

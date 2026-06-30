@@ -2,6 +2,12 @@ package com.ojj.academico.model;
 
 import java.math.BigDecimal;
 
+/**
+ * Modelo que representa o histórico académico de um estudante.
+ * <p>
+ * Regista a média final e o resultado (APROVADO/REPROVADO) obtido
+ * numa disciplina num determinado ano letivo.
+ */
 public class HistoricoAcademico {
     private int idHistorico;
     private int idEstudante;

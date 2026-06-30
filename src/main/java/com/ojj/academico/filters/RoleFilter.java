@@ -14,10 +14,20 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+/**
+ * Filtro de autorização baseado em perfis (roles).
+ * <p>
+ * Verifica se o utilizador autenticado possui um dos perfis
+ * permitidos para aceder ao recurso. O parâmetro "role" é
+ * configurado no web.xml e pode conter múltiplos perfis separados por vírgula.
+ */
 public class RoleFilter implements Filter {
 
     private String roleParam;
 
+    /**
+     * Lê o parâmetro "role" da configuração do filtro.
+     */
     @Override
     public void init(FilterConfig filterConfig) {
         roleParam = filterConfig.getInitParameter("role");
@@ -38,6 +48,9 @@ public class RoleFilter implements Filter {
         return false;
     }
 
+    /**
+     * Verifica se o utilizador tem permissão para aceder ao recurso.
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {

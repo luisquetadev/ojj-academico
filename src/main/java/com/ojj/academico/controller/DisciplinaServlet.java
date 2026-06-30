@@ -9,17 +9,21 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 /**
- * Servlet responsavel pelo fluxo de Disciplina.
- * Rotas atendidas: /admin/disciplina. Encaminha para: /view/admin/academico/catalogo.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pela listagem e gestao de disciplinas.
+ * Rota: /admin/disciplina
+ * Metodos: doGet (lista todas as disciplinas)
+ * Acesso: Admin
+ * Atribui e encaminha para: /view/admin/academico/catalogo.jsp com disciplinas e entityType
  */
 public class DisciplinaServlet extends AbstractPageServlet {
 
     private final DisciplinaService disciplinaService = new DisciplinaService();
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
 
+    /**
+     * Lista todas as disciplinas registadas no sistema.
+     * Atributos: disciplinas (List<Disciplina>), entityType ("disciplina").
+     * Redireciona para o catalogo de disciplinas.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -2,6 +2,12 @@ package com.ojj.academico.model;
 
 import java.time.LocalDateTime;
 
+/**
+ * Modelo que representa a matrícula de um estudante num curso.
+ * <p>
+ * Contém a referência ao estudante, curso, turma, ano académico e semestre,
+ * bem como o estado atual (PENDENTE, CONFIRMADA, CANCELADA).
+ */
 public class Matricula {
     private int idMatricula;
     private int idEstudante;

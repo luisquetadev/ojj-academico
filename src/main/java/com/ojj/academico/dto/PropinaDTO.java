@@ -3,6 +3,9 @@ package com.ojj.academico.dto;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 
+/**
+ * DTO que transporta os dados de uma propina entre camadas.
+ */
 public class PropinaDTO {
     private int idPropina;
     private int idEstudante;

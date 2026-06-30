@@ -14,9 +14,11 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
- * Servlet responsavel pelo fluxo de EstudanteHistorico.
- * Rotas atendidas: /estudante/historico. Encaminha para: /view/estudante/historico.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pela visualizacao do historico academico do estudante.
+ * Rota: /estudante/historico
+ * Metodos: doGet (exibe historico de matriculas e notas)
+ * Acesso: Estudante (autenticado por sessao)
+ * Encaminha para: /view/estudante/historico.jsp
  */
 public class EstudanteHistoricoServlet extends HttpServlet {
 
@@ -27,10 +29,14 @@ public class EstudanteHistoricoServlet extends HttpServlet {
     private final AnoAcademicoService anoAcademicoService = new AnoAcademicoService();
     private final SemestreService semestreService = new SemestreService();
     private final NotaService notaService = new NotaService();
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
 
+    /**
+     * Carrega o historico completo do estudante logado.
+     * 1. Obtem o estudante a partir do utilizador da sessao.
+     * 2. Lista todas as matriculas com informacoes de curso, turma, ano e semestre.
+     * 3. Obtem todas as notas do estudante com avaliacoes.
+     * Atributos: estudante, historicoInfo (List<Map>), notas (List<Map>).
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

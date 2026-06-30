@@ -11,15 +11,19 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Servlet responsavel pelo fluxo de CoordenadorDashboard.
- * Rotas atendidas: /coordenador/dashboard. Encaminha para: /view/coordenador/dashboard.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pelo dashboard do Coordenador.
+ * Rota: /coordenador/dashboard
+ * Metodos: doGet (exibe o painel principal)
+ * Acesso: Coordenador (validado por sessao)
+ * Encaminha para: /view/coordenador/dashboard.jsp
  */
 public class CoordenadorDashboardServlet extends HttpServlet {
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
 
+    /**
+     * Exibe o dashboard do coordenador.
+     * Verifica a existencia de sessao activa e do utilizador autenticado
+     * antes de encaminhar para o JSP do painel.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

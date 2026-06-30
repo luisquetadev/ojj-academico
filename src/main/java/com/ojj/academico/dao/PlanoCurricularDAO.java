@@ -7,8 +7,21 @@ import java.util.List;
 import com.ojj.academico.model.PlanoCurricular;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code plano_curricular}.
+ * <p>
+ * Estrutura curricular dos cursos (anos, semestres, carga horária).
+ * </p>
+ */
 public class PlanoCurricularDAO {
 
+    /**
+     * Busca um plano curricular pelo ID.
+     *
+     * @param idPlanoCurricular chave primária
+     * @return o plano encontrado ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public PlanoCurricular buscarPorId(int idPlanoCurricular) throws SQLException {
         String sql = "SELECT * FROM plano_curricular WHERE id_plano_curricular = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -22,6 +35,12 @@ public class PlanoCurricularDAO {
         }
     }
 
+    /**
+     * Lista todos os planos curriculares.
+     *
+     * @return lista de planos
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<PlanoCurricular> listarTodos() throws SQLException {
         String sql = "SELECT * FROM plano_curricular";
         List<PlanoCurricular> list = new ArrayList<>();
@@ -35,6 +54,13 @@ public class PlanoCurricularDAO {
         return list;
     }
 
+    /**
+     * Insere um novo plano curricular.
+     *
+     * @param plano dados do plano
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(PlanoCurricular plano) throws SQLException {
         String sql = "INSERT INTO plano_curricular (id_curso, ano_curricular, semestre, carga_horaria) VALUES (?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -59,6 +85,13 @@ public class PlanoCurricularDAO {
         }
     }
 
+    /**
+     * Actualiza um plano curricular.
+     *
+     * @param plano dados actualizados
+     * @return {@code true} se algum registo foi alterado
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean atualizar(PlanoCurricular plano) throws SQLException {
         String sql = "UPDATE plano_curricular SET id_curso = ?, ano_curricular = ?, semestre = ?, carga_horaria = ? WHERE id_plano_curricular = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -76,6 +109,13 @@ public class PlanoCurricularDAO {
         }
     }
 
+    /**
+     * Lista os planos curriculares de um curso específico.
+     *
+     * @param idCurso ID do curso
+     * @return planos do curso
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<PlanoCurricular> listarPorCurso(int idCurso) throws SQLException {
         String sql = "SELECT * FROM plano_curricular WHERE id_curso = ?";
         List<PlanoCurricular> list = new ArrayList<>();
@@ -90,6 +130,13 @@ public class PlanoCurricularDAO {
         return list;
     }
 
+    /**
+     * Exclui um plano curricular.
+     *
+     * @param idPlanoCurricular chave primária
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluir(int idPlanoCurricular) throws SQLException {
         String sql = "DELETE FROM plano_curricular WHERE id_plano_curricular = ?";
         try (Connection conn = ConnectionFactory.getConnection();

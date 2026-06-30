@@ -26,11 +26,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Servlet que gerencia o painel principal (Dashboard) do Administrador.
+ * Rota: /admin/dashboard
+ * Metodos: doGet (exibe o dashboard com estatisticas)
+ * Acesso: Admin
  * 
  * Responsabilidades:
- * - Verificar a sessão do usuário.
- * - Coletar estatísticas globais (total de alunos, funcionários, etc.).
- * - Encaminhar para a página de visualização do dashboard.
+ * - Verificar a sessao do usuario e perfil de admin.
+ * - Coletar estatisticas globais (total de alunos, funcionarios, cursos, turmas).
+ * - Buscar logs recentes (ultimas 10 acoes) para exibicao.
+ * - Encaminhar para a pagina de visualizacao do dashboard.
  */
 public class DashboardAdminServlet extends HttpServlet {
 
@@ -44,26 +48,23 @@ public class DashboardAdminServlet extends HttpServlet {
     private final OperacaoLogService logService = new OperacaoLogService();
 
     /**
-     * Processa a requisição para exibir o dashboard.
-     * 1. Verifica se existe uma sessão ativa.
-     * 2. Recupera os totais de cada entidade para exibir nos cards de resumo.
-     * 3. Despacha para o JSP correspondente.
-     */
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     * Processa o pedido GET para exibir o dashboard do administrador.
+     * 1. Verifica se existe uma sessao activa e se o utilizador e admin.
+     * 2. Recupera os totais de estudantes, funcionarios, cursos e turmas.
+     * 3. Busca as ultimas 10 acoes registadas nos logs de auditoria.
+     * Atributos: totalEstudantes, totalFuncionarios, totalCursos, totalTurmas, logsRecentes.
+     * Encaminha para: /view/admin/dashboard.jsp.
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Obtém a sessão atual, sem criar uma nova se não existir (false)
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        // Verifica se o objeto de usuário está presente na sessão
         Utilizador utilizador = (Utilizador) session.getAttribute(AppConfig.SESSION_USER_ATTRIBUTE);
         if (utilizador == null || !utilizador.isAdmin()) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -71,25 +72,21 @@ public class DashboardAdminServlet extends HttpServlet {
         }
 
         try {
-            // Busca os dados no banco através dos Services e define como atributos da requisição
-            // O JSP usará esses nomes para exibir os valores nos cards
             request.setAttribute("totalEstudantes", estudanteService.findAll().size());
             request.setAttribute("totalFuncionarios", funcionarioService.findAll().size());
             request.setAttribute("totalCursos", cursoService.findAll().size());
             request.setAttribute("totalTurmas", turmaService.findAll().size());
-            
-            // Buscar logs recentes (últimas 10 ações)
+
+            // Busca as ultimas 10 operacoes registadas
             List<OperacaoLog> logs = logService.findAll().stream()
                     .limit(10)
                     .collect(Collectors.toList());
             request.setAttribute("logsRecentes", logs);
 
         } catch (SQLException e) {
-            // Em caso de erro no SQL, apenas logamos o erro. O dashboard exibirá '0' por padrão
             log.error("Erro ao carregar estatisticas do dashboard admin", e);
         }
 
-        // Encaminha a requisição e a resposta para o JSP interno
         request.getRequestDispatcher("/view/admin/dashboard.jsp").forward(request, response);
     }
 }

@@ -2,6 +2,9 @@ package com.ojj.academico.dto;
 
 import java.time.LocalDate;
 
+/**
+ * DTO que transporta os dados de um ano académico entre camadas.
+ */
 public class AnoAcademicoDTO {
     private int idAnoAcademico;
     private String descricao;

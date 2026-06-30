@@ -3,6 +3,12 @@ package com.ojj.academico.model;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 
+/**
+ * Modelo que representa a propina mensal de um estudante.
+ * <p>
+ * Regista o mês e ano de referência, valor, multa, data de vencimento
+ * e estado (PENDENTE, PAGO, ATRASADO).
+ */
 public class Propina {
     private int idPropina;
     private int idEstudante;

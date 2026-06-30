@@ -20,18 +20,23 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Servlet responsavel pelo fluxo de EstudanteList.
- * Rotas atendidas: /admin/estudante/list. Encaminha para: /view/admin/estudante/list.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pela listagem de estudantes com filtro e status de propina.
+ * Rota: /admin/estudante/list
+ * Metodos: doGet (lista estudantes com filtro opcional)
+ * Acesso: Admin, Secretaria, Tesouraria
+ * Encaminha para: /view/admin/estudante/list.jsp
  */
 public class EstudanteListServlet extends HttpServlet {
 
     private final EstudanteDAO estudanteDAO = new EstudanteDAO();
     private final PropinaDAO propinaDAO = new PropinaDAO();
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
 
+    /**
+     * Lista todos os estudantes ou aplica filtro de pesquisa por nome/BI/numero.
+     * Para cada estudante, busca tambem o status actual da propina.
+     * Atributos: estudantes, statusPropinas (Map<Integer, String>), searchTerm.
+     * Apenas utilizadores com perfil Admin, Secretaria ou Tesouraria podem aceder.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -54,7 +59,7 @@ public class EstudanteListServlet extends HttpServlet {
                 estudantes = estudanteDAO.listarTodos();
             }
 
-            // Buscar status da propina para cada estudante
+            // Mapa com status de propina para exibir na listagem
             Map<Integer, String> statusPropinas = new HashMap<>();
             for (Estudante e : estudantes) {
                 statusPropinas.put(e.getIdEstudante(), propinaDAO.buscarStatusAtual(e.getIdEstudante()));

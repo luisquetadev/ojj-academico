@@ -7,8 +7,21 @@ import java.util.List;
 import com.ojj.academico.model.PlanoCurricularDisciplina;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code plano_curricular_disciplina}.
+ * <p>
+ * Associação entre planos curriculares e as disciplinas que os compõem.
+ * </p>
+ */
 public class PlanoCurricularDisciplinaDAO {
 
+    /**
+     * Busca uma associação pelo ID.
+     *
+     * @param id chave primária
+     * @return a associação encontrada ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public PlanoCurricularDisciplina buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM plano_curricular_disciplina WHERE id_plano_curricular_disciplina = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -22,6 +35,12 @@ public class PlanoCurricularDisciplinaDAO {
         }
     }
 
+    /**
+     * Lista todas as associações plano-disciplina.
+     *
+     * @return lista de associações
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<PlanoCurricularDisciplina> listarTodos() throws SQLException {
         String sql = "SELECT * FROM plano_curricular_disciplina";
         List<PlanoCurricularDisciplina> list = new ArrayList<>();
@@ -35,6 +54,13 @@ public class PlanoCurricularDisciplinaDAO {
         return list;
     }
 
+    /**
+     * Lista as disciplinas associadas a um determinado plano curricular.
+     *
+     * @param idPlanoCurricular ID do plano curricular
+     * @return disciplinas do plano
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<PlanoCurricularDisciplina> listarPorPlanoCurricular(int idPlanoCurricular) throws SQLException {
         String sql = "SELECT * FROM plano_curricular_disciplina WHERE id_plano_curricular = ?";
         List<PlanoCurricularDisciplina> list = new ArrayList<>();
@@ -49,6 +75,13 @@ public class PlanoCurricularDisciplinaDAO {
         return list;
     }
 
+    /**
+     * Insere a associação entre um plano curricular e uma disciplina.
+     *
+     * @param item dados da associação
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(PlanoCurricularDisciplina item) throws SQLException {
         String sql = "INSERT INTO plano_curricular_disciplina (id_plano_curricular, id_disciplina) VALUES (?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -67,6 +100,13 @@ public class PlanoCurricularDisciplinaDAO {
         }
     }
 
+    /**
+     * Exclui uma associação pelo seu ID.
+     *
+     * @param id chave primária
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluir(int id) throws SQLException {
         String sql = "DELETE FROM plano_curricular_disciplina WHERE id_plano_curricular_disciplina = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -76,6 +116,14 @@ public class PlanoCurricularDisciplinaDAO {
         }
     }
 
+    /**
+     * Exclui a associação pelo plano curricular e disciplina.
+     *
+     * @param idPlanoCurricular ID do plano
+     * @param idDisciplina      ID da disciplina
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluirPorPlanoCurricularEDisciplina(int idPlanoCurricular, int idDisciplina) throws SQLException {
         String sql = "DELETE FROM plano_curricular_disciplina WHERE id_plano_curricular = ? AND id_disciplina = ?";
         try (Connection conn = ConnectionFactory.getConnection();

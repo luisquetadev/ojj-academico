@@ -2,6 +2,9 @@ package com.ojj.academico.dto;
 
 import java.math.BigDecimal;
 
+/**
+ * DTO que transporta os dados de um curso entre camadas.
+ */
 public class CursoDTO {
     private int idCurso;
     private int idDepartamento;

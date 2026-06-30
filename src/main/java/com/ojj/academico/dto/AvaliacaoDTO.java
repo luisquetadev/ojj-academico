@@ -3,6 +3,9 @@ package com.ojj.academico.dto;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 
+/**
+ * DTO que transporta os dados de uma avaliação entre camadas.
+ */
 public class AvaliacaoDTO {
     private int idAvaliacao;
     private int idDisciplina;

@@ -17,18 +17,22 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Servlet responsavel pelo fluxo de EstudantePropina.
- * Rotas atendidas: /estudante/propina. Encaminha para: /view/estudante/propina.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pela visualizacao das propinas do estudante logado.
+ * Rota: /estudante/propina
+ * Metodos: doGet (exibe status e historico de propinas)
+ * Acesso: Estudante (autenticado por sessao)
+ * Encaminha para: /view/estudante/propina.jsp
  */
 public class EstudantePropinaServlet extends HttpServlet {
 
     private final PropinaService propinaService = new PropinaService();
     private final EstudanteDAO estudanteDAO = new EstudanteDAO();
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
 
+    /**
+     * Carrega as propinas do estudante autenticado.
+     * Calcula o total pendente (incluindo multas) e o total pago.
+     * Atributos: estudante, propinas, statusAtual, totalPendente, totalPago.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

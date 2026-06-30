@@ -20,6 +20,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+/**
+ * Utilitário para geração de documentos PDF no sistema académico.
+ * <p>
+ * Utiliza a biblioteca OpenPDF (iText fork) para gerar declarações
+ * académicas e cartões de estudante com formatação profissional.
+ */
 public class PDFGenerator {
 
     private static final Color PRIMARY = new Color(18, 50, 79);
@@ -31,6 +37,14 @@ public class PDFGenerator {
     private static final Color LIGHT_TEAL = new Color(232, 247, 245);
     private static final Color LIGHT_ORANGE = new Color(255, 244, 237);
 
+    /**
+     * Gera uma declaração académica para um estudante.
+     *
+     * @param estudante o estudante para quem gerar a declaração
+     * @param curso     o nome do curso do estudante
+     * @param out       o stream de saída para escrever o PDF
+     * @throws Exception em caso de erro na geração do PDF
+     */
     public static void gerarDeclaracaoEstudante(Estudante estudante, String curso, OutputStream out) throws Exception {
         Document document = new Document(PageSize.A4, 54, 54, 42, 48);
         PdfWriter.getInstance(document, out);
@@ -45,6 +59,14 @@ public class PDFGenerator {
         document.close();
     }
 
+    /**
+     * Gera um cartão de estudante no formato ID (336x214 pontos).
+     *
+     * @param estudante o estudante para quem gerar o cartão
+     * @param curso     o nome do curso do estudante
+     * @param out       o stream de saída para escrever o PDF
+     * @throws Exception em caso de erro na geração do PDF
+     */
     public static void gerarCartaoEstudante(Estudante estudante, String curso, OutputStream out) throws Exception {
         Rectangle pageSize = new Rectangle(336, 214);
         Document document = new Document(pageSize, 0, 0, 0, 0);

@@ -2,6 +2,12 @@ package com.ojj.academico.model;
 
 import java.time.LocalDateTime;
 
+/**
+ * Modelo que representa um registo de auditoria de operações.
+ * <p>
+ * Regista quem (utilizador), o quê (tipo de operação), quando (data/hora),
+ * de onde (IP, user-agent) e o resultado da operação no sistema.
+ */
 public class OperacaoLog {
     private int idLog;
     private int idUtilizador;

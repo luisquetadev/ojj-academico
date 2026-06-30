@@ -8,8 +8,21 @@ import java.util.List;
 import com.ojj.academico.model.Frequencia;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code frequencia}.
+ * <p>
+ * Registo de presenças/ausências dos estudantes nas aulas.
+ * </p>
+ */
 public class FrequenciaDAO {
 
+    /**
+     * Busca um registo de frequência pelo ID.
+     *
+     * @param idFrequencia chave primária
+     * @return o registo encontrado ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public Frequencia buscarPorId(int idFrequencia) throws SQLException {
         String sql = "SELECT * FROM frequencia WHERE id_frequencia = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -23,6 +36,12 @@ public class FrequenciaDAO {
         }
     }
 
+    /**
+     * Lista todos os registos de frequência.
+     *
+     * @return lista de frequências
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Frequencia> listarTodos() throws SQLException {
         String sql = "SELECT * FROM frequencia";
         List<Frequencia> list = new ArrayList<>();
@@ -36,6 +55,13 @@ public class FrequenciaDAO {
         return list;
     }
 
+    /**
+     * Insere um novo registo de frequência.
+     *
+     * @param frequencia dados da frequência
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(Frequencia frequencia) throws SQLException {
         String sql = "INSERT INTO frequencia (id_estudante, id_disciplina, data_aula, status) VALUES (?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -56,6 +82,13 @@ public class FrequenciaDAO {
         }
     }
 
+    /**
+     * Actualiza um registo de frequência.
+     *
+     * @param frequencia dados actualizados
+     * @return {@code true} se algum registo foi alterado
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean atualizar(Frequencia frequencia) throws SQLException {
         String sql = "UPDATE frequencia SET id_estudante = ?, id_disciplina = ?, data_aula = ?, status = ? WHERE id_frequencia = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -69,6 +102,13 @@ public class FrequenciaDAO {
         }
     }
 
+    /**
+     * Exclui um registo de frequência.
+     *
+     * @param idFrequencia chave primária
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluir(int idFrequencia) throws SQLException {
         String sql = "DELETE FROM frequencia WHERE id_frequencia = ?";
         try (Connection conn = ConnectionFactory.getConnection();

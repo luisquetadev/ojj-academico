@@ -3,6 +3,12 @@ package com.ojj.academico.model;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 
+/**
+ * Modelo que representa um funcionário da instituição.
+ * <p>
+ * Contém dados pessoais, profissionais (departamento, salário)
+ * e a referência à conta de utilizador associada.
+ */
 public class Funcionario {
     private int idFuncionario;
     private int idUtilizador;

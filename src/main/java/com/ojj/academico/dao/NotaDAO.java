@@ -10,8 +10,21 @@ import java.util.Map;
 import com.ojj.academico.model.Nota;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code nota}.
+ * <p>
+ * Registo das notas obtidas pelos estudantes nas avaliações.
+ * </p>
+ */
 public class NotaDAO {
 
+    /**
+     * Busca uma nota pelo ID.
+     *
+     * @param idNota chave primária
+     * @return a nota encontrada ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public Nota buscarPorId(int idNota) throws SQLException {
         String sql = "SELECT * FROM nota WHERE id_nota = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -25,6 +38,12 @@ public class NotaDAO {
         }
     }
 
+    /**
+     * Lista todas as notas registadas.
+     *
+     * @return lista de notas
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Nota> listarTodos() throws SQLException {
         String sql = "SELECT * FROM nota";
         List<Nota> list = new ArrayList<>();
@@ -38,6 +57,13 @@ public class NotaDAO {
         return list;
     }
 
+    /**
+     * Insere uma nova nota para um estudante numa avaliação.
+     *
+     * @param nota dados da nota
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(Nota nota) throws SQLException {
         String sql = "INSERT INTO nota (id_avaliacao, id_estudante, nota, observacao) VALUES (?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -58,6 +84,13 @@ public class NotaDAO {
         }
     }
 
+    /**
+     * Actualiza uma nota existente.
+     *
+     * @param nota dados actualizados
+     * @return {@code true} se algum registo foi alterado
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean atualizar(Nota nota) throws SQLException {
         String sql = "UPDATE nota SET id_avaliacao = ?, id_estudante = ?, nota = ?, observacao = ? WHERE id_nota = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -71,6 +104,13 @@ public class NotaDAO {
         }
     }
 
+    /**
+     * Lista as notas de uma avaliação específica.
+     *
+     * @param idAvaliacao ID da avaliação
+     * @return notas da avaliação
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Nota> listarPorAvaliacao(int idAvaliacao) throws SQLException {
         String sql = "SELECT * FROM nota WHERE id_avaliacao = ?";
         List<Nota> list = new ArrayList<>();
@@ -85,6 +125,14 @@ public class NotaDAO {
         return list;
     }
 
+    /**
+     * Busca a nota de um estudante numa avaliação específica.
+     *
+     * @param idAvaliacao ID da avaliação
+     * @param idEstudante ID do estudante
+     * @return a nota encontrada ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public Nota buscarPorAvaliacaoEEstudante(int idAvaliacao, int idEstudante) throws SQLException {
         String sql = "SELECT * FROM nota WHERE id_avaliacao = ? AND id_estudante = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -99,6 +147,13 @@ public class NotaDAO {
         return null;
     }
 
+    /**
+     * Lista todas as notas de um estudante.
+     *
+     * @param idEstudante ID do estudante
+     * @return notas do estudante
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Nota> listarPorEstudante(int idEstudante) throws SQLException {
         String sql = "SELECT * FROM nota WHERE id_estudante = ? ORDER BY id_avaliacao";
         List<Nota> list = new ArrayList<>();
@@ -113,7 +168,16 @@ public class NotaDAO {
         return list;
     }
 
+    /**
+     * Lista as notas de um estudante com dados da avaliação e disciplina
+     * (join com as tabelas {@code avaliacao} e {@code disciplina}).
+     *
+     * @param idEstudante ID do estudante
+     * @return lista de mapas com dados completos das notas
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Map<String, Object>> listarPorEstudanteComAvaliacao(int idEstudante) throws SQLException {
+        // Join de 3 tabelas para obter nome da disciplina e descrição da avaliação
         String sql = "SELECT n.*, a.tipo, a.descricao AS avaliacao_descricao, a.data_avaliacao, " +
                      "d.nome_disciplina, d.codigo_disciplina, d.id_disciplina " +
                      "FROM nota n " +
@@ -145,6 +209,13 @@ public class NotaDAO {
         return list;
     }
 
+    /**
+     * Exclui uma nota pelo ID.
+     *
+     * @param idNota chave primária
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluir(int idNota) throws SQLException {
         String sql = "DELETE FROM nota WHERE id_nota = ?";
         try (Connection conn = ConnectionFactory.getConnection();

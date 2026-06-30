@@ -2,6 +2,9 @@ package com.ojj.academico.dto;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO que transporta os dados de uma turma entre camadas.
+ */
 public class TurmaDTO {
     private int idTurma;
     private int idCurso;

@@ -1,5 +1,8 @@
 package com.ojj.academico.dto;
 
+/**
+ * DTO que transporta os dados de um perfil entre camadas.
+ */
 public class PerfilDTO {
     private int idPerfil;
     private String nomePerfil;

@@ -17,19 +17,22 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
- * Servlet responsavel pelo fluxo de EstudanteNotas.
- * Rotas atendidas: /estudante/notas. Encaminha para: /view/estudante/notas.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pela visualizacao das notas e avaliacoes do estudante logado.
+ * Rota: /estudante/notas
+ * Metodos: doGet (exibe notas agrupadas por disciplina)
+ * Acesso: Estudante (autenticado por sessao)
+ * Encaminha para: /view/estudante/notas.jsp
  */
 public class EstudanteNotasServlet extends HttpServlet {
 
     private final NotaService notaService = new NotaService();
     private final EstudanteDAO estudanteDAO = new EstudanteDAO();
     private final DisciplinaService disciplinaService = new DisciplinaService();
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
 
+    /**
+     * Carrega todas as notas do estudante autenticado e agrupa por disciplina.
+     * Atributos: estudante, disciplinas (List<Map> com nome, codigo e avaliacoes).
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -46,6 +49,7 @@ public class EstudanteNotasServlet extends HttpServlet {
 
             List<Map<String, Object>> notas = notaService.findByEstudanteComAvaliacao(estudante.getIdEstudante());
 
+            // Agrupa as notas por disciplina para facilitar a exibicao no JSP
             Map<Integer, Map<String, Object>> disciplinasMap = new LinkedHashMap<>();
             for (Map<String, Object> n : notas) {
                 int idDisciplina = (int) n.get("idDisciplina");
@@ -61,7 +65,8 @@ public class EstudanteNotasServlet extends HttpServlet {
                     disc.put("avaliacoes", new ArrayList<Map<String, Object>>());
                     disciplinasMap.put(idDisciplina, disc);
                 }
-                List<Map<String, Object>> avaliacoes = getAvaliacoes(disc);
+                @SuppressWarnings("unchecked")
+                List<Map<String, Object>> avaliacoes = (List<Map<String, Object>>) disc.get("avaliacoes");
                 avaliacoes.add(n);
             }
 
@@ -72,31 +77,5 @@ public class EstudanteNotasServlet extends HttpServlet {
             request.setAttribute("erro", "Erro ao carregar notas: " + e.getMessage());
             request.getRequestDispatcher("/view/estudante/notas.jsp").forward(request, response);
         }
-    }
-
-    private List<Map<String, Object>> getAvaliacoes(Map<String, Object> disciplina) {
-        Object avaliacoes = disciplina.get("avaliacoes");
-        if (avaliacoes instanceof List<?>) {
-            List<?> lista = (List<?>) avaliacoes;
-            List<Map<String, Object>> resultado = new ArrayList<>();
-            for (Object item : lista) {
-                if (item instanceof Map<?, ?>) {
-                    Map<?, ?> mapa = (Map<?, ?>) item;
-                    Map<String, Object> convertido = new HashMap<>();
-                    for (Map.Entry<?, ?> entry : mapa.entrySet()) {
-                        if (entry.getKey() instanceof String) {
-                            convertido.put((String) entry.getKey(), entry.getValue());
-                        }
-                    }
-                    resultado.add(convertido);
-                }
-            }
-            disciplina.put("avaliacoes", resultado);
-            return resultado;
-        }
-
-        List<Map<String, Object>> resultado = new ArrayList<>();
-        disciplina.put("avaliacoes", resultado);
-        return resultado;
     }
 }

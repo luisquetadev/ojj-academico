@@ -7,22 +7,26 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Servlet responsavel pelo fluxo de ConfirmacaoMatricula.
- * Rotas atendidas: /secretario/confirmacao-matricula.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pela confirmacao de matricula e emissao de comprovativos.
+ * Rota: /secretario/confirmacao-matricula
+ * Metodos: doGet (exibe formulario de consulta), doPost (processa a confirmacao)
+ * Acesso: Secretaria
+ * Encaminha para: /view/shared/module.jsp via AbstractPageServlet
  */
 public class ConfirmacaoMatriculaServlet extends AbstractPageServlet {
     /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
+     * Apresenta o formulario de consulta e emissao de comprovativo de matricula.
+     * Atributos: pageTitle, moduleName, pageDescription.
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         forward(request, response, "Confirmacao de Matricula", "Secretaria", "Consulta e emissao de comprovativo de matricula.");
     }
-    /**
-     * Trata requisicoes POST: valida dados enviados, executa a operacao do formulario e retorna o resultado ao usuario.
-     */
 
+    /**
+     * Processa a geracao da confirmacao de matricula para o estudante informado.
+     * Atribui mensagem de confirmacao e redireciona para a pagina modular.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         confirmAndForward(request, response, "Confirmacao de Matricula", "Secretaria", "Confirmacao gerada para o estudante informado.");

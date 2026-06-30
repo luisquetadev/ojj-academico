@@ -2,6 +2,12 @@ package com.ojj.academico.model;
 
 import java.time.LocalDateTime;
 
+/**
+ * Modelo que representa uma turma.
+ * <p>
+ * Cada turma está associada a um curso e sala, possui um turno
+ * (MANHA, TARDE, NOITE), código, horário e capacidade máxima de estudantes.
+ */
 public class Turma {
     private int idTurma;
     private int idCurso;

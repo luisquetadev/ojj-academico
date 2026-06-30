@@ -2,6 +2,12 @@ package com.ojj.academico.model;
 
 import java.math.BigDecimal;
 
+/**
+ * Modelo que representa um curso oferecido pela instituição.
+ * <p>
+ * Contém informações como código, nome, grau (licenciatura, mestrado),
+ * regime (laboral, pós-laboral), duração em anos e valor da propina mensal.
+ */
 public class Curso {
     private int idCurso;
     private int idDepartamento;

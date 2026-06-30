@@ -2,6 +2,12 @@ package com.ojj.academico.model;
 
 import java.time.LocalDate;
 
+/**
+ * Modelo que regista a frequência/presença de um estudante numa aula.
+ * <p>
+ * Indica se o estudante esteve PRESENTE ou AUSENTE numa determinada
+ * data para uma disciplina específica.
+ */
 public class Frequencia {
     private int idFrequencia;
     private int idEstudante;

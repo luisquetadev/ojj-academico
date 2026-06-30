@@ -11,11 +11,21 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Filtro de segurança que impede o acesso direto a ficheiros JSP.
+ * <p>
+ * Redireciona para erro 404 qualquer tentativa de acesso a URLs
+ * que terminem em ".jsp", forçando o acesso apenas através dos
+ * controladores Servlet.
+ */
 public class JspProtectionFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {}
 
+    /**
+     * Intercepta o pedido e bloqueia acesso direto a ficheiros JSP.
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {

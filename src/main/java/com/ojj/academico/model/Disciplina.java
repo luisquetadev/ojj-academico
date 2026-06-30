@@ -1,5 +1,10 @@
 package com.ojj.academico.model;
 
+/**
+ * Modelo que representa uma disciplina/componente curricular.
+ * <p>
+ * Contém o código, nome e carga horária total da disciplina.
+ */
 public class Disciplina {
     private int idDisciplina;
     private String codigoDisciplina;

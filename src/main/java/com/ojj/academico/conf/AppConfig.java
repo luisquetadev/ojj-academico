@@ -1,5 +1,11 @@
 package com.ojj.academico.conf;
 
+/**
+ * Constantes de configuração geral da aplicação OJJ Académico.
+ * <p>
+ * Define os nomes dos atributos de sessão, os perfis de utilizador,
+ * as páginas do sistema e os tipos de funcionário disponíveis.
+ */
 public final class AppConfig {
     public static final String SESSION_USER_ATTRIBUTE = "usuario";
     public static final String ROLE_ESTUDANTE = "Estudante";

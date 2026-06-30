@@ -23,7 +23,7 @@ import java.util.List;
  * Servlet responsavel pelo fluxo de FuncionarioRegistro.
  * Rotas atendidas: /admin/funcionario/registrar. Encaminha para: /view/admin/funcionario/registrar.jsp.
  * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
- */@WebServlet("/admin/funcionario/registrar")
+ */@WebServlet("/admin/funcionario/registrar")
 public class FuncionarioRegistroServlet extends HttpServlet {
     
     private FuncionarioRegistroService registroService = new FuncionarioRegistroService();

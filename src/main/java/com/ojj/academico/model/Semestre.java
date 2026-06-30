@@ -2,6 +2,12 @@ package com.ojj.academico.model;
 
 import java.time.LocalDate;
 
+/**
+ * Modelo que representa um semestre letivo.
+ * <p>
+ * Associado a um ano académico, define o período de início e fim
+ * e a designação (1_SEMESTRE, 2_SEMESTRE).
+ */
 public class Semestre {
     private int idSemestre;
     private int idAnoAcademico;

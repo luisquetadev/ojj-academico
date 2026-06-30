@@ -1,5 +1,8 @@
 package com.ojj.academico.dto;
 
+/**
+ * DTO que transporta a associação entre matrícula e disciplina entre camadas.
+ */
 public class MatriculaDisciplinaDTO {
     private int idMatricula;
     private int idDisciplina;

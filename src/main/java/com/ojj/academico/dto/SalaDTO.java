@@ -1,5 +1,8 @@
 package com.ojj.academico.dto;
 
+/**
+ * DTO que transporta os dados de uma sala entre camadas.
+ */
 public class SalaDTO {
     private int idSala;
     private String codigoSala;

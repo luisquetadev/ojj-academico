@@ -4,6 +4,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * Utilitário para formatação de descrições de operações registadas no log de auditoria.
+ * <p>
+ * Converte URLs e códigos de operação em descrições legíveis em português,
+ * facilitando a interpretação dos logs pelos utilizadores do sistema.
+ */
 public class OperacaoLogFormatter {
 
     private static final Map<Pattern, String> PATH_PATTERNS = new LinkedHashMap<>();
@@ -60,6 +66,12 @@ public class OperacaoLogFormatter {
         PATH_PATTERNS.put(Pattern.compile("^POST /financeiro/propinas.*$"), "registou um pagamento de propina");
     }
 
+    /**
+     * Formata um código de operação numa descrição legível em português.
+     *
+     * @param tipoOperacao o código da operação (ex: "GET /estudante/dashboard")
+     * @return a descrição formatada da operação
+     */
     public static String formatarOperacao(String tipoOperacao) {
         if (tipoOperacao == null || tipoOperacao.trim().isEmpty()) {
             return "-";
@@ -126,6 +138,12 @@ public class OperacaoLogFormatter {
         return capitalized.toString();
     }
 
+    /**
+     * Formata uma descrição de operação existente, extraindo a parte relevante.
+     *
+     * @param descricao a descrição original
+     * @return a descrição formatada
+     */
     public static String formatarDescricao(String descricao) {
         if (descricao == null || descricao.trim().isEmpty()) {
             return "-";

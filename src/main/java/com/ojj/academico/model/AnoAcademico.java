@@ -2,6 +2,12 @@ package com.ojj.academico.model;
 
 import java.time.LocalDate;
 
+/**
+ * Modelo que representa um ano académico.
+ * <p>
+ * Contém a descrição (ex: "2024/2025"), datas de início e fim,
+ * e o estado atual (ATIVO ou ENCERRADO).
+ */
 public class AnoAcademico {
     private int idAnoAcademico;
     private String descricao;

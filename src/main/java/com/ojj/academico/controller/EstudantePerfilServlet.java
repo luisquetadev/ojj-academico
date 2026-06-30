@@ -15,17 +15,22 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 /**
- * Servlet responsavel pelo fluxo de EstudantePerfil.
- * Rotas atendidas: /estudante/profile, /admin/estudante/profile. Encaminha para: /view/admin/estudante/profile.jsp.
- * Centraliza a leitura da requisicao, aciona servicos/DAOs quando necessario e define o proximo destino HTTP.
+ * Servlet responsavel pela visualizacao do perfil do estudante.
+ * Rotas: /estudante/profile (auto-visualizacao), /admin/estudante/profile (admin/secretaria)
+ * Metodos: doGet (exibe perfil do estudante)
+ * Acesso: Estudante (proprio perfil), Admin, Secretaria (qualquer estudante)
+ * Encaminha para: /view/admin/estudante/profile.jsp
  */
 public class EstudantePerfilServlet extends HttpServlet {
 
     private final EstudanteService estudanteService = new EstudanteService();
-    /**
-     * Trata requisicoes GET: prepara dados de exibicao e encaminha ou redireciona a tela correta.
-     */
 
+    /**
+     * Exibe o perfil do estudante.
+     * Se o utilizador logado for estudante, carrega o seu proprio perfil.
+     * Se for admin/secretaria, carrega o perfil do estudante pelo parametro id.
+     * Atributos: estudante.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -67,13 +72,7 @@ public class EstudantePerfilServlet extends HttpServlet {
             }
 
             request.setAttribute("estudante", estudante);
-
-            String path = request.getServletPath();
-            if (path.equals("/estudante/profile")) {
-                request.getRequestDispatcher("/view/admin/estudante/profile.jsp").forward(request, response);
-            } else {
-                request.getRequestDispatcher("/view/admin/estudante/profile.jsp").forward(request, response);
-            }
+            request.getRequestDispatcher("/view/admin/estudante/profile.jsp").forward(request, response);
 
         } catch (SQLException e) {
             request.setAttribute("erro", "Erro ao buscar estudante: " + e.getMessage());

@@ -1,5 +1,8 @@
 package com.ojj.academico.dto;
 
+/**
+ * DTO que transporta os dados de uma disciplina entre camadas.
+ */
 public class DisciplinaDTO {
     private int idDisciplina;
     private String codigoDisciplina;

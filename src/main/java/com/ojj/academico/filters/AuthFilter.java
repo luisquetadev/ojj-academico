@@ -14,11 +14,21 @@ import jakarta.servlet.http.HttpSession;
 
 import com.ojj.academico.model.Utilizador;
 
+/**
+ * Filtro de autenticação que protege os recursos do sistema.
+ * <p>
+ * Verifica se o utilizador possui uma sessão ativa antes de permitir
+ * o acesso a qualquer recurso protegido. Redireciona para a página
+ * inicial se não estiver autenticado.
+ */
 public class AuthFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {}
 
+    /**
+     * Intercepta o pedido e verifica se o utilizador está autenticado.
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {

@@ -7,8 +7,21 @@ import java.util.List;
 import com.ojj.academico.model.Departamento;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code departamento}.
+ * <p>
+ * Operações de CRUD para os departamentos da instituição.
+ * </p>
+ */
 public class DepartamentoDAO {
 
+    /**
+     * Busca um departamento pelo seu ID.
+     *
+     * @param idDepartamento chave primária do departamento
+     * @return o departamento encontrado ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public Departamento buscarPorId(int idDepartamento) throws SQLException {
         String sql = "SELECT * FROM departamento WHERE id_departamento = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -25,6 +38,12 @@ public class DepartamentoDAO {
         }
     }
 
+    /**
+     * Lista todos os departamentos.
+     *
+     * @return lista de departamentos
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Departamento> listarTodos() throws SQLException {
         String sql = "SELECT * FROM departamento";
         List<Departamento> list = new ArrayList<>();
@@ -41,6 +60,13 @@ public class DepartamentoDAO {
         return list;
     }
 
+    /**
+     * Insere um novo departamento.
+     *
+     * @param departamento dados do departamento
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(Departamento departamento) throws SQLException {
         String sql = "INSERT INTO departamento (nome_departamento) VALUES (?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -58,6 +84,13 @@ public class DepartamentoDAO {
         }
     }
 
+    /**
+     * Actualiza o nome de um departamento.
+     *
+     * @param departamento dados actualizados
+     * @return {@code true} se algum registo foi alterado
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean atualizar(Departamento departamento) throws SQLException {
         String sql = "UPDATE departamento SET nome_departamento = ? WHERE id_departamento = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -68,6 +101,13 @@ public class DepartamentoDAO {
         }
     }
 
+    /**
+     * Exclui um departamento pelo seu ID.
+     *
+     * @param idDepartamento chave primária do departamento
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluir(int idDepartamento) throws SQLException {
         String sql = "DELETE FROM departamento WHERE id_departamento = ?";
         try (Connection conn = ConnectionFactory.getConnection();

@@ -2,6 +2,9 @@ package com.ojj.academico.dto;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO que transporta os dados de um utilizador entre camadas.
+ */
 public class UtilizadorDTO {
     private int idUtilizador;
     private int idPerfil;

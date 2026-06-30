@@ -3,6 +3,9 @@ package com.ojj.academico.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * DTO que transporta os dados completos de um estudante entre camadas.
+ */
 public class EstudanteDTO {
     private int idEstudante;
     private int idUtilizador;

@@ -8,8 +8,21 @@ import java.util.List;
 import com.ojj.academico.model.Curso;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code curso}.
+ * <p>
+ * Responsável pelas operações CRUD dos cursos oferecidos pela instituição.
+ * </p>
+ */
 public class CursoDAO {
 
+    /**
+     * Busca um curso pelo seu ID.
+     *
+     * @param idCurso chave primária do curso
+     * @return o curso encontrado ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public Curso buscarPorId(int idCurso) throws SQLException {
         String sql = "SELECT * FROM curso WHERE id_curso = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -23,6 +36,12 @@ public class CursoDAO {
         }
     }
 
+    /**
+     * Lista todos os cursos.
+     *
+     * @return lista de cursos
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Curso> listarTodos() throws SQLException {
         String sql = "SELECT * FROM curso";
         List<Curso> list = new ArrayList<>();
@@ -36,6 +55,13 @@ public class CursoDAO {
         return list;
     }
 
+    /**
+     * Insere um novo curso no banco.
+     *
+     * @param curso dados do curso
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(Curso curso) throws SQLException {
         String sql = "INSERT INTO curso (id_departamento, codigo_curso, nome_curso, grau, regime, duracao_anos, propina_mensal) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -59,6 +85,13 @@ public class CursoDAO {
         }
     }
 
+    /**
+     * Actualiza os dados de um curso existente.
+     *
+     * @param curso dados actualizados
+     * @return {@code true} se algum registo foi alterado
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean atualizar(Curso curso) throws SQLException {
         String sql = "UPDATE curso SET id_departamento = ?, codigo_curso = ?, nome_curso = ?, grau = ?, regime = ?, duracao_anos = ?, propina_mensal = ? WHERE id_curso = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -75,6 +108,13 @@ public class CursoDAO {
         }
     }
 
+    /**
+     * Exclui um curso pelo seu ID.
+     *
+     * @param idCurso chave primária do curso
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluir(int idCurso) throws SQLException {
         String sql = "DELETE FROM curso WHERE id_curso = ?";
         try (Connection conn = ConnectionFactory.getConnection();

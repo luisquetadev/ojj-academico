@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 
+/**
+ * DTO que transporta os dados de um pagamento entre camadas.
+ */
 public class PagamentoDTO {
     private int idPagamento;
     private int idEstudante;

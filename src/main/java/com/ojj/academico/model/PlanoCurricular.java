@@ -1,5 +1,11 @@
 package com.ojj.academico.model;
 
+/**
+ * Modelo que representa o plano curricular de um curso.
+ * <p>
+ * Define a estrutura de anos curriculares e semestres com
+ * a respetiva carga horária para um curso.
+ */
 public class PlanoCurricular {
     private int idPlanoCurricular;
     private int idCurso;

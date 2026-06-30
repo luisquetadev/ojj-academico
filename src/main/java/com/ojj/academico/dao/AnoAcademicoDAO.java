@@ -8,8 +8,22 @@ import java.util.List;
 import com.ojj.academico.model.AnoAcademico;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code ano_academico}.
+ * <p>
+ * Responsável pelas operações de CRUD dos anos lectivos,
+ * incluindo a gestão de datas de início, fim e estado (activo/inactivo).
+ * </p>
+ */
 public class AnoAcademicoDAO {
 
+    /**
+     * Busca um ano lectivo pelo seu identificador único.
+     *
+     * @param idAnoAcademico chave primária do ano
+     * @return o ano encontrado ou {@code null} se não existir
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public AnoAcademico buscarPorId(int idAnoAcademico) throws SQLException {
         String sql = "SELECT * FROM ano_academico WHERE id_ano_academico = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -23,6 +37,12 @@ public class AnoAcademicoDAO {
         }
     }
 
+    /**
+     * Lista todos os anos lectivos registados.
+     *
+     * @return lista de anos (pode estar vazia)
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<AnoAcademico> listarTodos() throws SQLException {
         String sql = "SELECT * FROM ano_academico";
         List<AnoAcademico> list = new ArrayList<>();
@@ -36,6 +56,13 @@ public class AnoAcademicoDAO {
         return list;
     }
 
+    /**
+     * Insere um novo ano lectivo e atribui o ID gerado ao objecto.
+     *
+     * @param anoAcademico dados do ano a inserir
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(AnoAcademico anoAcademico) throws SQLException {
         String sql = "INSERT INTO ano_academico (descricao, data_inicio, data_fim, status) VALUES (?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -56,6 +83,13 @@ public class AnoAcademicoDAO {
         }
     }
 
+    /**
+     * Actualiza os dados de um ano lectivo existente.
+     *
+     * @param anoAcademico dados actualizados
+     * @return {@code true} se algum registo foi alterado
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean atualizar(AnoAcademico anoAcademico) throws SQLException {
         String sql = "UPDATE ano_academico SET descricao = ?, data_inicio = ?, data_fim = ?, status = ? WHERE id_ano_academico = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -69,6 +103,13 @@ public class AnoAcademicoDAO {
         }
     }
 
+    /**
+     * Exclui um ano lectivo pelo seu ID.
+     *
+     * @param idAnoAcademico chave primária do ano a remover
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean excluir(int idAnoAcademico) throws SQLException {
         String sql = "DELETE FROM ano_academico WHERE id_ano_academico = ?";
         try (Connection conn = ConnectionFactory.getConnection();

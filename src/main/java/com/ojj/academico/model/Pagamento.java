@@ -4,6 +4,12 @@ import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 
+/**
+ * Modelo que representa um pagamento efetuado por um estudante.
+ * <p>
+ * Regista o tipo de pagamento (matrícula, propina), valores,
+ * método de pagamento, datas e estado (PENDENTE, PAGO, PARCIAL, ATRASADO).
+ */
 public class Pagamento {
     private int idPagamento;
     private int idEstudante;

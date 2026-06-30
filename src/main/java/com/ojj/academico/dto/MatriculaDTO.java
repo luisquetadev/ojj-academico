@@ -2,6 +2,9 @@ package com.ojj.academico.dto;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO que transporta os dados de uma matrícula entre camadas.
+ */
 public class MatriculaDTO {
     private int idMatricula;
     private int idEstudante;

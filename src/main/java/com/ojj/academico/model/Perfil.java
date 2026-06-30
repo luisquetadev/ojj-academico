@@ -1,5 +1,11 @@
 package com.ojj.academico.model;
 
+/**
+ * Modelo que representa um perfil/papel de acesso no sistema.
+ * <p>
+ * Cada perfil (ADMIN, SECRETARIA, DOCENTE, ESTUDANTE, etc.)
+ * define um conjunto de permissões no sistema.
+ */
 public class Perfil {
     private int idPerfil;
     private String nomePerfil;

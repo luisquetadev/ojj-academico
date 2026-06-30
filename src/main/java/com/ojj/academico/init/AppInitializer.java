@@ -8,10 +8,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @WebListener
+/**
+ * Inicializador da aplicação executado no arranque do servidor.
+ * <p>
+ * Verifica se o banco de dados está vazio e, em caso afirmativo,
+ * executa automaticamente o seed de dados iniciais.
+ */
 public class AppInitializer implements ServletContextListener {
 
     private static final Logger log = LoggerFactory.getLogger(AppInitializer.class);
 
+    /**
+     * Invocado quando o contexto da aplicação é iniciado.
+     * Executa o seed automático se o banco de dados estiver vazio.
+     */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         SeedService seedService = new SeedService();

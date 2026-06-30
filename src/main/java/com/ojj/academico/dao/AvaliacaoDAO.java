@@ -9,8 +9,22 @@ import java.math.BigDecimal;
 import com.ojj.academico.model.Avaliacao;
 import com.ojj.academico.utils.ConnectionFactory;
 
+/**
+ * DAO para a tabela {@code avaliacao}.
+ * <p>
+ * Permite criar, listar, actualizar e remover avaliações,
+ * bem como filtrá-las por disciplina ou professor.
+ * </p>
+ */
 public class AvaliacaoDAO {
 
+    /**
+     * Busca uma avaliação pelo seu ID.
+     *
+     * @param idAvaliacao chave primária da avaliação
+     * @return a avaliação encontrada ou {@code null}
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public Avaliacao buscarPorId(int idAvaliacao) throws SQLException {
         String sql = "SELECT * FROM avaliacao WHERE id_avaliacao = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -24,6 +38,12 @@ public class AvaliacaoDAO {
         }
     }
 
+    /**
+     * Lista todas as avaliações registadas.
+     *
+     * @return lista de avaliações
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Avaliacao> listarTodos() throws SQLException {
         String sql = "SELECT * FROM avaliacao";
         List<Avaliacao> list = new ArrayList<>();
@@ -37,6 +57,13 @@ public class AvaliacaoDAO {
         return list;
     }
 
+    /**
+     * Insere uma nova avaliação no banco.
+     *
+     * @param avaliacao dados da avaliação
+     * @return {@code true} se a inserção foi bem-sucedida
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean inserir(Avaliacao avaliacao) throws SQLException {
         String sql = "INSERT INTO avaliacao (id_disciplina, id_professor, tipo, descricao, data_avaliacao, peso) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -63,6 +90,13 @@ public class AvaliacaoDAO {
         }
     }
 
+    /**
+     * Actualiza os dados de uma avaliação existente.
+     *
+     * @param avaliacao dados actualizados
+     * @return {@code true} se algum registo foi alterado
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public boolean atualizar(Avaliacao avaliacao) throws SQLException {
         String sql = "UPDATE avaliacao SET id_disciplina = ?, id_professor = ?, tipo = ?, descricao = ?, data_avaliacao = ?, peso = ? WHERE id_avaliacao = ?";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -82,6 +116,13 @@ public class AvaliacaoDAO {
         }
     }
 
+    /**
+     * Lista as avaliações de uma disciplina, ordenadas por data.
+     *
+     * @param idDisciplina ID da disciplina
+     * @return avaliações associadas
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Avaliacao> listarPorDisciplina(int idDisciplina) throws SQLException {
         String sql = "SELECT * FROM avaliacao WHERE id_disciplina = ? ORDER BY data_avaliacao";
         List<Avaliacao> list = new ArrayList<>();
@@ -96,7 +137,13 @@ public class AvaliacaoDAO {
         return list;
     }
 
-   
+    /**
+     * Lista as avaliações de um professor, ordenadas por data.
+     *
+     * @param idProfessor ID do professor
+     * @return avaliações associadas
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
     public List<Avaliacao> listarPorProfessor(int idProfessor) throws SQLException {
         String sql = "SELECT * FROM avaliacao WHERE id_professor = ? ORDER BY data_avaliacao";
         List<Avaliacao> list = new ArrayList<>();
@@ -111,7 +158,14 @@ public class AvaliacaoDAO {
         return list;
     }
 
-     public boolean excluir(int idAvaliacao) throws SQLException {
+    /**
+     * Exclui uma avaliação pelo seu ID.
+     *
+     * @param idAvaliacao chave primária da avaliação
+     * @return {@code true} se o registo foi removido
+     * @throws SQLException em caso de erro de acesso ao banco
+     */
+    public boolean excluir(int idAvaliacao) throws SQLException {
         String sql = "DELETE FROM avaliacao WHERE id_avaliacao = ?";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

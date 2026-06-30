@@ -1,5 +1,9 @@
 package com.ojj.academico.model;
 
+/**
+ * Modelo que representa a associação entre uma matrícula e as disciplinas
+ * em que o estudante está inscrito.
+ */
 public class MatriculaDisciplina {
     private int idMatricula;
     private int idDisciplina;
